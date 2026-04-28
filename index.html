@@ -195,45 +195,70 @@ footer span{
 }
 
 
-.contato-card.instagram img{
-  width:46px;
-  height:46px;
-  border-radius:12px;
-  background:#000;
-  padding:4px;
+/* AJUSTE FINAL - BOTÕES ESTILO NIKE */
+.btn:not(.btn-dark):not(.btn-danger),
+.add-btn,
+.search button,
+.qty button,
+.modal-close,
+.icon-btn {
+  background:#000 !important;
+  color:#fff !important;
+  border:1px solid #2c2c2c !important;
+  border-radius:999px !important;
+  font-weight:800 !important;
+  letter-spacing:.4px;
+  transition:all .25s ease;
 }
-.fav-count{
-  display:inline-grid;
-  place-items:center;
-  min-width:22px;
-  height:22px;
-  padding:0 6px;
-  margin-left:6px;
-  background:#ef4444;
-  color:#fff;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:900;
+
+.btn:not(.btn-dark):not(.btn-danger):hover,
+.add-btn:hover,
+.search button:hover,
+.qty button:hover,
+.modal-close:hover,
+.icon-btn:hover {
+  background:#111 !important;
+  color:#fff !important;
+  transform:translateY(-2px) scale(1.02);
+  box-shadow:0 10px 25px rgba(0,0,0,.55);
 }
-.heart{
-  user-select:none;
+
+/* Mantém botões perigosos em vermelho */
+.btn-danger {
+  background:#ef4444 !important;
+  color:#fff !important;
+  border-radius:999px !important;
 }
-.heart.ativo{
-  background:#ef4444!important;
-  color:#fff!important;
-  box-shadow:0 0 0 3px rgba(239,68,68,.22), 0 8px 18px rgba(239,68,68,.28);
+
+/* Mantém botões escuros elegantes */
+.btn-dark {
+  background:#181818 !important;
+  color:#fff !important;
+  border:1px solid #333 !important;
+  border-radius:999px !important;
 }
-.heart.ativo:hover{
-  transform:scale(1.08);
+
+/* Botões do menu superior mais limpos */
+.nav a {
+  border-radius:999px !important;
 }
-.favoritos-vazio{
-  grid-column:1/-1;
-  text-align:center;
-  background:#111;
-  border:1px solid #333;
-  border-radius:18px;
-  padding:28px;
-  color:#ccc;
+
+.nav a:hover,
+.nav a.active {
+  background:#000 !important;
+  color:#fff !important;
+  border:1px solid #333 !important;
+}
+
+/* Botão de favorito continua funcional e destacado */
+.heart {
+  background:rgba(255,255,255,.9) !important;
+  color:#000 !important;
+}
+
+.heart.ativo {
+  background:#ef4444 !important;
+  color:#fff !important;
 }
 
 </style>
@@ -243,7 +268,7 @@ footer span{
   <div class="header-inner">
     <a class="brand" href="#top" onclick="mostrarLoja()"><img class="logo-word" src="logo-escrita.png" alt="D'Black Outlet" onerror="this.src='logo escrita.png'"></a>
     <div class="search"><input id="busca" placeholder="Buscar produtos..." onkeyup="buscar()"><button onclick="buscar()">🔎</button></div>
-    <div class="header-actions"><button class="icon-btn" onclick="mostrarFavoritos()">♡ Favoritos <span id="favCount" class="fav-count">0</span></button><button class="icon-btn" onclick="toggleCart()">🛒 <span id="cartCount" class="cart-count">0</span></button><button class="icon-btn" onclick="abrirAdmin()">👤 Admin</button></div>
+    <div class="header-actions"><button class="icon-btn" onclick="toggleCart()">🛒 <span id="cartCount" class="cart-count">0</span></button><button class="icon-btn" onclick="abrirAdmin()">👤 Admin</button></div>
   </div>
   <nav class="nav">
   <a href="#top" onclick="mostrarLoja()">Início</a>
@@ -315,8 +340,8 @@ footer span{
       </div>
     </a>
 
-    <a class="contato-card instagram" href="https://instagram.com/dblack_outlet" target="_blank">
-      <img src="instagram.png" alt="Instagram">
+    <a class="contato-card instagram" href="https://instagram.com/SEU_INSTAGRAM" target="_blank">
+      <div class="instagram-icon">📸</div>
       <div>
         <h3>Instagram</h3>
         <p>Acompanhe novidades, lançamentos e ofertas</p>
@@ -374,11 +399,6 @@ function salvarFavoritos(){
   localStorage.setItem('favoritos_dblack', JSON.stringify(favoritos));
 }
 
-function atualizarContadorFavoritos(){
-  const el = document.getElementById('favCount');
-  if(el) el.textContent = favoritos.length;
-}
-
 function toggleFavorito(event, id, btn){
   event.preventDefault();
   event.stopPropagation();
@@ -389,28 +409,15 @@ function toggleFavorito(event, id, btn){
     favoritos.splice(index, 1);
     btn.classList.remove('ativo');
     btn.innerHTML = '♡';
-    btn.setAttribute('title','Adicionar aos favoritos');
     toast('Produto removido dos favoritos.');
   }else{
     favoritos.push(id);
     btn.classList.add('ativo');
     btn.innerHTML = '♥';
-    btn.setAttribute('title','Remover dos favoritos');
     toast('Produto favoritado!');
   }
 
   salvarFavoritos();
-  atualizarContadorFavoritos();
-
-  if(filtroAtual === 'Favoritos') render();
-}
-
-function mostrarFavoritos(){
-  mostrarLoja();
-  filtroAtual = 'Favoritos';
-  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
-  render();
-  document.getElementById('produtos')?.scrollIntoView({behavior:'smooth'});
 }
 
 function produtoAtualizado(item){
@@ -494,7 +501,6 @@ async function carregar(){
   renderAdmin();
   renderCarrinho();
   renderAvaliacoes();
-  atualizarContadorFavoritos();
 }
 
 function filtrar(cat){
@@ -517,13 +523,12 @@ function buscar(){
 
 function produtosFiltrados(){
   return produtos.filter(p => {
-    const porFavorito = filtroAtual === 'Favoritos' ? favoritos.includes(p.id) : true;
-    const porCategoria = filtroAtual === 'Todos' || filtroAtual === 'Favoritos' || p.categoria === filtroAtual;
+    const porCategoria = filtroAtual === 'Todos' || p.categoria === filtroAtual;
     const porBusca = !termoBusca ||
       (p.nome || '').toLowerCase().includes(termoBusca) ||
       (p.marca || '').toLowerCase().includes(termoBusca);
 
-    return porFavorito && porCategoria && porBusca;
+    return porCategoria && porBusca;
   });
 }
 
@@ -535,9 +540,7 @@ function render(){
   lista.innerHTML = '';
 
   if(dados.length === 0){
-    lista.innerHTML = filtroAtual === 'Favoritos'
-      ? '<div class="favoritos-vazio">Você ainda não favoritou nenhum produto. Clique no coração dos produtos para salvar aqui.</div>'
-      : '<div class="empty">Nenhum produto encontrado.</div>';
+    lista.innerHTML = '<div class="empty">Nenhum produto encontrado.</div>';
     return;
   }
 
@@ -548,7 +551,7 @@ function render(){
     lista.innerHTML += `
       <article class="product">
         <span class="badge">Novo</span>
-        <button type="button" title="${favorito ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}" class="heart ${favorito ? 'ativo' : ''}" onclick="toggleFavorito(event,'${p.id}',this)">${favorito ? '♥' : '♡'}</button>
+        <button type="button" class="heart ${favorito ? 'ativo' : ''}" onclick="toggleFavorito(event,'${p.id}',this)">${favorito ? '♥' : '♡'}</button>
         <div class="product-img" onclick="abrirProduto(${i})">${imagemProduto(p.imagem, p.nome)}</div>
         <div class="product-info">
           <h3>${p.nome || 'Produto'}</h3>
