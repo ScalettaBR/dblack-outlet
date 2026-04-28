@@ -21,7 +21,7 @@
 body::before{content:"";position:fixed;inset:0;background:linear-gradient(90deg,rgba(255,196,0,.035) 1px,transparent 1px),linear-gradient(rgba(255,196,0,.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;z-index:-1}
 h1,h2,h3,h4,.nav a,.btn,.cat-card span{font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.6px}.hidden{display:none!important}.muted{color:var(--muted);font-size:13px}.price{color:var(--yellow);font-size:22px;font-weight:900;margin:0 0 12px}.btn{background:var(--yellow);color:#000;border:0;border-radius:12px;padding:14px 24px;font-weight:900;cursor:pointer;transition:.25s}.btn:hover,.icon-btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(255,196,0,.25)}.btn-outline{background:transparent;color:#fff;border:1px solid var(--yellow)}.btn-danger{background:var(--danger);color:#fff}.btn-dark{background:#181818;color:#fff;border:1px solid #333}
 .header{position:sticky;top:0;z-index:50;background:rgba(5,5,5,.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.08)}
-.header-inner{max-width:1320px;margin:auto;padding:14px 22px;display:grid;grid-template-columns:340px 1fr auto;align-items:center;gap:22px}.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}.brand img.logo-word{height:125px;max-width:340px;object-fit:contain}
+.header-inner{max-width:1320px;margin:auto;padding:10px 22px;display:grid;grid-template-columns:390px 1fr auto;align-items:center;gap:22px}.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}.brand img.logo-word{height:145px;max-width:390px;object-fit:contain}
 .search{display:flex;align-items:center;background:#151515;border:1px solid #2e2e2e;border-radius:999px;overflow:hidden;max-width:520px;width:100%;justify-self:center}.search input{flex:1;background:transparent;border:0;color:#fff;padding:14px 18px;outline:none}.search button{border:0;background:var(--yellow);padding:14px 18px;border-radius:999px;cursor:pointer}
 .header-actions{display:flex;align-items:center;gap:10px}.icon-btn{background:#151515;color:#fff;border:1px solid #262626;border-radius:999px;padding:12px 14px;cursor:pointer;position:relative;transition:.25s}.cart-count{position:absolute;right:-5px;top:-7px;background:var(--yellow);color:#000;font-size:12px;font-weight:800;border-radius:50%;width:22px;height:22px;display:grid;place-items:center}
 .nav{max-width:1320px;margin:auto;padding:0 22px 14px;display:flex;gap:18px;align-items:center}.nav a{color:#fff;text-decoration:none;padding:12px 20px;border-radius:10px;font-weight:800}.nav a.active,.nav a:hover{background:var(--yellow);color:#000}
@@ -34,11 +34,11 @@ h1,h2,h3,h4,.nav a,.btn,.cat-card span{font-family:'Barlow Condensed',sans-serif
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:90;display:none;align-items:center;justify-content:center;padding:20px}.modal.open{display:flex}.modal-box{background:#121212;border:1px solid #333;border-radius:24px;max-width:860px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:22px;position:relative}.modal-box img{width:100%;height:440px;object-fit:cover;border-radius:18px}.modal-close{position:absolute;right:16px;top:14px;background:#222;color:#fff;border:1px solid #444}
 .login,.admin{max-width:1320px;margin:20px auto;padding:22px}.admin-card{background:linear-gradient(145deg,#111,#181818);border:1px solid #2d2d2d;border-radius:22px;padding:22px}.admin-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{font-size:13px;color:#ddd;display:block;margin-bottom:6px}.field input,.field select{width:100%;background:#0d0d0d;color:#fff;border:1px solid #444;border-radius:10px;padding:13px;outline:none}.field.full{grid-column:1/-1}.preview-box{border:1px solid #444;border-radius:16px;padding:12px;text-align:center;background:#0d0d0d}.preview-box img#preview{width:220px;height:220px;object-fit:cover;border-radius:14px;display:none;margin:auto}.admin-list{display:flex;flex-direction:column;gap:12px}.admin-prod{display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:center;border-bottom:1px solid #2f2f2f;padding-bottom:12px}.admin-prod img{width:72px;height:72px;object-fit:cover;border-radius:10px}.admin-prod h4{margin:0;font-size:18px}.admin-actions{display:flex;gap:8px}.toast{position:fixed;right:24px;bottom:96px;background:#22c55e;color:#061006;padding:14px 18px;border-radius:14px;font-weight:900;opacity:0;transform:translateY(20px);transition:.3s;z-index:120}.toast.show{opacity:1;transform:translateY(0)}footer{text-align:center;color:#777;padding:28px;border-top:1px solid #222;margin-top:30px}
 @media(max-width:1000px){.header-inner{grid-template-columns:1fr;justify-items:center}.search{order:3}.nav{justify-content:center;flex-wrap:wrap}.hero-box{grid-template-columns:1fr}.hero-content{padding:42px 28px;text-align:center}.hero h1{font-size:54px}.hero-mascot{height:280px}.categories{grid-template-columns:repeat(3,1fr)}.product-grid{grid-template-columns:repeat(3,1fr)}.benefits{grid-template-columns:repeat(2,1fr)}.modal-box{grid-template-columns:1fr}.modal-box img{height:320px}.admin-grid{grid-template-columns:1fr}}
-@media(max-width:650px){.brand img.logo-word{height:88px}.header-actions{flex-wrap:wrap;justify-content:center}.nav{display:none}.hero{padding:10px}.hero h1{font-size:42px}.kicker{font-size:20px}.hero-mascot img{max-height:285px}.categories{grid-template-columns:repeat(2,1fr);gap:10px}.product-grid{grid-template-columns:repeat(2,1fr);gap:12px}.product-img{height:170px}.product-info{padding:10px}.product-info h3{font-size:18px}.price{font-size:18px}.benefits{grid-template-columns:1fr}.benefit{border-right:0;border-bottom:1px solid #333}.form-grid{grid-template-columns:1fr}.cart-panel{width:100%;max-width:100%;right:-100%}.modal-box{padding:14px}.modal-box img{height:260px}}
+@media(max-width:650px){.brand img.logo-word{height:96px}.header-actions{flex-wrap:wrap;justify-content:center}.nav{display:none}.hero{padding:10px}.hero h1{font-size:42px}.kicker{font-size:20px}.hero-mascot img{max-height:285px}.categories{grid-template-columns:repeat(2,1fr);gap:10px}.product-grid{grid-template-columns:repeat(2,1fr);gap:12px}.product-img{height:170px}.product-info{padding:10px}.product-info h3{font-size:18px}.price{font-size:18px}.benefits{grid-template-columns:1fr}.benefit{border-right:0;border-bottom:1px solid #333}.form-grid{grid-template-columns:1fr}.cart-panel{width:100%;max-width:100%;right:-100%}.modal-box{padding:14px}.modal-box img{height:260px}}
 
 .highlight-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:28px}
-.highlight-card{background:linear-gradient(145deg,rgba(255,196,0,.18),#111);border:1px solid rgba(255,196,0,.55);border-radius:18px;overflow:hidden;position:relative}
-.highlight-card::before{content:"DESTAQUE";position:absolute;left:12px;top:12px;background:var(--yellow);color:#000;font-weight:900;font-size:12px;border-radius:8px;padding:5px 10px;z-index:2}
+.highlight-card{background:linear-gradient(145deg,#171717,#0d0d0d);border:1px solid rgba(255,196,0,.45);border-radius:22px;overflow:hidden;position:relative;transition:.25s;box-shadow:0 10px 26px rgba(0,0,0,.35)}.highlight-card:hover{transform:translateY(-5px);border-color:var(--yellow)}
+.highlight-card::before{content:'NOVIDADE';position:absolute;left:12px;top:12px;background:var(--yellow);color:#000;font-weight:900;font-size:12px;border-radius:8px;padding:5px 10px;z-index:2}
 .highlight-card img{width:100%;height:210px;object-fit:cover}
 .highlight-card .highlight-info{padding:14px}
 .highlight-card h3{font-size:22px;margin:0 0 6px}
@@ -77,6 +77,11 @@ footer span{
   100%{background-position:0%}
 }
 
+
+#top, #categoriasProdutos, #produtos, #avaliacoes, #sobre, #contato {
+  scroll-margin-top: 180px;
+}
+
 </style>
 </head>
 <body>
@@ -88,17 +93,17 @@ footer span{
   </div>
   <nav class="nav">
   <a href="#top" onclick="mostrarLoja()">Início</a>
-  <a href="#categoriasProdutos">Nossos produtos</a>
-  <a href="#destaques">Destaques</a>
-  <a href="#avaliacoes">Avaliações</a>
-  <a href="#sobre">Sobre nós</a>
-  <a href="#contato">Contato</a>
+  <a href="#categoriasProdutos" onclick="mostrarLoja()">Nossos produtos</a>
+  <a href="#produtos" onclick="mostrarLoja()">Produtos</a>
+  <a href="#avaliacoes" onclick="mostrarLoja()">Avaliações</a>
+  <a href="#sobre" onclick="mostrarLoja()">Sobre nós</a>
+  <a href="#contato" onclick="mostrarLoja()">Contato</a>
 </nav>
 </header>
 
 <main id="lojaView">
   <section id="top" class="hero"><div class="hero-box"><div class="hero-content"><div class="kicker">Estilo que impõe</div><h1>ATITUDE QUE <span>TRANSFORMA</span></h1><button class="btn" onclick="document.getElementById('produtos').scrollIntoView()">Ver produtos →</button></div><div class="hero-mascot"><img src="logo.png" alt="Mascote D'Black Outlet"></div></div></section>
-  <section class="main"><div id="categoriasProdutos" class="section-title"><h2>Categorias</h2></div><div class="categories"><div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div><span>Todos</span></div><div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div><span>Calçados</span></div><div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div><span>Camisas</span></div><div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div><div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div><div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div></div><div id="destaques" class="section-title"><h2>Destaques da semana</h2></div><div id="listaDestaques" class="highlight-grid"></div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div></section>
+  <section class="main"><div id="categoriasProdutos" class="section-title"><h2>Categorias</h2></div><div class="categories"><div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div><span>Todos</span></div><div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div><span>Calçados</span></div><div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div><span>Camisas</span></div><div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div><div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div><div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div></div><div id="destaques" class="section-title"><h2>Novidades da loja</h2></div><div id="listaDestaques" class="highlight-grid"></div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div></section>
   <section class="benefits"><div class="benefit">🚚 <div><strong>Frete para todo Brasil</strong><small>Envio rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>Pagamento via Pix</strong><small>Rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>5% off no Pix</strong><small>Pagamento à vista</small></div></div><div class="benefit">💬 <div><strong>Atendimento VIP</strong><small>Suporte via WhatsApp</small></div></div></section>
 </main>
 
@@ -227,7 +232,6 @@ function produtoAtualizado(item){
 }
 
 function mostrarLoja(){
-  window.location.hash = '';
   document.getElementById('lojaView')?.classList.remove('hidden');
   document.getElementById('loginView')?.classList.add('hidden');
   document.getElementById('adminView')?.classList.add('hidden');
@@ -370,11 +374,14 @@ function renderDestaques(){
   const area = document.getElementById('listaDestaques');
   if(!area) return;
 
-  const destaques = [...produtos].filter(p => p.nome && p.imagem).slice(0, 4);
+  const destaques = [...produtos]
+    .filter(p => p.nome && p.imagem)
+    .slice(0,4);
+
   area.innerHTML = '';
 
   if(destaques.length === 0){
-    area.innerHTML = '<div class="empty">Cadastre produtos para aparecerem aqui automaticamente.</div>';
+    area.innerHTML = '<div class="empty">As novidades aparecerão aqui assim que você cadastrar produtos.</div>';
     return;
   }
 
