@@ -154,51 +154,148 @@ footer span{
 <footer><span>© 2026 D'Black Outlet - Todos os direitos reservados - By Scaletta💜</span></footer>
 
 <script>
-const firebaseConfig={apiKey:"AIzaSyC_vXz5dXrBRgZN3KciVKvyNGnZ47sNh7w",authDomain:"d-black-outlet-d8f3c.firebaseapp.com",projectId:"d-black-outlet-d8f3c",storageBucket:"d-black-outlet-d8f3c.firebasestorage.app",messagingSenderId:"816810445158",appId:"1:816810445158:web:00a782dfb4e19a497aa0a7"};
-firebase.initializeApp(firebaseConfig);const db=firebase.firestore();const auth=firebase.auth();
-let produtos=[];let avaliacoes=[];let carrinhoItens=JSON.parse(localStorage.getItem('carrinho_dblack'))||[];let favoritos=JSON.parse(localStorage.getItem('favoritos_dblack'))||[];let filtroAtual='Todos';let termoBusca='';let editandoId=null;
-const moeda=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
-function imagemProduto(url,nome){return `<img src="${url||'logo.png'}" alt="${nome||'Produto'}" onerror="this.src='logo.png';this.style.objectFit='contain';this.style.padding='18px';">`}
-function produtoAtualizado(item){
-  const atualizado = produtos.find(p => p.id === item.id);
-  return atualizado ? {...item, ...atualizado, qtd:item.qtd || 1} : item;
+const firebaseConfig = {
+  apiKey: "AIzaSyC_vXz5dXrBRgZN3KciVKvyNGnZ47sNh7w",
+  authDomain: "d-black-outlet-d8f3c.firebaseapp.com",
+  projectId: "d-black-outlet-d8f3c",
+  storageBucket: "d-black-outlet-d8f3c.firebasestorage.app",
+  messagingSenderId: "816810445158",
+  appId: "1:816810445158:web:00a782dfb4e19a497aa0a7"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+let produtos = [];
+let avaliacoes = [];
+let carrinhoItens = JSON.parse(localStorage.getItem('carrinho_dblack')) || [];
+let favoritos = JSON.parse(localStorage.getItem('favoritos_dblack')) || [];
+let filtroAtual = 'Todos';
+let termoBusca = '';
+let editandoId = null;
+
+const moeda = valor => Number(valor || 0).toLocaleString('pt-BR', {
+  style: 'currency',
+  currency: 'BRL'
+});
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  if(!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
 }
-function salvarCarrinho(){localStorage.setItem('carrinho_dblack',JSON.stringify(carrinhoItens))}
-function salvarFavoritos(){localStorage.setItem('favoritos_dblack',JSON.stringify(favoritos))}
-function toggleFavorito(event,id,btn){
+
+function imagemProduto(url, nome){
+  return `<img src="${url || 'logo.png'}" alt="${nome || 'Produto'}" onerror="this.src='logo.png';this.style.objectFit='contain';this.style.padding='18px';">`;
+}
+
+function salvarCarrinho(){
+  localStorage.setItem('carrinho_dblack', JSON.stringify(carrinhoItens));
+}
+
+function salvarFavoritos(){
+  localStorage.setItem('favoritos_dblack', JSON.stringify(favoritos));
+}
+
+function toggleFavorito(event, id, btn){
+  event.preventDefault();
   event.stopPropagation();
-  const index=favoritos.indexOf(id);
-  if(index>-1){
-    favoritos.splice(index,1);
+
+  const index = favoritos.indexOf(id);
+
+  if(index > -1){
+    favoritos.splice(index, 1);
     btn.classList.remove('ativo');
-    btn.innerHTML='♡';
+    btn.innerHTML = '♡';
     toast('Produto removido dos favoritos.');
   }else{
     favoritos.push(id);
     btn.classList.add('ativo');
-    btn.innerHTML='♥';
+    btn.innerHTML = '♥';
     toast('Produto favoritado!');
   }
+
   salvarFavoritos();
 }
-function mostrarLoja(){window.location.hash='';document.getElementById('lojaView').classList.remove('hidden');document.getElementById('loginView').classList.add('hidden');document.getElementById('adminView').classList.add('hidden')}
-function abrirAdmin(){window.location.hash='admin';mostrarLogin()}
-function mostrarLogin(){document.getElementById('lojaView').classList.add('hidden');document.getElementById('loginView').classList.remove('hidden');document.getElementById('adminView').classList.add('hidden');document.getElementById('cartPanel').classList.remove('open')}
-function mostrarAdmin(){window.location.hash='admin';document.getElementById('lojaView').classList.add('hidden');document.getElementById('loginView').classList.add('hidden');document.getElementById('adminView').classList.remove('hidden');document.getElementById('cartPanel').classList.remove('open')}
-function toggleCart(){document.getElementById('cartPanel').classList.toggle('open')}
-function login(){const email=document.getElementById('email').value;const senha=document.getElementById('senha').value;auth.signInWithEmailAndPassword(email,senha).then(()=>{mostrarAdmin();toast('Admin conectado!')}).catch(e=>alert('Erro no login: '+e.message))}
-function logout(){auth.signOut();cancelarEdicao();mostrarLoja();toast('Você saiu do admin.')}
+
+function produtoAtualizado(item){
+  const atualizado = produtos.find(p => p.id === item.id);
+  return atualizado ? {...item, ...atualizado, qtd: item.qtd || 1} : item;
+}
+
+function mostrarLoja(){
+  window.location.hash = '';
+  document.getElementById('lojaView')?.classList.remove('hidden');
+  document.getElementById('loginView')?.classList.add('hidden');
+  document.getElementById('adminView')?.classList.add('hidden');
+}
+
+function abrirAdmin(){
+  window.location.hash = 'admin';
+  mostrarLogin();
+}
+
+function mostrarLogin(){
+  document.getElementById('lojaView')?.classList.add('hidden');
+  document.getElementById('loginView')?.classList.remove('hidden');
+  document.getElementById('adminView')?.classList.add('hidden');
+  document.getElementById('cartPanel')?.classList.remove('open');
+}
+
+function mostrarAdmin(){
+  window.location.hash = 'admin';
+  document.getElementById('lojaView')?.classList.add('hidden');
+  document.getElementById('loginView')?.classList.add('hidden');
+  document.getElementById('adminView')?.classList.remove('hidden');
+  document.getElementById('cartPanel')?.classList.remove('open');
+}
+
+function toggleCart(){
+  document.getElementById('cartPanel')?.classList.toggle('open');
+}
+
+function login(){
+  const email = document.getElementById('email')?.value || '';
+  const senha = document.getElementById('senha')?.value || '';
+
+  auth.signInWithEmailAndPassword(email, senha)
+    .then(() => {
+      mostrarAdmin();
+      toast('Admin conectado!');
+    })
+    .catch(err => alert('Erro no login: ' + err.message));
+}
+
+function logout(){
+  auth.signOut();
+  cancelarEdicao();
+  mostrarLoja();
+  toast('Você saiu do admin.');
+}
+
 async function carregar(){
-  const snap = await db.collection('produtos').get();
-  produtos = snap.docs.map(doc=>({id:doc.id,...doc.data()}));
+  try{
+    const snap = await db.collection('produtos').get();
+    produtos = snap.docs.map(doc => ({id: doc.id, ...doc.data()}));
+  }catch(err){
+    console.error('Erro ao carregar produtos:', err);
+    produtos = [];
+  }
 
   try{
-    const avSnap = await db.collection('avaliacoes').orderBy('criadoEm','desc').limit(12).get();
-    avaliacoes = avSnap.docs.map(doc=>({id:doc.id,...doc.data()}));
-  }catch(e){
     const avSnap = await db.collection('avaliacoes').get();
-    avaliacoes = avSnap.docs.map(doc=>({id:doc.id,...doc.data()}));
+    avaliacoes = avSnap.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    avaliacoes.sort((a,b) => {
+      const da = a.criadoEm?.seconds || 0;
+      const dbb = b.criadoEm?.seconds || 0;
+      return dbb - da;
+    });
+  }catch(err){
+    console.error('Erro ao carregar avaliações:', err);
+    avaliacoes = [];
   }
 
   render();
@@ -207,19 +304,352 @@ async function carregar(){
   renderCarrinho();
   renderAvaliacoes();
 }
-function removerCarrinho(i){carrinhoItens.splice(i,1);salvarCarrinho();renderCarrinho()}
-function renderCarrinho(){const c=document.getElementById('carrinho');let total=0,qtd=0;c.innerHTML='';if(carrinhoItens.length===0)c.innerHTML='<p class="muted">Seu carrinho está vazio.</p>';carrinhoItens = carrinhoItens.map(produtoAtualizado); salvarCarrinho(); carrinhoItens.forEach((p,i)=>{total+=Number(p.preco)*Number(p.qtd||1);qtd+=Number(p.qtd||1);c.innerHTML+=`<div class="cart-item">${imagemProduto(p.imagem,p.nome)}<div><h4>${p.nome}</h4><small class="muted">${p.tamanho?'Tamanho: '+p.tamanho:p.categoria||''}</small><div class="qty"><button onclick="alterarQtd(${i},-1)">−</button><span>${p.qtd||1}</span><button onclick="alterarQtd(${i},1)">+</button></div></div><div style="text-align:right"><strong>${moeda(p.preco*(p.qtd||1))}</strong><br><button class="btn-dark" onclick="removerCarrinho(${i})">🗑</button></div></div>`});document.getElementById('total').textContent=moeda(total);document.getElementById('cartCount').textContent=qtd}
-function finalizar(){if(carrinhoItens.length===0){alert('Carrinho vazio');return}let msg=`Pedido D'Black Outlet:%0A%0A`;let total=0;carrinhoItens.forEach(p=>{const sub=p.preco*(p.qtd||1);total+=sub;msg+=`• ${p.nome} x${p.qtd||1} - ${moeda(sub)}%0A`});msg+=`%0ATotal: ${moeda(total)}%0A%0AQuero finalizar este pedido.`;window.open(`https://wa.me/5542999296088?text=${msg}`,'_blank')}
-function atualizarPreviewImagem(){const url=document.getElementById('imagem').value.trim();const preview=document.getElementById('preview');if(!url){preview.style.display='none';preview.src='';return}preview.onload=function(){preview.style.display='block'};preview.onerror=function(){preview.style.display='none';alert('Não consegui carregar a prévia. Use um link direto de imagem (.jpg, .png ou .webp).')};preview.src=url}
-function editarProduto(id){const p=produtos.find(x=>x.id===id);if(!p)return;editandoId=id;document.getElementById('formTitulo').textContent='Editar produto';document.getElementById('nome').value=p.nome||'';document.getElementById('marca').value=p.marca||'';document.getElementById('preco').value=p.preco||'';document.getElementById('tamanho').value=p.tamanho||'';document.getElementById('estoque').value=p.estoque||'';document.getElementById('categoria').value=p.categoria||'Calçados';document.getElementById('imagem').value=p.imagem||'';document.getElementById('btnSalvar').textContent='Atualizar produto';document.getElementById('btnCancelarEdicao').classList.remove('hidden');atualizarPreviewImagem();mostrarAdmin();window.scrollTo({top:0,behavior:'smooth'})}
-function cancelarEdicao(){editandoId=null;document.getElementById('formTitulo').textContent='Adicionar produto';['nome','marca','preco','tamanho','estoque','imagem'].forEach(id=>document.getElementById(id).value='');document.getElementById('categoria').value='Calçados';document.getElementById('preview').style.display='none';document.getElementById('btnSalvar').textContent='Salvar produto';document.getElementById('btnCancelarEdicao').classList.add('hidden')}
-async function salvarProduto(){const nome=document.getElementById('nome').value.trim();const marca=document.getElementById('marca').value.trim();const preco=document.getElementById('preco').value;const tamanho=document.getElementById('tamanho').value.trim();const estoque=Number(document.getElementById('estoque').value||1);const categoria=document.getElementById('categoria').value;const imagem=document.getElementById('imagem').value.trim();if(!nome||!preco||!categoria||!imagem){alert('Preencha nome, preço, categoria e imagem.');return}const dados={nome,marca,preco:Number(preco),tamanho,estoque,categoria,imagem,atualizadoEm:firebase.firestore.FieldValue.serverTimestamp()};if(editandoId){await db.collection('produtos').doc(editandoId).update(dados);toast('Produto atualizado!')}else{await db.collection('produtos').add({...dados,criadoEm:firebase.firestore.FieldValue.serverTimestamp()});toast('Produto salvo!')}cancelarEdicao();carregar()}
-function renderAdmin(){const el=document.getElementById('listaAdmin');if(!el)return;el.innerHTML='';produtos.forEach(p=>{el.innerHTML+=`<div class="admin-prod">${imagemProduto(p.imagem,p.nome)}<div><h4>${p.nome}</h4><small class="muted">${moeda(p.preco)} | ${p.categoria||''} ${p.tamanho?'| Tam: '+p.tamanho:''}</small></div><div class="admin-actions"><button class="btn-dark" onclick="editarProduto('${p.id}')">✏️</button><button class="btn-danger" onclick="excluirProduto('${p.id}')">🗑</button></div></div>`})}
-async function excluirProduto(id){if(!confirm('Excluir produto?'))return;await db.collection('produtos').doc(id).delete();toast('Produto excluído!');carregar()}
+
+function filtrar(cat){
+  filtroAtual = cat;
+
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+  const cats = ['Todos','Calçados','Camisas','Bermudas','Calças','Acessórios'];
+  const idx = cats.indexOf(cat);
+  const cards = document.querySelectorAll('.cat-card');
+
+  if(idx >= 0 && cards[idx]) cards[idx].classList.add('active');
+
+  render();
+}
+
+function buscar(){
+  termoBusca = (document.getElementById('busca')?.value || '').toLowerCase().trim();
+  render();
+}
+
+function produtosFiltrados(){
+  return produtos.filter(p => {
+    const porCategoria = filtroAtual === 'Todos' || p.categoria === filtroAtual;
+    const porBusca = !termoBusca ||
+      (p.nome || '').toLowerCase().includes(termoBusca) ||
+      (p.marca || '').toLowerCase().includes(termoBusca);
+
+    return porCategoria && porBusca;
+  });
+}
+
+function render(){
+  const lista = document.getElementById('lista');
+  if(!lista) return;
+
+  const dados = produtosFiltrados();
+  lista.innerHTML = '';
+
+  if(dados.length === 0){
+    lista.innerHTML = '<div class="empty">Nenhum produto encontrado.</div>';
+    return;
+  }
+
+  dados.forEach(p => {
+    const i = produtos.findIndex(x => x.id === p.id);
+    const favorito = favoritos.includes(p.id);
+
+    lista.innerHTML += `
+      <article class="product">
+        <span class="badge">Novo</span>
+        <button type="button" class="heart ${favorito ? 'ativo' : ''}" onclick="toggleFavorito(event,'${p.id}',this)">${favorito ? '♥' : '♡'}</button>
+        <div class="product-img" onclick="abrirProduto(${i})">${imagemProduto(p.imagem, p.nome)}</div>
+        <div class="product-info">
+          <h3>${p.nome || 'Produto'}</h3>
+          <div class="meta">${p.marca || 'Multimarcas'} ${p.tamanho ? '• Tam: ' + p.tamanho : ''}</div>
+          <p class="price">${moeda(p.preco)}</p>
+          <button class="add-btn" onclick="addCarrinho(${i})">🛒 Adicionar ao carrinho</button>
+        </div>
+      </article>
+    `;
+  });
+}
+
+function renderDestaques(){
+  const area = document.getElementById('listaDestaques');
+  if(!area) return;
+
+  const destaques = [...produtos].filter(p => p.nome && p.imagem).slice(0, 4);
+  area.innerHTML = '';
+
+  if(destaques.length === 0){
+    area.innerHTML = '<div class="empty">Cadastre produtos para aparecerem aqui automaticamente.</div>';
+    return;
+  }
+
+  destaques.forEach(p => {
+    const i = produtos.findIndex(x => x.id === p.id);
+    area.innerHTML += `
+      <article class="highlight-card" onclick="abrirProduto(${i})">
+        ${imagemProduto(p.imagem, p.nome)}
+        <div class="highlight-info">
+          <h3>${p.nome || 'Produto'}</h3>
+          <p class="muted">${p.marca || 'Multimarcas'} ${p.tamanho ? '• Tam: ' + p.tamanho : ''}</p>
+          <p class="price">${moeda(p.preco)}</p>
+          <button class="add-btn" onclick="event.stopPropagation();addCarrinho(${i})">Comprar agora</button>
+        </div>
+      </article>
+    `;
+  });
+}
+
+function abrirProduto(i){
+  const p = produtos[i];
+  if(!p) return;
+
+  const modalImg = document.getElementById('modalImg');
+  modalImg.src = p.imagem || 'logo.png';
+  modalImg.onerror = function(){
+    this.src = 'logo.png';
+    this.style.objectFit = 'contain';
+    this.style.padding = '18px';
+  };
+
+  document.getElementById('modalNome').textContent = p.nome || 'Produto';
+  document.getElementById('modalMeta').textContent = `${p.marca || 'Multimarcas'} • ${p.categoria || ''}${p.tamanho ? ' • Tam: ' + p.tamanho : ''}`;
+  document.getElementById('modalPreco').textContent = moeda(p.preco);
+  document.getElementById('modalAdd').onclick = () => {
+    addCarrinho(i);
+    fecharProduto();
+  };
+
+  document.getElementById('produtoModal').classList.add('open');
+}
+
+function fecharProduto(){
+  document.getElementById('produtoModal')?.classList.remove('open');
+}
+
+function addCarrinho(i){
+  const item = produtos[i];
+  if(!item) return;
+
+  const ex = carrinhoItens.find(p => p.id === item.id);
+
+  if(ex) ex.qtd += 1;
+  else carrinhoItens.push({...item, qtd: 1});
+
+  salvarCarrinho();
+  renderCarrinho();
+  document.getElementById('cartPanel')?.classList.add('open');
+  toast('Produto adicionado!');
+}
+
+function alterarQtd(i, d){
+  carrinhoItens[i].qtd += d;
+
+  if(carrinhoItens[i].qtd <= 0) carrinhoItens.splice(i,1);
+
+  salvarCarrinho();
+  renderCarrinho();
+}
+
+function removerCarrinho(i){
+  carrinhoItens.splice(i,1);
+  salvarCarrinho();
+  renderCarrinho();
+}
+
+function renderCarrinho(){
+  const c = document.getElementById('carrinho');
+  if(!c) return;
+
+  let total = 0;
+  let qtd = 0;
+
+  carrinhoItens = carrinhoItens.map(produtoAtualizado);
+  salvarCarrinho();
+
+  c.innerHTML = '';
+
+  if(carrinhoItens.length === 0){
+    c.innerHTML = '<p class="muted">Seu carrinho está vazio.</p>';
+  }
+
+  carrinhoItens.forEach((p,i) => {
+    total += Number(p.preco) * Number(p.qtd || 1);
+    qtd += Number(p.qtd || 1);
+
+    c.innerHTML += `
+      <div class="cart-item">
+        ${imagemProduto(p.imagem, p.nome)}
+        <div>
+          <h4>${p.nome || 'Produto'}</h4>
+          <small class="muted">${p.tamanho ? 'Tamanho: ' + p.tamanho : p.categoria || ''}</small>
+          <div class="qty">
+            <button onclick="alterarQtd(${i},-1)">−</button>
+            <span>${p.qtd || 1}</span>
+            <button onclick="alterarQtd(${i},1)">+</button>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <strong>${moeda(p.preco * (p.qtd || 1))}</strong><br>
+          <button class="btn-dark" onclick="removerCarrinho(${i})">🗑</button>
+        </div>
+      </div>
+    `;
+  });
+
+  document.getElementById('total').textContent = moeda(total);
+  document.getElementById('cartCount').textContent = qtd;
+}
+
+function finalizar(){
+  if(carrinhoItens.length === 0){
+    alert('Carrinho vazio');
+    return;
+  }
+
+  let msg = `Pedido D'Black Outlet:%0A%0A`;
+  let total = 0;
+
+  carrinhoItens.forEach(p => {
+    const sub = Number(p.preco) * Number(p.qtd || 1);
+    total += sub;
+    msg += `• ${p.nome} x${p.qtd || 1} - ${moeda(sub)}%0A`;
+  });
+
+  msg += `%0ATotal: ${moeda(total)}%0A%0AQuero finalizar este pedido.`;
+
+  window.open(`https://wa.me/5542999296088?text=${msg}`, '_blank');
+}
+
+function atualizarPreviewImagem(){
+  const url = document.getElementById('imagem')?.value.trim();
+  const preview = document.getElementById('preview');
+
+  if(!preview) return;
+
+  if(!url){
+    preview.style.display = 'none';
+    preview.src = '';
+    return;
+  }
+
+  preview.onload = function(){
+    preview.style.display = 'block';
+  };
+
+  preview.onerror = function(){
+    preview.style.display = 'none';
+    alert('Não consegui carregar a prévia. Use um link direto de imagem (.jpg, .png ou .webp).');
+  };
+
+  preview.src = url;
+}
+
+function editarProduto(id){
+  const p = produtos.find(x => x.id === id);
+  if(!p) return;
+
+  editandoId = id;
+
+  document.getElementById('formTitulo').textContent = 'Editar produto';
+  document.getElementById('nome').value = p.nome || '';
+  document.getElementById('marca').value = p.marca || '';
+  document.getElementById('preco').value = p.preco || '';
+  document.getElementById('tamanho').value = p.tamanho || '';
+  document.getElementById('estoque').value = p.estoque || '';
+  document.getElementById('categoria').value = p.categoria || 'Calçados';
+  document.getElementById('imagem').value = p.imagem || '';
+  document.getElementById('btnSalvar').textContent = 'Atualizar produto';
+  document.getElementById('btnCancelarEdicao').classList.remove('hidden');
+
+  atualizarPreviewImagem();
+  mostrarAdmin();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function cancelarEdicao(){
+  editandoId = null;
+
+  document.getElementById('formTitulo').textContent = 'Adicionar produto';
+  ['nome','marca','preco','tamanho','estoque','imagem'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.value = '';
+  });
+
+  document.getElementById('categoria').value = 'Calçados';
+  document.getElementById('preview').style.display = 'none';
+  document.getElementById('btnSalvar').textContent = 'Salvar produto';
+  document.getElementById('btnCancelarEdicao').classList.add('hidden');
+}
+
+async function salvarProduto(){
+  const nome = document.getElementById('nome').value.trim();
+  const marca = document.getElementById('marca').value.trim();
+  const preco = document.getElementById('preco').value;
+  const tamanho = document.getElementById('tamanho').value.trim();
+  const estoque = Number(document.getElementById('estoque').value || 1);
+  const categoria = document.getElementById('categoria').value;
+  const imagem = document.getElementById('imagem').value.trim();
+
+  if(!nome || !preco || !categoria || !imagem){
+    alert('Preencha nome, preço, categoria e imagem.');
+    return;
+  }
+
+  const dados = {
+    nome,
+    marca,
+    preco: Number(preco),
+    tamanho,
+    estoque,
+    categoria,
+    imagem,
+    atualizadoEm: firebase.firestore.FieldValue.serverTimestamp()
+  };
+
+  if(editandoId){
+    await db.collection('produtos').doc(editandoId).update(dados);
+    toast('Produto atualizado!');
+  }else{
+    await db.collection('produtos').add({
+      ...dados,
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    toast('Produto salvo!');
+  }
+
+  cancelarEdicao();
+  carregar();
+}
+
+function renderAdmin(){
+  const el = document.getElementById('listaAdmin');
+  if(!el) return;
+
+  el.innerHTML = '';
+
+  produtos.forEach(p => {
+    el.innerHTML += `
+      <div class="admin-prod">
+        ${imagemProduto(p.imagem, p.nome)}
+        <div>
+          <h4>${p.nome || 'Produto'}</h4>
+          <small class="muted">${moeda(p.preco)} | ${p.categoria || ''} ${p.tamanho ? '| Tam: ' + p.tamanho : ''}</small>
+        </div>
+        <div class="admin-actions">
+          <button class="btn-dark" onclick="editarProduto('${p.id}')">✏️</button>
+          <button class="btn-danger" onclick="excluirProduto('${p.id}')">🗑</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+async function excluirProduto(id){
+  if(!confirm('Excluir produto?')) return;
+
+  await db.collection('produtos').doc(id).delete();
+  toast('Produto excluído!');
+  carregar();
+}
 
 function estrelas(nota){
   const n = Number(nota || 5);
-  return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n);
+  return '★'.repeat(n) + '☆'.repeat(5-n);
 }
 
 function renderAvaliacoes(){
@@ -228,17 +658,19 @@ function renderAvaliacoes(){
 
   area.innerHTML = '';
 
-  if(avaliacoes.length === 0){
+  if(!avaliacoes || avaliacoes.length === 0){
     area.innerHTML = '<div class="empty">Ainda não há avaliações. Seja o primeiro a avaliar.</div>';
     return;
   }
 
-  avaliacoes.forEach(a=>{
-    area.innerHTML += `<div class="review-card">
-      <div class="review-stars">${estrelas(a.nota)}</div>
-      <p>${a.texto || ''}</p>
-      <strong>${a.nome || 'Cliente D\\'Black'}</strong>
-    </div>`;
+  avaliacoes.forEach(a => {
+    area.innerHTML += `
+      <div class="review-card">
+        <div class="review-stars">${estrelas(a.nota)}</div>
+        <p>${a.texto || ''}</p>
+        <strong>${a.nome || "Cliente D'Black"}</strong>
+      </div>
+    `;
   });
 }
 
@@ -248,7 +680,7 @@ async function salvarAvaliacao(){
   const textoEl = document.getElementById('reviewTexto');
 
   if(!nomeEl || !notaEl || !textoEl){
-    alert('Erro: campos de avaliação não encontrados no site.');
+    alert('Erro: campos de avaliação não encontrados.');
     return;
   }
 
@@ -263,15 +695,15 @@ async function salvarAvaliacao(){
 
   try{
     await db.collection('avaliacoes').add({
-      nome: nome,
-      nota: nota,
-      texto: texto,
+      nome,
+      nota,
+      texto,
       criadoEm: firebase.firestore.FieldValue.serverTimestamp()
     });
 
     nomeEl.value = '';
-    textoEl.value = '';
     notaEl.value = '5';
+    textoEl.value = '';
 
     toast('Avaliação enviada. Obrigado!');
     carregar();
