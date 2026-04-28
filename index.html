@@ -151,7 +151,9 @@ footer span{
 
 
 
-/* AJUSTE FINAL - BOTÕES AMARELOS COM TEXTO BRANCO */
+
+
+/* AJUSTE FINAL - BOTÕES AMARELOS SUAVES */
 .btn,
 .add-btn,
 .search button,
@@ -159,13 +161,14 @@ footer span{
 .qty button,
 .modal-close,
 button {
-  background: var(--yellow) !important;
+  background: linear-gradient(135deg, #d9a900, #b88900) !important;
   color: #ffffff !important;
-  border: none !important;
+  border: 1px solid rgba(255,255,255,.14) !important;
   border-radius: 999px !important;
   font-weight: 800 !important;
-  letter-spacing: .4px !important;
+  letter-spacing: .35px !important;
   transition: all .25s ease !important;
+  box-shadow: 0 6px 16px rgba(184,137,0,.18) !important;
 }
 
 .btn:hover,
@@ -175,21 +178,23 @@ button {
 .qty button:hover,
 .modal-close:hover,
 button:hover {
-  background: #eab308 !important;
+  background: linear-gradient(135deg, #e0b11a, #c49300) !important;
   color: #ffffff !important;
-  transform: translateY(-2px) scale(1.02) !important;
-  box-shadow: 0 12px 28px rgba(250,204,21,.28) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 24px rgba(184,137,0,.26) !important;
 }
 
 .btn-dark {
   background: #181818 !important;
   color: #ffffff !important;
   border: 1px solid #333 !important;
+  box-shadow: none !important;
 }
 
 .btn-danger {
   background: #ef4444 !important;
   color: #ffffff !important;
+  box-shadow: none !important;
 }
 
 .btn-danger:hover {
@@ -199,15 +204,15 @@ button:hover {
 
 .nav a:hover,
 .nav a.active {
-  background: var(--yellow) !important;
+  background: linear-gradient(135deg, #d9a900, #b88900) !important;
   color: #ffffff !important;
 }
 
 .cat-card:hover,
 .cat-card.active {
-  background: rgba(255,196,0,.18) !important;
+  background: rgba(217,169,0,.16) !important;
   color: #ffffff !important;
-  border-color: var(--yellow) !important;
+  border-color: #d9a900 !important;
 }
 
 .heart {
@@ -215,6 +220,7 @@ button:hover {
   color: #000000 !important;
   border: none !important;
   border-radius: 50% !important;
+  box-shadow: none !important;
 }
 
 .heart:hover {
@@ -272,7 +278,7 @@ button:hover {
 
 <aside id="cartPanel" class="cart-panel"><div class="cart-head"><h2>Seu carrinho</h2><button class="btn-dark" onclick="toggleCart()">✕</button></div><div id="carrinho"></div><div class="cart-total"><span>Subtotal</span><span id="total">R$ 0,00</span></div><button class="btn" style="width:100%" onclick="finalizar()">🛒 Finalizar compra</button><button class="btn btn-outline" style="width:100%;margin-top:10px" onclick="toggleCart()">Continuar comprando</button><p class="muted" style="text-align:center;margin-top:24px">🔒 Compra 100% segura</p></aside>
 <div id="produtoModal" class="modal"><div class="modal-box"><button class="modal-close" onclick="fecharProduto()">✕</button><img id="modalImg" src="" alt="Produto"><div><h2 id="modalNome"></h2><p id="modalMeta" class="muted"></p><p id="modalPreco" class="price" style="font-size:34px"></p><p class="muted">Produto selecionado da D'Black Outlet. Finalize pelo WhatsApp para confirmar disponibilidade, entrega e pagamento.</p><button id="modalAdd" class="btn" style="width:100%">Adicionar ao carrinho</button></div></div></div>
-<a class="whatsapp-float" href="https://wa.me/5542999296088" target="_blank"><img src="whatsapp.png" alt="WhatsApp"></a><div id="toast" class="toast">Produto salvo com sucesso!</div>
+<a class="whatsapp-float" href="https://wa.me/5542999296088?text=Ol%C3%A1%20gostaria%20de%20saber%20mais%20sobre%20a%20loja." target="_blank"><img src="whatsapp.png" alt="WhatsApp"></a><div id="toast" class="toast">Produto salvo com sucesso!</div>
 
 
 <section id="avaliacoes" class="main">
@@ -313,7 +319,7 @@ button:hover {
   </div>
 
   <div class="contato-grid">
-    <a class="contato-card whatsapp" href="https://wa.me/5542999296088" target="_blank">
+    <a class="contato-card whatsapp" href="https://wa.me/5542999296088?text=Ol%C3%A1%20gostaria%20de%20saber%20mais%20sobre%20a%20loja." target="_blank">
       <img src="whatsapp.png" alt="WhatsApp">
       <div>
         <h3>WhatsApp</h3>
@@ -537,7 +543,7 @@ function render(){
         <div class="product-info">
           <h3>${p.nome || 'Produto'}</h3>
           <div class="meta">${p.marca || 'Multimarcas'} ${p.tamanho ? '• Tam: ' + p.tamanho : ''}</div>
-          <p class="price">${moeda(p.preco)}</p>
+          <p class="price">Valor: ${moeda(p.preco)} <span style="font-size:13px;color:#ccc;font-weight:600">(Frete incluso)</span></p><p class="muted">Estoque: ${p.estoque || 0} unidade(s)</p>
           <button class="add-btn" onclick="addCarrinho(${i})">🛒 Adicionar ao carrinho</button>
         </div>
       </article>
@@ -568,7 +574,7 @@ function renderDestaques(){
         <div class="highlight-info">
           <h3>${p.nome || 'Produto'}</h3>
           <p class="muted">${p.marca || 'Multimarcas'} ${p.tamanho ? '• Tam: ' + p.tamanho : ''}</p>
-          <p class="price">${moeda(p.preco)}</p>
+          <p class="price">Valor: ${moeda(p.preco)} <span style="font-size:13px;color:#ccc;font-weight:600">(Frete incluso)</span></p><p class="muted">Estoque: ${p.estoque || 0} unidade(s)</p>
           <button class="add-btn" onclick="event.stopPropagation();addCarrinho(${i})">Comprar agora</button>
         </div>
       </article>
@@ -589,8 +595,8 @@ function abrirProduto(i){
   };
 
   document.getElementById('modalNome').textContent = p.nome || 'Produto';
-  document.getElementById('modalMeta').textContent = `${p.marca || 'Multimarcas'} • ${p.categoria || ''}${p.tamanho ? ' • Tam: ' + p.tamanho : ''}`;
-  document.getElementById('modalPreco').textContent = moeda(p.preco);
+  document.getElementById('modalMeta').textContent = `${p.marca || 'Multimarcas'} • ${p.categoria || ''}${p.tamanho ? ' • Tam: ' + p.tamanho : ''} • Estoque: ${p.estoque || 0}`;
+  document.getElementById('modalPreco').innerHTML = 'Valor: ' + moeda(p.preco) + ' <span style="font-size:16px;color:#ccc;font-weight:600">(Frete incluso)</span>';
   document.getElementById('modalAdd').onclick = () => {
     addCarrinho(i);
     fecharProduto();
