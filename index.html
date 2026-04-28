@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>D'Black Outlet</title>
 
-<!-- Fonte moderna (pode trocar depois pela exata da sua logo) -->
-<link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -14,125 +13,98 @@
 
 <style>
 *{box-sizing:border-box}
-body { margin:0; font-family:'Teko', sans-serif; letter-spacing:1px; background:#0a0a0a; color:#fff; }
-
-header {
- display:flex; justify-content:space-between; align-items:center;
- padding:15px 20px; background:#111; position:sticky; top:0;
-}
-
-.logo { display:flex; align-items:center; gap:10px; }
-.logo img { width:45px; border-radius:50%; }
-
-button {
- background:#facc15; border:none; padding:10px 14px;
- border-radius:12px; cursor:pointer; font-weight:600;
-}
-
-.banner {
- padding:60px 20px;
- text-align:center;
- background:linear-gradient(135deg,#111,#222);
-}
-
-.container { padding:20px; }
-
-.grid {
- display:grid;
- grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
- gap:15px;
-}
-
-.card {
- background:#18181b;
- padding:12px;
- border-radius:18px;
- transition:0.3s;
-}
-
-.card:hover { transform:translateY(-5px); }
-.card img { width:100%; border-radius:12px; }
-
-input {
- width:100%; padding:10px;
- border-radius:10px; border:none;
- margin-bottom:10px;
-}
-
-.filtros {
- display:flex; flex-wrap:wrap; gap:8px; margin-bottom:15px;
-}
-
-.hidden { display:none; }
-
-@media(max-width:600px){
- .banner h1{font-size:22px}
-}
+body{margin:0;font-family:'Inter',sans-serif;background:#0a0a0a;color:#fff}
+header{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:#111;position:sticky;top:0;z-index:10;box-shadow:0 2px 16px rgba(0,0,0,.5)}
+.logo{display:flex;align-items:center;gap:10px}.logo img{width:46px;height:46px;object-fit:cover;border-radius:50%}.logo h2{font-family:'Oswald',sans-serif;letter-spacing:1px;margin:0}
+button{background:#facc15;border:none;padding:10px 16px;border-radius:14px;cursor:pointer;font-weight:700;font-family:'Inter',sans-serif;transition:.25s}button:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(250,204,21,.35)}
+.banner{padding:64px 20px;text-align:center;background:linear-gradient(135deg,#111,#262626);border-radius:0 0 32px 32px}.banner h1{font-family:'Oswald',sans-serif;font-size:42px;margin:0 0 8px}
+.container{padding:22px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:18px}.card{background:#18181b;padding:14px;border-radius:22px;cursor:pointer;transition:.3s;box-shadow:0 8px 24px rgba(0,0,0,.35)}.card:hover{transform:translateY(-6px) scale(1.02)}.card img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:16px}.card h4{font-family:'Oswald',sans-serif;font-size:22px;margin:10px 0 4px}.price{color:#facc15;font-weight:800}
+input,select{width:100%;padding:12px;margin:7px 0;border-radius:12px;border:none;font-family:'Inter',sans-serif}.hidden{display:none}.filtros{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.admin-box{max-width:560px;background:#151515;border:1px solid #2b2b2b;border-radius:22px;padding:18px}.preview{width:140px;height:140px;object-fit:cover;border-radius:18px;display:none;margin:12px 0}.cart{position:fixed;right:-360px;top:0;width:340px;max-width:92vw;height:100%;background:#111;padding:22px;transition:.3s;overflow:auto;z-index:20;box-shadow:-10px 0 30px rgba(0,0,0,.55)}.cart.open{right:0}.cart-item{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #333;padding:10px 0}.muted{color:#aaa;font-size:13px}.toast{position:fixed;right:20px;bottom:20px;background:#22c55e;color:#061006;padding:12px 18px;border-radius:14px;font-weight:800;opacity:0;transform:translateY(20px);transition:.3s;z-index:30}.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:650px){header{flex-direction:column;gap:12px}.banner h1{font-size:30px}.container{padding:15px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{padding:10px;border-radius:18px}.card h4{font-size:18px}.cart{width:100%;max-width:100%}}
 </style>
 </head>
 <body>
-
 <header>
-<div class="logo">
-<img src="logo.png" onerror="this.style.display='none'">
-<h2>D'BLACK <span style="color:#facc15">OUTLET</span></h2>
-</div>
-<div>
-<button onclick="mostrarCliente()">Loja</button>
-<button onclick="mostrarLogin()">Admin</button>
-</div>
+  <div class="logo">
+    <img src="logo.png" onerror="this.style.display='none'">
+    <h2>D'BLACK <span style="color:#facc15">OUTLET</span></h2>
+  </div>
+  <div>
+    <button onclick="mostrarCliente()">Loja</button>
+    <button onclick="toggleCart()">Carrinho</button>
+    <button onclick="mostrarLogin()">Admin</button>
+  </div>
 </header>
 
-<div class="banner">
-<h1>🔥 Estilo, Qualidade e Preço Baixo 🔥</h1>
-<p>Multimarcas com as melhores ofertas</p>
-</div>
+<section class="banner">
+  <h1>ESTILO DE VERDADE</h1>
+  <p>Multimarcas, ofertas e novidades selecionadas.</p>
+</section>
 
-<!-- LOGIN -->
-<div id="login" class="container hidden">
-<input id="email" placeholder="Email">
-<input id="senha" type="password" placeholder="Senha">
-<button onclick="login()">Entrar</button>
-</div>
+<section id="login" class="container hidden">
+  <div class="admin-box">
+    <h3>Login Admin</h3>
+    <input id="email" placeholder="Email">
+    <input id="senha" type="password" placeholder="Senha">
+    <button onclick="login()">Entrar</button>
+  </div>
+</section>
 
-<!-- CLIENTE -->
-<div id="cliente" class="container">
+<section id="cliente" class="container">
+  <input id="busca" placeholder="Buscar produto..." onkeyup="buscar()">
+  <div class="filtros">
+    <button onclick="filtrar('Todos')">Todos</button>
+    <button onclick="filtrar('Calçados')">Calçados</button>
+    <button onclick="filtrar('Camisas')">Camisas</button>
+    <button onclick="filtrar('Bermudas')">Bermudas</button>
+    <button onclick="filtrar('Calças')">Calças</button>
+    <button onclick="filtrar('Acessórios')">Acessórios</button>
+  </div>
+  <div class="grid" id="lista"></div>
+</section>
 
-<input id="busca" placeholder="Buscar produto..." onkeyup="buscar()">
+<aside id="cart" class="cart">
+  <button onclick="toggleCart()">Fechar</button>
+  <h3>Carrinho</h3>
+  <div id="carrinho"></div>
+  <h3 id="total">Total: R$ 0</h3>
+  <button onclick="finalizar()">Finalizar no WhatsApp</button>
+</aside>
 
-<div class="filtros">
-<button onclick="filtrar('Todos')">Todos</button>
-<button onclick="filtrar('Calçados')">Calçados</button>
-<button onclick="filtrar('Camisas')">Camisas</button>
-<button onclick="filtrar('Bermudas')">Bermudas</button>
-<button onclick="filtrar('Calças')">Calças</button>
-</div>
+<section id="admin" class="container hidden">
+  <div class="admin-box">
+    <h3>Painel Admin</h3>
+    <input id="nome" placeholder="Nome do produto">
+    <input id="marca" placeholder="Marca">
+    <input id="preco" type="number" step="0.01" placeholder="Preço">
+    <select id="categoria">
+      <option value="Calçados">Calçados</option>
+      <option value="Camisas">Camisas</option>
+      <option value="Bermudas">Bermudas</option>
+      <option value="Calças">Calças</option>
+      <option value="Acessórios">Acessórios</option>
+      <option value="Outros">Outros</option>
+    </select>
+    <input id="imagem" placeholder="Link da imagem" oninput="atualizarPreviewImagem()">
+    <img id="preview" class="preview">
+    <p class="muted">Cole o link da imagem para visualizar antes de salvar.</p>
+    <button onclick="salvarProduto()">Salvar Produto</button>
+  </div>
 
-<div class="grid" id="lista"></div>
+  <h3>Produtos cadastrados</h3>
+  <div id="listaAdmin" class="grid"></div>
+</section>
 
-<h3>Carrinho</h3>
-<div id="carrinho"></div>
-<p id="total"></p>
-<button onclick="finalizar()">Finalizar no WhatsApp</button>
-</div>
-
-<!-- ADMIN -->
-<div id="admin" class="container hidden">
-<input id="nome" placeholder="Nome">
-<input id="preco" placeholder="Preço">
-<input id="imagem" placeholder="URL imagem">
-<input id="categoria" placeholder="Categoria">
-<button onclick="salvarProduto()">Salvar</button>
-
-<h3>Produtos</h3>
-<div id="listaAdmin"></div>
-</div>
+<div id="toast" class="toast">Produto salvo com sucesso!</div>
 
 <script>
 const firebaseConfig = {
- apiKey: "AIzaSyC_vXz5dXrBRgZN3KciVKvyNGnZ47sNh7w",
- authDomain: "d-black-outlet-d8f3c.firebaseapp.com",
- projectId: "d-black-outlet-d8f3c"
+  apiKey: "AIzaSyC_vXz5dXrBRgZN3KciVKvyNGnZ47sNh7w",
+  authDomain: "d-black-outlet-d8f3c.firebaseapp.com",
+  projectId: "d-black-outlet-d8f3c",
+  storageBucket: "d-black-outlet-d8f3c.firebasestorage.app",
+  messagingSenderId: "816810445158",
+  appId: "1:816810445158:web:00a782dfb4e19a497aa0a7"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -140,113 +112,185 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 
 let produtos = [];
-let carrinhoItens = [];
+let carrinhoItens = JSON.parse(localStorage.getItem('carrinho')) || [];
 let filtroAtual = 'Todos';
 
-function mostrarCliente(){
- document.getElementById('cliente').classList.remove('hidden');
- document.getElementById('admin').classList.add('hidden');
- document.getElementById('login').classList.add('hidden');
+const moeda = valor => Number(valor || 0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2600);
 }
 
-function mostrarLogin(){
- document.getElementById('login').classList.remove('hidden');
- document.getElementById('cliente').classList.add('hidden');
+function mostrarCliente(){
+  document.getElementById('cliente').classList.remove('hidden');
+  document.getElementById('admin').classList.add('hidden');
+  document.getElementById('login').classList.add('hidden');
 }
+function mostrarLogin(){
+  document.getElementById('login').classList.remove('hidden');
+  document.getElementById('cliente').classList.add('hidden');
+  document.getElementById('admin').classList.add('hidden');
+}
+function toggleCart(){ document.getElementById('cart').classList.toggle('open'); }
 
 function login(){
- const emailVal = document.getElementById('email').value;
- const senhaVal = document.getElementById('senha').value;
-
- auth.signInWithEmailAndPassword(emailVal, senhaVal)
- .then(()=>{
-   document.getElementById('login').classList.add('hidden');
-   document.getElementById('admin').classList.remove('hidden');
- })
- .catch(()=> alert('Erro no login'));
+  const email = document.getElementById('email').value;
+  const senha = document.getElementById('senha').value;
+  auth.signInWithEmailAndPassword(email, senha)
+    .then(()=>{
+      document.getElementById('login').classList.add('hidden');
+      document.getElementById('admin').classList.remove('hidden');
+      toast('Admin conectado!');
+    })
+    .catch(err=>alert('Erro no login: ' + err.message));
 }
 
 async function carregar(){
- const snap = await db.collection('produtos').get();
- produtos = snap.docs.map(doc=>({id:doc.id, ...doc.data()}));
- render();
- renderAdmin();
+  const snap = await db.collection('produtos').orderBy('criadoEm','desc').get().catch(async()=> await db.collection('produtos').get());
+  produtos = snap.docs.map(doc=>({id:doc.id, ...doc.data()}));
+  render();
+  renderAdmin();
+  renderCarrinho();
 }
 
 function filtrar(cat){ filtroAtual = cat; render(); }
-
 function buscar(){
- const t = document.getElementById('busca').value.toLowerCase();
- render(produtos.filter(p=>p.nome.toLowerCase().includes(t)));
+  const termo = document.getElementById('busca').value.toLowerCase().trim();
+  render(produtos.filter(p => (p.nome || '').toLowerCase().includes(termo) || (p.marca || '').toLowerCase().includes(termo)));
 }
 
 function render(listaProdutos = produtos){
- const lista = document.getElementById('lista');
- lista.innerHTML='';
- listaProdutos.forEach((p,i)=>{
-  if(filtroAtual!='Todos' && p.categoria!=filtroAtual) return;
-  lista.innerHTML+=`<div class='card'>
-  <img src='${p.imagem}'>
-  <h4>${p.nome}</h4>
-  <p>${p.categoria}</p>
-  <p>R$ ${p.preco}</p>
-  <button onclick='addCarrinho(${i})'>Comprar</button>
-  </div>`;
- });
+  const lista = document.getElementById('lista');
+  lista.innerHTML = '';
+  listaProdutos.forEach((p,i)=>{
+    if(filtroAtual !== 'Todos' && p.categoria !== filtroAtual) return;
+    lista.innerHTML += `
+      <div class="card" onclick="abrirProduto(${i})">
+        <img src="${p.imagem}" alt="${p.nome}">
+        <h4>${p.nome}</h4>
+        <p class="muted">${p.marca || ''} • ${p.categoria || ''}</p>
+        <p class="price">${moeda(p.preco)}</p>
+        <button onclick="event.stopPropagation(); addCarrinho(${i})">Adicionar</button>
+      </div>`;
+  });
+}
+
+function abrirProduto(i){
+  const p = produtos[i];
+  const confirmar = confirm(`${p.nome}\n${p.marca || ''}\n${moeda(p.preco)}\n\nAdicionar ao carrinho?`);
+  if(confirmar) addCarrinho(i);
 }
 
 function renderAdmin(){
- const listaAdmin = document.getElementById('listaAdmin');
- listaAdmin.innerHTML='';
- produtos.forEach(p=>{
-  listaAdmin.innerHTML+=`<div class='card'>
-  <h4>${p.nome}</h4>
-  <button onclick='excluirProduto("${p.id}")'>Excluir</button>
-  </div>`;
- });
+  const listaAdmin = document.getElementById('listaAdmin');
+  listaAdmin.innerHTML = '';
+  produtos.forEach(p=>{
+    listaAdmin.innerHTML += `
+      <div class="card">
+        <img src="${p.imagem}" alt="${p.nome}">
+        <h4>${p.nome}</h4>
+        <p class="muted">${p.categoria || ''}</p>
+        <p>${moeda(p.preco)}</p>
+        <button onclick="excluirProduto('${p.id}','${p.imagemPath || ''}')">Excluir</button>
+      </div>`;
+  });
 }
 
-async function excluirProduto(id){
- await db.collection('produtos').doc(id).delete();
- carregar();
+async function excluirProduto(id, imagemPath){
+  if(!confirm('Excluir este produto?')) return;
+  await db.collection('produtos').doc(id).delete();
+  if(imagemPath){
+    storage.ref(imagemPath).delete().catch(()=>{});
+  }
+  toast('Produto excluído!');
+  carregar();
 }
 
+function salvarCarrinho(){ localStorage.setItem('carrinho', JSON.stringify(carrinhoItens)); }
 function addCarrinho(i){
- carrinhoItens.push(produtos[i]);
- renderCarrinho();
+  const item = produtos[i];
+  const existente = carrinhoItens.find(p => p.id === item.id);
+  if(existente) existente.qtd += 1;
+  else carrinhoItens.push({...item, qtd:1});
+  salvarCarrinho();
+  renderCarrinho();
+  document.getElementById('cart').classList.add('open');
 }
-
+function removerCarrinho(i){ carrinhoItens.splice(i,1); salvarCarrinho(); renderCarrinho(); }
 function renderCarrinho(){
- let total=0;
- const carrinhoDiv = document.getElementById('carrinho');
- carrinhoDiv.innerHTML='';
- carrinhoItens.forEach(p=>{
-  total+=p.preco;
-  carrinhoDiv.innerHTML+=`<p>${p.nome} - R$ ${p.preco}</p>`;
- });
- document.getElementById('total').innerText='Total: R$ '+total;
+  const c = document.getElementById('carrinho');
+  let total = 0;
+  c.innerHTML = '';
+  carrinhoItens.forEach((p,i)=>{
+    total += Number(p.preco) * Number(p.qtd || 1);
+    c.innerHTML += `<div class="cart-item"><span>${p.nome}<br><small>x${p.qtd || 1}</small></span><span>${moeda(p.preco * (p.qtd || 1))}<br><button onclick="removerCarrinho(${i})">Remover</button></span></div>`;
+  });
+  document.getElementById('total').textContent = 'Total: ' + moeda(total);
+}
+function finalizar(){
+  if(carrinhoItens.length === 0){ alert('Carrinho vazio'); return; }
+  let msg = 'Pedido D\'Black Outlet:%0A';
+  carrinhoItens.forEach(p=> msg += `• ${p.nome} x${p.qtd || 1} - ${moeda(p.preco * (p.qtd || 1))}%0A`);
+  window.open(`https://wa.me/5542999296088?text=${encodeURIComponent(msg)}`);
 }
 
-function finalizar(){
- let msg='Pedido:%0A';
- carrinhoItens.forEach(p=> msg+=`${p.nome} - R$ ${p.preco}%0A`);
- window.open(`https://wa.me/5542999296088?text=${msg}`);
+function atualizarPreviewImagem(){
+  const url = document.getElementById('imagem').value.trim();
+  const preview = document.getElementById('preview');
+
+  if(!url){
+    preview.style.display = 'none';
+    preview.src = '';
+    return;
+  }
+
+  preview.src = url;
+  preview.style.display = 'block';
+}
+    );
+  });
 }
 
 async function salvarProduto(){
- const nome = document.getElementById('nome').value;
- const preco = document.getElementById('preco').value;
- const imagem = document.getElementById('imagem').value;
- const categoria = document.getElementById('categoria').value;
+  const nome = document.getElementById('nome').value.trim();
+  const marca = document.getElementById('marca').value.trim();
+  const preco = document.getElementById('preco').value;
+  const categoria = document.getElementById('categoria').value;
+  const imagem = document.getElementById('imagem').value.trim();
 
- if(!nome || !preco || !imagem || !categoria){ alert('Preencha tudo'); return; }
+  if(!nome || !preco || !categoria || !imagem){
+    alert('Preencha nome, preço, categoria e link da imagem.');
+    return;
+  }
 
- await db.collection('produtos').add({ nome, preco:Number(preco), imagem, categoria });
- carregar();
+  try{
+    await db.collection('produtos').add({
+      nome,
+      marca,
+      preco: Number(preco),
+      categoria,
+      imagem,
+      criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    document.getElementById('nome').value = '';
+    document.getElementById('marca').value = '';
+    document.getElementById('preco').value = '';
+    document.getElementById('imagem').value = '';
+    document.getElementById('preview').style.display = 'none';
+
+    toast('Produto salvo com sucesso!');
+    carregar();
+  }catch(err){
+    console.error(err);
+    alert('Erro ao salvar produto: ' + err.message);
+  }
 }
 
 carregar();
 </script>
-
 </body>
 </html>
