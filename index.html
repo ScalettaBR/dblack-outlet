@@ -5,41 +5,102 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>D'Black Outlet</title>
 
+<!-- Fonte moderna (pode trocar depois pela exata da sua logo) -->
+<link href="https://fonts.googleapis.com/css2?family=Teko:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <style>
-body { margin:0; font-family: Arial; background:#0a0a0a; color:#fff; }
-header { display:flex; justify-content:space-between; padding:15px; }
-button { background:#facc15; border:none; padding:10px; border-radius:12px; cursor:pointer; margin:3px; }
+*{box-sizing:border-box}
+body { margin:0; font-family:'Teko', sans-serif; letter-spacing:1px; background:#0a0a0a; color:#fff; }
+
+header {
+ display:flex; justify-content:space-between; align-items:center;
+ padding:15px 20px; background:#111; position:sticky; top:0;
+}
+
+.logo { display:flex; align-items:center; gap:10px; }
+.logo img { width:45px; border-radius:50%; }
+
+button {
+ background:#facc15; border:none; padding:10px 14px;
+ border-radius:12px; cursor:pointer; font-weight:600;
+}
+
+.banner {
+ padding:60px 20px;
+ text-align:center;
+ background:linear-gradient(135deg,#111,#222);
+}
+
 .container { padding:20px; }
-.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:20px; }
-.card { background:#18181b; padding:15px; border-radius:20px; }
-.card img { width:100%; border-radius:15px; }
+
+.grid {
+ display:grid;
+ grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+ gap:15px;
+}
+
+.card {
+ background:#18181b;
+ padding:12px;
+ border-radius:18px;
+ transition:0.3s;
+}
+
+.card:hover { transform:translateY(-5px); }
+.card img { width:100%; border-radius:12px; }
+
+input {
+ width:100%; padding:10px;
+ border-radius:10px; border:none;
+ margin-bottom:10px;
+}
+
+.filtros {
+ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:15px;
+}
+
 .hidden { display:none; }
+
+@media(max-width:600px){
+ .banner h1{font-size:22px}
+}
 </style>
 </head>
 <body>
 
 <header>
-<h2>D'BLACK OUTLET</h2>
+<div class="logo">
+<img src="logo.png" onerror="this.style.display='none'">
+<h2>D'BLACK <span style="color:#facc15">OUTLET</span></h2>
+</div>
 <div>
 <button onclick="mostrarCliente()">Loja</button>
 <button onclick="mostrarLogin()">Admin</button>
 </div>
 </header>
 
+<div class="banner">
+<h1>🔥 Estilo, Qualidade e Preço Baixo 🔥</h1>
+<p>Multimarcas com as melhores ofertas</p>
+</div>
+
+<!-- LOGIN -->
 <div id="login" class="container hidden">
 <input id="email" placeholder="Email">
 <input id="senha" type="password" placeholder="Senha">
 <button onclick="login()">Entrar</button>
 </div>
 
+<!-- CLIENTE -->
 <div id="cliente" class="container">
 
-<!-- FILTROS -->
-<div>
+<input id="busca" placeholder="Buscar produto..." onkeyup="buscar()">
+
+<div class="filtros">
 <button onclick="filtrar('Todos')">Todos</button>
 <button onclick="filtrar('Calçados')">Calçados</button>
 <button onclick="filtrar('Camisas')">Camisas</button>
@@ -52,25 +113,26 @@ button { background:#facc15; border:none; padding:10px; border-radius:12px; curs
 <h3>Carrinho</h3>
 <div id="carrinho"></div>
 <p id="total"></p>
+<button onclick="finalizar()">Finalizar no WhatsApp</button>
 </div>
 
+<!-- ADMIN -->
 <div id="admin" class="container hidden">
-<h3>Admin</h3>
 <input id="nome" placeholder="Nome">
 <input id="preco" placeholder="Preço">
-<input id="imagem" placeholder="Imagem URL">
+<input id="imagem" placeholder="URL imagem">
 <input id="categoria" placeholder="Categoria">
 <button onclick="salvarProduto()">Salvar</button>
 
-<h3>Produtos cadastrados</h3>
+<h3>Produtos</h3>
 <div id="listaAdmin"></div>
 </div>
 
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyC_vXz5dXrBRgZN3KciVKvyNGnZ47sNh7w",
-  authDomain: "d-black-outlet-d8f3c.firebaseapp.com",
-  projectId: "d-black-outlet-d8f3c"
+ apiKey: "AIzaSyC_vXz5dXrBRgZN3KciVKvyNGnZ47sNh7w",
+ authDomain: "d-black-outlet-d8f3c.firebaseapp.com",
+ projectId: "d-black-outlet-d8f3c"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -82,15 +144,26 @@ let carrinhoItens = [];
 let filtroAtual = 'Todos';
 
 function mostrarCliente(){
-  cliente.classList.remove('hidden');
-  admin.classList.add('hidden');
+ document.getElementById('cliente').classList.remove('hidden');
+ document.getElementById('admin').classList.add('hidden');
+ document.getElementById('login').classList.add('hidden');
 }
 
-function mostrarLogin(){ login.classList.remove('hidden'); }
+function mostrarLogin(){
+ document.getElementById('login').classList.remove('hidden');
+ document.getElementById('cliente').classList.add('hidden');
+}
 
 function login(){
- auth.signInWithEmailAndPassword(email.value, senha.value)
- .then(()=>{ login.classList.add('hidden'); admin.classList.remove('hidden'); })
+ const emailVal = document.getElementById('email').value;
+ const senhaVal = document.getElementById('senha').value;
+
+ auth.signInWithEmailAndPassword(emailVal, senhaVal)
+ .then(()=>{
+   document.getElementById('login').classList.add('hidden');
+   document.getElementById('admin').classList.remove('hidden');
+ })
+ .catch(()=> alert('Erro no login'));
 }
 
 async function carregar(){
@@ -100,32 +173,36 @@ async function carregar(){
  renderAdmin();
 }
 
-function filtrar(cat){
- filtroAtual = cat;
- render();
+function filtrar(cat){ filtroAtual = cat; render(); }
+
+function buscar(){
+ const t = document.getElementById('busca').value.toLowerCase();
+ render(produtos.filter(p=>p.nome.toLowerCase().includes(t)));
 }
 
-function render(){
+function render(listaProdutos = produtos){
+ const lista = document.getElementById('lista');
  lista.innerHTML='';
- produtos.forEach((p,i)=>{
-   if(filtroAtual!='Todos' && p.categoria!=filtroAtual) return;
-   lista.innerHTML+=`<div class='card'>
-   <img src='${p.imagem}'>
-   <h4>${p.nome}</h4>
-   <p>${p.categoria}</p>
-   <p>R$ ${p.preco}</p>
-   <button onclick='addCarrinho(${i})'>Comprar</button>
-   </div>`;
+ listaProdutos.forEach((p,i)=>{
+  if(filtroAtual!='Todos' && p.categoria!=filtroAtual) return;
+  lista.innerHTML+=`<div class='card'>
+  <img src='${p.imagem}'>
+  <h4>${p.nome}</h4>
+  <p>${p.categoria}</p>
+  <p>R$ ${p.preco}</p>
+  <button onclick='addCarrinho(${i})'>Comprar</button>
+  </div>`;
  });
 }
 
 function renderAdmin(){
+ const listaAdmin = document.getElementById('listaAdmin');
  listaAdmin.innerHTML='';
  produtos.forEach(p=>{
-   listaAdmin.innerHTML+=`<div class='card'>
-   <h4>${p.nome}</h4>
-   <button onclick='excluirProduto("${p.id}")'>Excluir</button>
-   </div>`;
+  listaAdmin.innerHTML+=`<div class='card'>
+  <h4>${p.nome}</h4>
+  <button onclick='excluirProduto("${p.id}")'>Excluir</button>
+  </div>`;
  });
 }
 
@@ -141,21 +218,30 @@ function addCarrinho(i){
 
 function renderCarrinho(){
  let total=0;
- carrinho.innerHTML='';
+ const carrinhoDiv = document.getElementById('carrinho');
+ carrinhoDiv.innerHTML='';
  carrinhoItens.forEach(p=>{
- total+=p.preco;
- carrinho.innerHTML+=`<p>${p.nome} - R$ ${p.preco}</p>`;
+  total+=p.preco;
+  carrinhoDiv.innerHTML+=`<p>${p.nome} - R$ ${p.preco}</p>`;
  });
- total.innerText='Total: R$ '+total;
+ document.getElementById('total').innerText='Total: R$ '+total;
+}
+
+function finalizar(){
+ let msg='Pedido:%0A';
+ carrinhoItens.forEach(p=> msg+=`${p.nome} - R$ ${p.preco}%0A`);
+ window.open(`https://wa.me/5542999296088?text=${msg}`);
 }
 
 async function salvarProduto(){
- await db.collection('produtos').add({
- nome:nome.value,
- preco:Number(preco.value),
- imagem:imagem.value,
- categoria:categoria.value
- });
+ const nome = document.getElementById('nome').value;
+ const preco = document.getElementById('preco').value;
+ const imagem = document.getElementById('imagem').value;
+ const categoria = document.getElementById('categoria').value;
+
+ if(!nome || !preco || !imagem || !categoria){ alert('Preencha tudo'); return; }
+
+ await db.collection('produtos').add({ nome, preco:Number(preco), imagem, categoria });
  carregar();
 }
 
