@@ -31,6 +31,21 @@ h1,h2,h3,h4,.nav a,.btn,.cat-card span{font-family:'Barlow Condensed',sans-serif
 .login,.admin{max-width:1320px;margin:20px auto;padding:22px}.admin-card{background:linear-gradient(145deg,#111,#181818);border:1px solid #2d2d2d;border-radius:22px;padding:22px}.admin-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{font-size:13px;color:#ddd;display:block;margin-bottom:6px}.field input,.field select{width:100%;background:#0d0d0d;color:#fff;border:1px solid #444;border-radius:10px;padding:13px;outline:none}.field.full{grid-column:1/-1}.preview-box{border:1px solid #444;border-radius:16px;padding:12px;text-align:center;background:#0d0d0d}.preview-box img#preview{width:220px;height:220px;object-fit:cover;border-radius:14px;display:none;margin:auto}.admin-list{display:flex;flex-direction:column;gap:12px}.admin-prod{display:grid;grid-template-columns:72px 1fr auto;gap:12px;align-items:center;border-bottom:1px solid #2f2f2f;padding-bottom:12px}.admin-prod img{width:72px;height:72px;object-fit:cover;border-radius:10px}.admin-prod h4{margin:0;font-size:18px}.admin-actions{display:flex;gap:8px}.toast{position:fixed;right:24px;bottom:96px;background:#22c55e;color:#061006;padding:14px 18px;border-radius:14px;font-weight:900;opacity:0;transform:translateY(20px);transition:.3s;z-index:120}.toast.show{opacity:1;transform:translateY(0)}footer{text-align:center;color:#777;padding:28px;border-top:1px solid #222;margin-top:30px}
 @media(max-width:1000px){.header-inner{grid-template-columns:1fr;justify-items:center}.search{order:3}.nav{justify-content:center;flex-wrap:wrap}.hero-box{grid-template-columns:1fr}.hero-content{padding:42px 28px;text-align:center}.hero h1{font-size:54px}.hero-mascot{height:280px}.categories{grid-template-columns:repeat(3,1fr)}.product-grid{grid-template-columns:repeat(3,1fr)}.benefits{grid-template-columns:repeat(2,1fr)}.modal-box{grid-template-columns:1fr}.modal-box img{height:320px}.admin-grid{grid-template-columns:1fr}}
 @media(max-width:650px){.brand img.logo-word{height:88px}.header-actions{flex-wrap:wrap;justify-content:center}.nav{display:none}.hero{padding:10px}.hero h1{font-size:42px}.kicker{font-size:20px}.hero-mascot img{max-height:285px}.categories{grid-template-columns:repeat(2,1fr);gap:10px}.product-grid{grid-template-columns:repeat(2,1fr);gap:12px}.product-img{height:170px}.product-info{padding:10px}.product-info h3{font-size:18px}.price{font-size:18px}.benefits{grid-template-columns:1fr}.benefit{border-right:0;border-bottom:1px solid #333}.form-grid{grid-template-columns:1fr}.cart-panel{width:100%;max-width:100%;right:-100%}.modal-box{padding:14px}.modal-box img{height:260px}}
+
+.highlight-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:28px}
+.highlight-card{background:linear-gradient(145deg,rgba(255,196,0,.18),#111);border:1px solid rgba(255,196,0,.55);border-radius:18px;overflow:hidden;position:relative}
+.highlight-card::before{content:"DESTAQUE";position:absolute;left:12px;top:12px;background:var(--yellow);color:#000;font-weight:900;font-size:12px;border-radius:8px;padding:5px 10px;z-index:2}
+.highlight-card img{width:100%;height:210px;object-fit:cover}
+.highlight-card .highlight-info{padding:14px}
+.highlight-card h3{font-size:22px;margin:0 0 6px}
+.review-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.review-card{background:#111;border:1px solid #2f2f2f;border-radius:18px;padding:20px;box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.review-stars{color:var(--yellow);font-size:20px;margin-bottom:10px}
+.review-card p{color:#ddd;line-height:1.5}
+.review-card strong{font-family:'Barlow Condensed',sans-serif;font-size:20px;text-transform:uppercase}
+@media(max-width:1000px){.highlight-grid{grid-template-columns:repeat(2,1fr)}.review-grid{grid-template-columns:1fr}}
+@media(max-width:650px){.highlight-grid{grid-template-columns:1fr}.highlight-card img{height:230px}}
+
 </style>
 </head>
 <body>
@@ -40,12 +55,12 @@ h1,h2,h3,h4,.nav a,.btn,.cat-card span{font-family:'Barlow Condensed',sans-serif
     <div class="search"><input id="busca" placeholder="Buscar produtos..." onkeyup="buscar()"><button onclick="buscar()">🔎</button></div>
     <div class="header-actions"><button class="icon-btn" onclick="toggleCart()">🛒 <span id="cartCount" class="cart-count">0</span></button><button class="icon-btn" onclick="abrirAdmin()">👤 Admin</button></div>
   </div>
-  <nav class="nav"><a href="#" class="active" onclick="filtrar('Todos')">Início</a><a href="#produtos" onclick="filtrar('Calçados')">Calçados</a><a href="#produtos" onclick="filtrar('Camisas')">Camisas</a><a href="#produtos" onclick="filtrar('Bermudas')">Bermudas</a><a href="#produtos" onclick="filtrar('Calças')">Calças</a><a href="#produtos" onclick="filtrar('Acessórios')">Acessórios</a><a href="#sobre">Sobre nós</a><a href="#contato">Contato</a></nav>
+  <nav class="nav"><a href="#" class="active" onclick="filtrar('Todos')">Início</a><a href="#produtos" onclick="filtrar('Calçados')">Calçados</a><a href="#produtos" onclick="filtrar('Camisas')">Camisas</a><a href="#produtos" onclick="filtrar('Bermudas')">Bermudas</a><a href="#produtos" onclick="filtrar('Calças')">Calças</a><a href="#produtos" onclick="filtrar('Acessórios')">Acessórios</a><a href="#destaques">Destaques</a><a href="#avaliacoes">Avaliações</a><a href="#sobre">Sobre nós</a><a href="#contato">Contato</a></nav>
 </header>
 
 <main id="lojaView">
   <section id="top" class="hero"><div class="hero-box"><div class="hero-content"><div class="kicker">Estilo que impõe</div><h1>ATITUDE QUE <span>TRANSFORMA</span></h1><button class="btn" onclick="document.getElementById('produtos').scrollIntoView()">Ver produtos →</button></div><div class="hero-mascot"><img src="logo.png" alt="Mascote D'Black Outlet"></div></div></section>
-  <section class="main"><div class="section-title"><h2>Categorias</h2></div><div class="categories"><div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div><span>Todos</span></div><div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div><span>Calçados</span></div><div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div><span>Camisas</span></div><div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div><div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div><div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div></div><div id="produtos" class="section-title"><h2>Produtos em destaque</h2></div><div id="lista" class="product-grid"></div></section>
+  <section class="main"><div class="section-title"><h2>Categorias</h2></div><div class="categories"><div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div><span>Todos</span></div><div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div><span>Calçados</span></div><div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div><span>Camisas</span></div><div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div><div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div><div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div></div><div id="destaques" class="section-title"><h2>Destaques da semana</h2></div><div id="listaDestaques" class="highlight-grid"></div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div></section>
   <section class="benefits"><div class="benefit">🚚 <div><strong>Frete para todo Brasil</strong><small>Envio rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>Pagamento via Pix</strong><small>Rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>5% off no Pix</strong><small>Pagamento à vista</small></div></div><div class="benefit">💬 <div><strong>Atendimento VIP</strong><small>Suporte via WhatsApp</small></div></div></section>
 </main>
 
@@ -56,6 +71,28 @@ h1,h2,h3,h4,.nav a,.btn,.cat-card span{font-family:'Barlow Condensed',sans-serif
 <aside id="cartPanel" class="cart-panel"><div class="cart-head"><h2>Seu carrinho</h2><button class="btn-dark" onclick="toggleCart()">✕</button></div><div id="carrinho"></div><div class="cart-total"><span>Subtotal</span><span id="total">R$ 0,00</span></div><button class="btn" style="width:100%" onclick="finalizar()">🛒 Finalizar compra</button><button class="btn btn-outline" style="width:100%;margin-top:10px" onclick="toggleCart()">Continuar comprando</button><p class="muted" style="text-align:center;margin-top:24px">🔒 Compra 100% segura</p></aside>
 <div id="produtoModal" class="modal"><div class="modal-box"><button class="modal-close" onclick="fecharProduto()">✕</button><img id="modalImg" src="" alt="Produto"><div><h2 id="modalNome"></h2><p id="modalMeta" class="muted"></p><p id="modalPreco" class="price" style="font-size:34px"></p><p class="muted">Produto selecionado da D'Black Outlet. Finalize pelo WhatsApp para confirmar disponibilidade, entrega e pagamento.</p><button id="modalAdd" class="btn" style="width:100%">Adicionar ao carrinho</button></div></div></div>
 <a class="whatsapp-float" href="https://wa.me/5542999296088" target="_blank"><img src="whatsapp.png" alt="WhatsApp"></a><div id="toast" class="toast">Produto salvo com sucesso!</div>
+
+<section id="avaliacoes" class="main">
+  <div class="section-title"><h2>Avaliações de clientes</h2></div>
+  <div class="review-grid">
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p>Atendimento rápido e produto chegou certinho. Recomendo demais a D'Black Outlet.</p>
+      <strong>Cliente verificado</strong>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p>Peças muito bonitas, preço justo e compra finalizada rapidinho pelo WhatsApp.</p>
+      <strong>Compra via Pix</strong>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p>Gostei bastante da qualidade. Voltarei a comprar com certeza.</p>
+      <strong>D'Black Cliente</strong>
+    </div>
+  </div>
+</section>
+
 <section id="sobre" class="main">
   <div class="section-title"><h2>Sobre nós</h2></div>
   <p style="max-width:800px;margin:auto;text-align:center;color:#ccc">
@@ -68,11 +105,11 @@ h1,h2,h3,h4,.nav a,.btn,.cat-card span{font-family:'Barlow Condensed',sans-serif
   <div class="section-title"><h2>Contato</h2></div>
   <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:20px">
     <a class="btn" href="https://wa.me/5542999296088" target="_blank">💬 WhatsApp</a>
-    <a class="btn btn-outline" href="https://instagram.com/dblack_outlet" target="_blank">📸 Instagram</a>
+    <a class="btn btn-outline" href="https://instagram.com/SEU_INSTAGRAM" target="_blank">📸 Instagram</a>
   </div>
 </section>
 
-<footer>© 2026 D'Black Outlet - Todos os direitos reservados - By Scaletta💜</footer>
+<footer>© 2026 D'Black Outlet - Todos os direitos reservados</footer>
 
 <script>
 const firebaseConfig={apiKey:"AIzaSyC_vXz5dXrBRgZN3KciVKvyNGnZ47sNh7w",authDomain:"d-black-outlet-d8f3c.firebaseapp.com",projectId:"d-black-outlet-d8f3c",storageBucket:"d-black-outlet-d8f3c.firebasestorage.app",messagingSenderId:"816810445158",appId:"1:816810445158:web:00a782dfb4e19a497aa0a7"};
@@ -114,12 +151,43 @@ async function carregar(){
   const snap = await db.collection('produtos').get();
   produtos = snap.docs.map(doc=>({id:doc.id,...doc.data()}));
   render();
+  renderDestaques();
   renderAdmin();
   renderCarrinho();
 }
 function filtrar(cat){filtroAtual=cat;document.querySelectorAll('.cat-card').forEach(c=>c.classList.remove('active'));const idx=['Todos','Calçados','Camisas','Bermudas','Calças','Acessórios'].indexOf(cat);if(idx>=0&&document.querySelectorAll('.cat-card')[idx])document.querySelectorAll('.cat-card')[idx].classList.add('active');render()}
 function buscar(){termoBusca=document.getElementById('busca').value.toLowerCase().trim();render()}
 function produtosFiltrados(){return produtos.filter(p=>{const pc=filtroAtual==='Todos'||p.categoria===filtroAtual;const pb=!termoBusca||(p.nome||'').toLowerCase().includes(termoBusca)||(p.marca||'').toLowerCase().includes(termoBusca);return pc&&pb})}
+
+function renderDestaques(){
+  const area = document.getElementById('listaDestaques');
+  if(!area) return;
+
+  const destaques = [...produtos]
+    .filter(p => p.nome && p.imagem)
+    .slice(0,4);
+
+  area.innerHTML = '';
+
+  if(destaques.length === 0){
+    area.innerHTML = '<div class="empty">Cadastre produtos para aparecerem aqui automaticamente.</div>';
+    return;
+  }
+
+  destaques.forEach(p=>{
+    const i = produtos.findIndex(x=>x.id===p.id);
+    area.innerHTML += `<article class="highlight-card" onclick="abrirProduto(${i})">
+      ${imagemProduto(p.imagem,p.nome)}
+      <div class="highlight-info">
+        <h3>${p.nome}</h3>
+        <p class="muted">${p.marca||'Multimarcas'} ${p.tamanho?'• Tam: '+p.tamanho:''}</p>
+        <p class="price">${moeda(p.preco)}</p>
+        <button class="add-btn" onclick="event.stopPropagation();addCarrinho(${i})">Comprar agora</button>
+      </div>
+    </article>`;
+  });
+}
+
 function render(){const lista=document.getElementById('lista');const dados=produtosFiltrados();lista.innerHTML='';if(dados.length===0){lista.innerHTML='<div class="empty">Nenhum produto encontrado.</div>';return}dados.forEach(p=>{const i=produtos.findIndex(x=>x.id===p.id);lista.innerHTML+=`<article class="product"><span class="badge">Novo</span><button type=\"button\" class=\"heart ${favoritos.includes(p.id)?'ativo':''}\" onclick=\"toggleFavorito(event,'${p.id}',this)\">${favoritos.includes(p.id)?'♥':'♡'}</button><div class="product-img" onclick="abrirProduto(${i})">${imagemProduto(p.imagem,p.nome)}</div><div class="product-info"><h3>${p.nome}</h3><div class="meta">${p.marca||'Multimarcas'} ${p.tamanho?'• Tam: '+p.tamanho:''}</div><p class="price">${moeda(p.preco)}</p><button class="add-btn" onclick="addCarrinho(${i})">🛒 Adicionar ao carrinho</button></div></article>`})}
 function abrirProduto(i){const p=produtos[i];if(!p)return;document.getElementById('modalImg').src=p.imagem||'logo.png';document.getElementById('modalImg').onerror=function(){this.src='logo.png';this.style.objectFit='contain';this.style.padding='18px'};document.getElementById('modalNome').textContent=p.nome;document.getElementById('modalMeta').textContent=`${p.marca||'Multimarcas'} • ${p.categoria||''}${p.tamanho?' • Tam: '+p.tamanho:''}`;document.getElementById('modalPreco').textContent=moeda(p.preco);document.getElementById('modalAdd').onclick=()=>{addCarrinho(i);fecharProduto()};document.getElementById('produtoModal').classList.add('open')}
 function fecharProduto(){document.getElementById('produtoModal').classList.remove('open')}
