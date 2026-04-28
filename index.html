@@ -11,64 +11,59 @@
 
 <style>
 body { margin:0; font-family: Arial; background:#0a0a0a; color:#fff; }
-header { display:flex; justify-content:space-between; align-items:center; padding:15px 20px; background:#111; }
-.logo { display:flex; align-items:center; gap:10px; }
-.logo img { width:45px; border-radius:50%; }
-.banner { background:linear-gradient(135deg,#111,#222); padding:60px 20px; text-align:center; border-radius:0 0 30px 30px; }
-.banner h1 { font-size:36px; margin-bottom:10px; }
-button { background:#facc15; border:none; padding:10px 14px; cursor:pointer; border-radius:12px; font-weight:bold; }
+header { display:flex; justify-content:space-between; padding:15px; }
+button { background:#facc15; border:none; padding:10px; border-radius:12px; cursor:pointer; margin:3px; }
 .container { padding:20px; }
 .grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:20px; }
-.card { background:#18181b; padding:15px; border-radius:20px; box-shadow:0 5px 20px rgba(0,0,0,0.5); transition:0.3s; }
-.card:hover { transform:scale(1.04); }
+.card { background:#18181b; padding:15px; border-radius:20px; }
 .card img { width:100%; border-radius:15px; }
-input { width:100%; padding:10px; margin:5px 0; border-radius:10px; border:none; }
 .hidden { display:none; }
-.section-title { font-size:22px; margin:20px 0 10px; }
 </style>
 </head>
 <body>
 
 <header>
-<div class="logo">
-<img src="logo.png">
-<h2>D'BLACK <span style="color:#facc15">OUTLET</span></h2>
-</div>
+<h2>D'BLACK OUTLET</h2>
 <div>
 <button onclick="mostrarCliente()">Loja</button>
 <button onclick="mostrarLogin()">Admin</button>
 </div>
 </header>
 
-<div class="banner">
-<h1>🔥 Novidades da Semana 🔥</h1>
-<p>Multimarcas com os melhores preços</p>
-</div>
-
 <div id="login" class="container hidden">
-<h3>Login Admin</h3>
 <input id="email" placeholder="Email">
 <input id="senha" type="password" placeholder="Senha">
 <button onclick="login()">Entrar</button>
 </div>
 
 <div id="cliente" class="container">
-<input id="busca" placeholder="Buscar produtos..." onkeyup="buscar()">
-<h3 class="section-title">Produtos</h3>
+
+<!-- FILTROS -->
+<div>
+<button onclick="filtrar('Todos')">Todos</button>
+<button onclick="filtrar('Calçados')">Calçados</button>
+<button onclick="filtrar('Camisas')">Camisas</button>
+<button onclick="filtrar('Bermudas')">Bermudas</button>
+<button onclick="filtrar('Calças')">Calças</button>
+</div>
+
 <div class="grid" id="lista"></div>
 
-<h3 class="section-title">Carrinho</h3>
+<h3>Carrinho</h3>
 <div id="carrinho"></div>
 <p id="total"></p>
-<button onclick="finalizar()">Finalizar no WhatsApp</button>
 </div>
 
 <div id="admin" class="container hidden">
-<h3>Painel Admin</h3>
+<h3>Admin</h3>
 <input id="nome" placeholder="Nome">
 <input id="preco" placeholder="Preço">
-<input id="imagem" placeholder="URL imagem">
+<input id="imagem" placeholder="Imagem URL">
+<input id="categoria" placeholder="Categoria">
 <button onclick="salvarProduto()">Salvar</button>
+
+<h3>Produtos cadastrados</h3>
+<div id="listaAdmin"></div>
 </div>
 
 <script>
@@ -83,81 +78,84 @@ const db = firebase.firestore();
 const auth = firebase.auth();
 
 let produtos = [];
-let carrinhoItens = JSON.parse(localStorage.getItem('carrinho')) || [];
-
-function salvarCarrinho(){ localStorage.setItem('carrinho', JSON.stringify(carrinhoItens)); }
+let carrinhoItens = [];
+let filtroAtual = 'Todos';
 
 function mostrarCliente(){
-  document.getElementById('cliente').classList.remove('hidden');
-  document.getElementById('admin').classList.add('hidden');
-  document.getElementById('login').classList.add('hidden');
+  cliente.classList.remove('hidden');
+  admin.classList.add('hidden');
 }
 
-function mostrarLogin(){
-  document.getElementById('login').classList.remove('hidden');
-  document.getElementById('cliente').classList.add('hidden');
-}
+function mostrarLogin(){ login.classList.remove('hidden'); }
 
 function login(){
  auth.signInWithEmailAndPassword(email.value, senha.value)
- .then(()=>{
-   document.getElementById('login').classList.add('hidden');
-   document.getElementById('admin').classList.remove('hidden');
- })
- .catch(()=> alert('Erro no login'));
+ .then(()=>{ login.classList.add('hidden'); admin.classList.remove('hidden'); })
 }
 
 async function carregar(){
  const snap = await db.collection('produtos').get();
- produtos = snap.docs.map(doc=>doc.data());
- render(produtos);
- renderCarrinho();
+ produtos = snap.docs.map(doc=>({id:doc.id, ...doc.data()}));
+ render();
+ renderAdmin();
 }
 
-function buscar(){
- const t = busca.value.toLowerCase();
- render(produtos.filter(p=>p.nome.toLowerCase().includes(t)));
+function filtrar(cat){
+ filtroAtual = cat;
+ render();
 }
 
-function render(listaProdutos){
+function render(){
  lista.innerHTML='';
- listaProdutos.forEach((p,i)=>{
- lista.innerHTML+=`<div class='card'>
- <img src='${p.imagem}'>
- <h4>${p.nome}</h4>
- <p>R$ ${p.preco}</p>
- <button onclick='addCarrinho(${i})'>Comprar</button>
- </div>`;
+ produtos.forEach((p,i)=>{
+   if(filtroAtual!='Todos' && p.categoria!=filtroAtual) return;
+   lista.innerHTML+=`<div class='card'>
+   <img src='${p.imagem}'>
+   <h4>${p.nome}</h4>
+   <p>${p.categoria}</p>
+   <p>R$ ${p.preco}</p>
+   <button onclick='addCarrinho(${i})'>Comprar</button>
+   </div>`;
  });
 }
 
+function renderAdmin(){
+ listaAdmin.innerHTML='';
+ produtos.forEach(p=>{
+   listaAdmin.innerHTML+=`<div class='card'>
+   <h4>${p.nome}</h4>
+   <button onclick='excluirProduto("${p.id}")'>Excluir</button>
+   </div>`;
+ });
+}
+
+async function excluirProduto(id){
+ await db.collection('produtos').doc(id).delete();
+ carregar();
+}
+
 function addCarrinho(i){
- carrinhoItens.push({...produtos[i], qtd:1});
- salvarCarrinho();
+ carrinhoItens.push(produtos[i]);
  renderCarrinho();
 }
 
 function renderCarrinho(){
  let total=0;
  carrinho.innerHTML='';
- carrinhoItens.forEach((p,i)=>{
- total += p.preco * p.qtd;
- carrinho.innerHTML+=`<p>${p.nome} x${p.qtd} - R$ ${p.preco*p.qtd}
- <button onclick='remover(${i})'>❌</button></p>`;
+ carrinhoItens.forEach(p=>{
+ total+=p.preco;
+ carrinho.innerHTML+=`<p>${p.nome} - R$ ${p.preco}</p>`;
  });
- document.getElementById('total').innerText='Total: R$ '+total;
-}
-
-function remover(i){ carrinhoItens.splice(i,1); salvarCarrinho(); renderCarrinho(); }
-
-function finalizar(){
- let msg='Pedido:%0A';
- carrinhoItens.forEach(p=> msg+=`${p.nome} x${p.qtd}%0A`);
- window.open(`https://wa.me/5542999296088?text=${msg}`);
+ total.innerText='Total: R$ '+total;
 }
 
 async function salvarProduto(){
- await db.collection('produtos').add({ nome:nome.value, preco:Number(preco.value), imagem:imagem.value });
+ await db.collection('produtos').add({
+ nome:nome.value,
+ preco:Number(preco.value),
+ imagem:imagem.value,
+ categoria:categoria.value
+ });
  carregar();
 }
 
