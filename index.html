@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>D'Black Outlet</title>
 
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+
+
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -46,6 +50,34 @@ h1,h2,h3,h4,.nav a,.btn,.cat-card span{font-family:'Barlow Condensed',sans-serif
 @media(max-width:1000px){.highlight-grid{grid-template-columns:repeat(2,1fr)}.review-grid{grid-template-columns:1fr}}
 @media(max-width:650px){.highlight-grid{grid-template-columns:1fr}.highlight-card img{height:230px}}
 
+
+footer{
+  text-align:center;
+  padding:28px;
+  margin-top:30px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:18px;
+  background:linear-gradient(90deg,#111,#1a1a1a,#111);
+  border-top:1px solid #222;
+  color:#ccc;
+  position:relative;
+  overflow:hidden;
+}
+footer::before{
+  content:"";
+  position:absolute;
+  width:200%;
+  height:100%;
+  top:0;
+  left:-50%;
+  background:linear-gradient(120deg,transparent,rgba(255,196,0,.3),transparent);
+  animation:shine 4s linear infinite;
+}
+@keyframes shine{
+  0%{left:-50%}
+  100%{left:100%}
+}
+
 </style>
 </head>
 <body>
@@ -55,12 +87,19 @@ h1,h2,h3,h4,.nav a,.btn,.cat-card span{font-family:'Barlow Condensed',sans-serif
     <div class="search"><input id="busca" placeholder="Buscar produtos..." onkeyup="buscar()"><button onclick="buscar()">🔎</button></div>
     <div class="header-actions"><button class="icon-btn" onclick="toggleCart()">🛒 <span id="cartCount" class="cart-count">0</span></button><button class="icon-btn" onclick="abrirAdmin()">👤 Admin</button></div>
   </div>
-  <nav class="nav"><a href="#" class="active" onclick="filtrar('Todos')">Início</a><a href="#produtos" onclick="filtrar('Calçados')">Calçados</a><a href="#produtos" onclick="filtrar('Camisas')">Camisas</a><a href="#produtos" onclick="filtrar('Bermudas')">Bermudas</a><a href="#produtos" onclick="filtrar('Calças')">Calças</a><a href="#produtos" onclick="filtrar('Acessórios')">Acessórios</a><a href="#destaques">Destaques</a><a href="#avaliacoes">Avaliações</a><a href="#sobre">Sobre nós</a><a href="#contato">Contato</a></nav>
+  <nav class="nav">
+  <a href="#top" onclick="mostrarLoja()">Início</a>
+  <a href="#categoriasProdutos">Nossos produtos</a>
+  <a href="#destaques">Destaques</a>
+  <a href="#avaliacoes">Avaliações</a>
+  <a href="#sobre">Sobre nós</a>
+  <a href="#contato">Contato</a>
+</nav>
 </header>
 
 <main id="lojaView">
   <section id="top" class="hero"><div class="hero-box"><div class="hero-content"><div class="kicker">Estilo que impõe</div><h1>ATITUDE QUE <span>TRANSFORMA</span></h1><button class="btn" onclick="document.getElementById('produtos').scrollIntoView()">Ver produtos →</button></div><div class="hero-mascot"><img src="logo.png" alt="Mascote D'Black Outlet"></div></div></section>
-  <section class="main"><div class="section-title"><h2>Categorias</h2></div><div class="categories"><div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div><span>Todos</span></div><div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div><span>Calçados</span></div><div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div><span>Camisas</span></div><div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div><div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div><div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div></div><div id="destaques" class="section-title"><h2>Destaques da semana</h2></div><div id="listaDestaques" class="highlight-grid"></div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div></section>
+  <section class="main"><div id="categoriasProdutos" class="section-title"><h2>Categorias</h2></div><div class="categories"><div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div><span>Todos</span></div><div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div><span>Calçados</span></div><div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div><span>Camisas</span></div><div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div><div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div><div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div></div><div id="destaques" class="section-title"><h2>Destaques da semana</h2></div><div id="listaDestaques" class="highlight-grid"></div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div></section>
   <section class="benefits"><div class="benefit">🚚 <div><strong>Frete para todo Brasil</strong><small>Envio rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>Pagamento via Pix</strong><small>Rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>5% off no Pix</strong><small>Pagamento à vista</small></div></div><div class="benefit">💬 <div><strong>Atendimento VIP</strong><small>Suporte via WhatsApp</small></div></div></section>
 </main>
 
@@ -72,25 +111,29 @@ h1,h2,h3,h4,.nav a,.btn,.cat-card span{font-family:'Barlow Condensed',sans-serif
 <div id="produtoModal" class="modal"><div class="modal-box"><button class="modal-close" onclick="fecharProduto()">✕</button><img id="modalImg" src="" alt="Produto"><div><h2 id="modalNome"></h2><p id="modalMeta" class="muted"></p><p id="modalPreco" class="price" style="font-size:34px"></p><p class="muted">Produto selecionado da D'Black Outlet. Finalize pelo WhatsApp para confirmar disponibilidade, entrega e pagamento.</p><button id="modalAdd" class="btn" style="width:100%">Adicionar ao carrinho</button></div></div></div>
 <a class="whatsapp-float" href="https://wa.me/5542999296088" target="_blank"><img src="whatsapp.png" alt="WhatsApp"></a><div id="toast" class="toast">Produto salvo com sucesso!</div>
 
+
 <section id="avaliacoes" class="main">
   <div class="section-title"><h2>Avaliações de clientes</h2></div>
-  <div class="review-grid">
-    <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <p>Atendimento rápido e produto chegou certinho. Recomendo demais a D'Black Outlet.</p>
-      <strong>Cliente verificado</strong>
+
+  <div class="admin-card" style="max-width:760px;margin:0 auto 24px">
+    <h3>Deixe sua avaliação</h3>
+    <div class="form-grid">
+      <div class="field"><label>Nome</label><input id="reviewNome" placeholder="Seu nome"></div>
+      <div class="field"><label>Nota</label>
+        <select id="reviewNota">
+          <option value="5">★★★★★ - Excelente</option>
+          <option value="4">★★★★☆ - Muito bom</option>
+          <option value="3">★★★☆☆ - Bom</option>
+          <option value="2">★★☆☆☆ - Regular</option>
+          <option value="1">★☆☆☆☆ - Ruim</option>
+        </select>
+      </div>
+      <div class="field full"><label>Comentário</label><input id="reviewTexto" placeholder="Conte como foi sua experiência"></div>
     </div>
-    <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <p>Peças muito bonitas, preço justo e compra finalizada rapidinho pelo WhatsApp.</p>
-      <strong>Compra via Pix</strong>
-    </div>
-    <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <p>Gostei bastante da qualidade. Voltarei a comprar com certeza.</p>
-      <strong>D'Black Cliente</strong>
-    </div>
+    <button class="btn" style="width:100%;margin-top:12px" onclick="salvarAvaliacao()">Enviar avaliação</button>
   </div>
+
+  <div class="review-grid" id="listaAvaliacoes"></div>
 </section>
 
 <section id="sobre" class="main">
@@ -109,12 +152,12 @@ h1,h2,h3,h4,.nav a,.btn,.cat-card span{font-family:'Barlow Condensed',sans-serif
   </div>
 </section>
 
-<footer>© 2026 D'Black Outlet - Todos os direitos reservados</footer>
+<footer>© 2026 D'Black Outlet - Todos os direitos reservados - By Scaletta💜</footer>
 
 <script>
 const firebaseConfig={apiKey:"AIzaSyC_vXz5dXrBRgZN3KciVKvyNGnZ47sNh7w",authDomain:"d-black-outlet-d8f3c.firebaseapp.com",projectId:"d-black-outlet-d8f3c",storageBucket:"d-black-outlet-d8f3c.firebasestorage.app",messagingSenderId:"816810445158",appId:"1:816810445158:web:00a782dfb4e19a497aa0a7"};
 firebase.initializeApp(firebaseConfig);const db=firebase.firestore();const auth=firebase.auth();
-let produtos=[];let carrinhoItens=JSON.parse(localStorage.getItem('carrinho_dblack'))||[];let favoritos=JSON.parse(localStorage.getItem('favoritos_dblack'))||[];let filtroAtual='Todos';let termoBusca='';let editandoId=null;
+let produtos=[];let avaliacoes=[];let carrinhoItens=JSON.parse(localStorage.getItem('carrinho_dblack'))||[];let favoritos=JSON.parse(localStorage.getItem('favoritos_dblack'))||[];let filtroAtual='Todos';let termoBusca='';let editandoId=null;
 const moeda=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
 function imagemProduto(url,nome){return `<img src="${url||'logo.png'}" alt="${nome||'Produto'}" onerror="this.src='logo.png';this.style.objectFit='contain';this.style.padding='18px';">`}
@@ -150,49 +193,21 @@ function logout(){auth.signOut();cancelarEdicao();mostrarLoja();toast('Você sai
 async function carregar(){
   const snap = await db.collection('produtos').get();
   produtos = snap.docs.map(doc=>({id:doc.id,...doc.data()}));
+
+  try{
+    const avSnap = await db.collection('avaliacoes').orderBy('criadoEm','desc').limit(12).get();
+    avaliacoes = avSnap.docs.map(doc=>({id:doc.id,...doc.data()}));
+  }catch(e){
+    const avSnap = await db.collection('avaliacoes').get();
+    avaliacoes = avSnap.docs.map(doc=>({id:doc.id,...doc.data()}));
+  }
+
   render();
   renderDestaques();
   renderAdmin();
   renderCarrinho();
+  renderAvaliacoes();
 }
-function filtrar(cat){filtroAtual=cat;document.querySelectorAll('.cat-card').forEach(c=>c.classList.remove('active'));const idx=['Todos','Calçados','Camisas','Bermudas','Calças','Acessórios'].indexOf(cat);if(idx>=0&&document.querySelectorAll('.cat-card')[idx])document.querySelectorAll('.cat-card')[idx].classList.add('active');render()}
-function buscar(){termoBusca=document.getElementById('busca').value.toLowerCase().trim();render()}
-function produtosFiltrados(){return produtos.filter(p=>{const pc=filtroAtual==='Todos'||p.categoria===filtroAtual;const pb=!termoBusca||(p.nome||'').toLowerCase().includes(termoBusca)||(p.marca||'').toLowerCase().includes(termoBusca);return pc&&pb})}
-
-function renderDestaques(){
-  const area = document.getElementById('listaDestaques');
-  if(!area) return;
-
-  const destaques = [...produtos]
-    .filter(p => p.nome && p.imagem)
-    .slice(0,4);
-
-  area.innerHTML = '';
-
-  if(destaques.length === 0){
-    area.innerHTML = '<div class="empty">Cadastre produtos para aparecerem aqui automaticamente.</div>';
-    return;
-  }
-
-  destaques.forEach(p=>{
-    const i = produtos.findIndex(x=>x.id===p.id);
-    area.innerHTML += `<article class="highlight-card" onclick="abrirProduto(${i})">
-      ${imagemProduto(p.imagem,p.nome)}
-      <div class="highlight-info">
-        <h3>${p.nome}</h3>
-        <p class="muted">${p.marca||'Multimarcas'} ${p.tamanho?'• Tam: '+p.tamanho:''}</p>
-        <p class="price">${moeda(p.preco)}</p>
-        <button class="add-btn" onclick="event.stopPropagation();addCarrinho(${i})">Comprar agora</button>
-      </div>
-    </article>`;
-  });
-}
-
-function render(){const lista=document.getElementById('lista');const dados=produtosFiltrados();lista.innerHTML='';if(dados.length===0){lista.innerHTML='<div class="empty">Nenhum produto encontrado.</div>';return}dados.forEach(p=>{const i=produtos.findIndex(x=>x.id===p.id);lista.innerHTML+=`<article class="product"><span class="badge">Novo</span><button type=\"button\" class=\"heart ${favoritos.includes(p.id)?'ativo':''}\" onclick=\"toggleFavorito(event,'${p.id}',this)\">${favoritos.includes(p.id)?'♥':'♡'}</button><div class="product-img" onclick="abrirProduto(${i})">${imagemProduto(p.imagem,p.nome)}</div><div class="product-info"><h3>${p.nome}</h3><div class="meta">${p.marca||'Multimarcas'} ${p.tamanho?'• Tam: '+p.tamanho:''}</div><p class="price">${moeda(p.preco)}</p><button class="add-btn" onclick="addCarrinho(${i})">🛒 Adicionar ao carrinho</button></div></article>`})}
-function abrirProduto(i){const p=produtos[i];if(!p)return;document.getElementById('modalImg').src=p.imagem||'logo.png';document.getElementById('modalImg').onerror=function(){this.src='logo.png';this.style.objectFit='contain';this.style.padding='18px'};document.getElementById('modalNome').textContent=p.nome;document.getElementById('modalMeta').textContent=`${p.marca||'Multimarcas'} • ${p.categoria||''}${p.tamanho?' • Tam: '+p.tamanho:''}`;document.getElementById('modalPreco').textContent=moeda(p.preco);document.getElementById('modalAdd').onclick=()=>{addCarrinho(i);fecharProduto()};document.getElementById('produtoModal').classList.add('open')}
-function fecharProduto(){document.getElementById('produtoModal').classList.remove('open')}
-function addCarrinho(i){const item=produtos[i];if(!item)return;const ex=carrinhoItens.find(p=>p.id===item.id);if(ex)ex.qtd+=1;else carrinhoItens.push({...item,qtd:1});salvarCarrinho();renderCarrinho();document.getElementById('cartPanel').classList.add('open');toast('Produto adicionado!')}
-function alterarQtd(i,d){carrinhoItens[i].qtd+=d;if(carrinhoItens[i].qtd<=0)carrinhoItens.splice(i,1);salvarCarrinho();renderCarrinho()}
 function removerCarrinho(i){carrinhoItens.splice(i,1);salvarCarrinho();renderCarrinho()}
 function renderCarrinho(){const c=document.getElementById('carrinho');let total=0,qtd=0;c.innerHTML='';if(carrinhoItens.length===0)c.innerHTML='<p class="muted">Seu carrinho está vazio.</p>';carrinhoItens = carrinhoItens.map(produtoAtualizado); salvarCarrinho(); carrinhoItens.forEach((p,i)=>{total+=Number(p.preco)*Number(p.qtd||1);qtd+=Number(p.qtd||1);c.innerHTML+=`<div class="cart-item">${imagemProduto(p.imagem,p.nome)}<div><h4>${p.nome}</h4><small class="muted">${p.tamanho?'Tamanho: '+p.tamanho:p.categoria||''}</small><div class="qty"><button onclick="alterarQtd(${i},-1)">−</button><span>${p.qtd||1}</span><button onclick="alterarQtd(${i},1)">+</button></div></div><div style="text-align:right"><strong>${moeda(p.preco*(p.qtd||1))}</strong><br><button class="btn-dark" onclick="removerCarrinho(${i})">🗑</button></div></div>`});document.getElementById('total').textContent=moeda(total);document.getElementById('cartCount').textContent=qtd}
 function finalizar(){if(carrinhoItens.length===0){alert('Carrinho vazio');return}let msg=`Pedido D'Black Outlet:%0A%0A`;let total=0;carrinhoItens.forEach(p=>{const sub=p.preco*(p.qtd||1);total+=sub;msg+=`• ${p.nome} x${p.qtd||1} - ${moeda(sub)}%0A`});msg+=`%0ATotal: ${moeda(total)}%0A%0AQuero finalizar este pedido.`;window.open(`https://wa.me/5542999296088?text=${msg}`,'_blank')}
@@ -202,6 +217,57 @@ function cancelarEdicao(){editandoId=null;document.getElementById('formTitulo').
 async function salvarProduto(){const nome=document.getElementById('nome').value.trim();const marca=document.getElementById('marca').value.trim();const preco=document.getElementById('preco').value;const tamanho=document.getElementById('tamanho').value.trim();const estoque=Number(document.getElementById('estoque').value||1);const categoria=document.getElementById('categoria').value;const imagem=document.getElementById('imagem').value.trim();if(!nome||!preco||!categoria||!imagem){alert('Preencha nome, preço, categoria e imagem.');return}const dados={nome,marca,preco:Number(preco),tamanho,estoque,categoria,imagem,atualizadoEm:firebase.firestore.FieldValue.serverTimestamp()};if(editandoId){await db.collection('produtos').doc(editandoId).update(dados);toast('Produto atualizado!')}else{await db.collection('produtos').add({...dados,criadoEm:firebase.firestore.FieldValue.serverTimestamp()});toast('Produto salvo!')}cancelarEdicao();carregar()}
 function renderAdmin(){const el=document.getElementById('listaAdmin');if(!el)return;el.innerHTML='';produtos.forEach(p=>{el.innerHTML+=`<div class="admin-prod">${imagemProduto(p.imagem,p.nome)}<div><h4>${p.nome}</h4><small class="muted">${moeda(p.preco)} | ${p.categoria||''} ${p.tamanho?'| Tam: '+p.tamanho:''}</small></div><div class="admin-actions"><button class="btn-dark" onclick="editarProduto('${p.id}')">✏️</button><button class="btn-danger" onclick="excluirProduto('${p.id}')">🗑</button></div></div>`})}
 async function excluirProduto(id){if(!confirm('Excluir produto?'))return;await db.collection('produtos').doc(id).delete();toast('Produto excluído!');carregar()}
+
+function estrelas(nota){
+  const n = Number(nota || 5);
+  return '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(0,5-n);
+}
+
+function renderAvaliacoes(){
+  const area = document.getElementById('listaAvaliacoes');
+  if(!area) return;
+
+  area.innerHTML = '';
+
+  if(avaliacoes.length === 0){
+    area.innerHTML = '<div class="empty">Ainda não há avaliações. Seja o primeiro a avaliar.</div>';
+    return;
+  }
+
+  avaliacoes.forEach(a=>{
+    area.innerHTML += `<div class="review-card">
+      <div class="review-stars">${estrelas(a.nota)}</div>
+      <p>${a.texto || ''}</p>
+      <strong>${a.nome || 'Cliente D\\'Black'}</strong>
+    </div>`;
+  });
+}
+
+async function salvarAvaliacao(){
+  const nome = document.getElementById('reviewNome').value.trim();
+  const nota = Number(document.getElementById('reviewNota').value);
+  const texto = document.getElementById('reviewTexto').value.trim();
+
+  if(!nome || !texto){
+    alert('Preencha seu nome e comentário.');
+    return;
+  }
+
+  await db.collection('avaliacoes').add({
+    nome,
+    nota,
+    texto,
+    criadoEm: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  document.getElementById('reviewNome').value = '';
+  document.getElementById('reviewTexto').value = '';
+  document.getElementById('reviewNota').value = '5';
+
+  toast('Avaliação enviada. Obrigado!');
+  carregar();
+}
+
 carregar();
 </script>
 </body>
