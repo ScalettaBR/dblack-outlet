@@ -1,158 +1,144 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>D'Black Outlet</title>
+<title>D'Black Outlet Ultra</title>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <style>
 body { margin:0; font-family: Arial; background:#000; color:#fff; }
-header { display:flex; align-items:center; gap:10px; padding:15px; }
-header img { width:50px; border-radius:50%; }
-h1 span { color:#facc15; }
-
-.container { display:grid; grid-template-columns: 1fr 2fr 1fr; gap:20px; padding:20px; }
-.card { background:#18181b; padding:10px; border-radius:10px; }
-button { background:#facc15; border:none; padding:8px; cursor:pointer; }
-input { width:100%; margin:5px 0; padding:5px; }
-
-.produto img { width:100%; border-radius:10px; }
+header { display:flex; justify-content:space-between; padding:15px; }
+.banner { background:#111; padding:40px; text-align:center; }
+button { background:#facc15; border:none; padding:10px; cursor:pointer; }
+.container { padding:20px; }
+.grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap:20px; }
+.card { background:#18181b; padding:10px; border-radius:12px; }
+.card img { width:100%; border-radius:10px; }
+.hidden { display:none; }
 </style>
 </head>
-
 <body>
 
 <header>
-<img src="logo.png">
-<h1>D'BLACK <span>OUTLET</span></h1>
+<h2>D'BLACK <span style="color:#facc15">OUTLET</span></h2>
+<div>
+<button onclick="mostrarCliente()">Loja</button>
+<button onclick="mostrarLogin()">Admin</button>
+</div>
 </header>
 
-<div style="padding:0 20px;">
-<button onclick="filtrar('Todos')">Todos</button>
-<button onclick="filtrar('Calçados')">Calçados</button>
-<button onclick="filtrar('Camisas')">Camisas</button>
-<button onclick="filtrar('Bermudas')">Bermudas</button>
-<button onclick="filtrar('Calças')">Calças</button>
+<div class="banner">
+<h1>🔥 Ofertas Exclusivas 🔥</h1>
 </div>
 
-<div class="container">
-
-<!-- ADMIN -->
-<div class="card">
-<h3>Adicionar Produto</h3>
-<input id="nome" placeholder="Nome">
-<input id="marca" placeholder="Marca">
-<input id="preco" placeholder="Preço">
-<input id="imagem" placeholder="URL da imagem">
-<input id="categoria" placeholder="Categoria">
-<button onclick="addProduto()">Adicionar</button>
+<div id="login" class="container hidden">
+<input id="email" placeholder="Email">
+<input id="senha" type="password" placeholder="Senha">
+<button onclick="login()">Entrar</button>
 </div>
 
-<!-- PRODUTOS -->
-<div>
-<h2>Produtos</h2>
-<div id="lista"></div>
-</div>
+<div id="cliente" class="container">
+<input id="busca" placeholder="Buscar..." onkeyup="buscar()">
+<div class="grid" id="lista"></div>
 
-<!-- CARRINHO -->
-<div class="card">
 <h3>Carrinho</h3>
 <div id="carrinho"></div>
-<h4 id="total"></h4>
-<button onclick="finalizar()">Finalizar no WhatsApp</button>
+<p id="total"></p>
+<button onclick="finalizar()">Finalizar Pedido</button>
 </div>
 
+<div id="admin" class="container hidden">
+<h3>Admin</h3>
+<input id="nome" placeholder="Nome">
+<input id="preco" placeholder="Preço">
+<input id="imagem" placeholder="Imagem URL">
+<button onclick="salvarProduto()">Salvar</button>
 </div>
 
 <script>
-  // Configure a firebase
 const firebaseConfig = {
   apiKey: "AIzaSyC_vXz5dXrBRgZN3KciVKvyNGnZ47sNh7w",
   authDomain: "d-black-outlet-d8f3c.firebaseapp.com",
-  projectId: "d-black-outlet-d8f3c",
-  storageBucket: "d-black-outlet-d8f3c.firebasestorage.app",
-  messagingSenderId: "816810445158",
-  appId: "1:816810445158:web:00a782dfb4e19a497aa0a7",
-  measurementId: "G-C0JE81FTBL"
+  projectId: "d-black-outlet-d8f3c"
 };
 
-// INICIALIZAR FIREBASE
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-let produtos = JSON.parse(localStorage.getItem('produtos')) || [];
-let carrinho = [];
-let filtroAtual = 'Todos';
+const auth = firebase.auth();
 
-function salvar(){
-  localStorage.setItem('produtos', JSON.stringify(produtos));
+let produtos = [];
+let carrinhoItens = JSON.parse(localStorage.getItem('carrinho')) || [];
+
+function salvarCarrinho(){ localStorage.setItem('carrinho', JSON.stringify(carrinhoItens)); }
+
+function mostrarCliente(){ cliente.classList.remove('hidden'); }
+function mostrarLogin(){ login.classList.remove('hidden'); }
+
+function login(){
+ auth.signInWithEmailAndPassword(email.value, senha.value)
+ .then(()=>{ login.classList.add('hidden'); admin.classList.remove('hidden'); })
+ .catch(()=> alert('Erro'));
 }
 
-function addProduto(){
-  const p = {
-    nome: nome.value,
-    marca: marca.value,
-    preco: Number(preco.value),
-    imagem: imagem.value,
-    categoria: categoria.value
-  };
-  produtos.push(p);
-  salvar();
-  render();
+async function carregar(){
+ const snap = await db.collection('produtos').get();
+ produtos = snap.docs.map(doc=>doc.data());
+ render(produtos);
+ renderCarrinho();
 }
 
-function filtrar(cat){
-  filtroAtual = cat;
-  render();
+function buscar(){
+ const t = busca.value.toLowerCase();
+ render(produtos.filter(p=>p.nome.toLowerCase().includes(t)));
+}
+
+function render(listaProdutos){
+ lista.innerHTML='';
+ listaProdutos.forEach((p,i)=>{
+ lista.innerHTML+=`<div class='card'>
+ <img src='${p.imagem}'>
+ <h4>${p.nome}</h4>
+ <p>R$ ${p.preco}</p>
+ <button onclick='addCarrinho(${i})'>Adicionar</button>
+ </div>`;
+ });
 }
 
 function addCarrinho(i){
-  carrinho.push(produtos[i]);
-  renderCarrinho();
-}
-
-function render(){
-  const lista = document.getElementById('lista');
-  lista.innerHTML = '';
-
-  produtos.forEach((p,i)=>{
-    if(filtroAtual!='Todos' && p.categoria!=filtroAtual) return;
-
-    lista.innerHTML += `
-    <div class='card produto'>
-      <img src='${p.imagem}'>
-      <h4>${p.nome}</h4>
-      <small>${p.marca}</small>
-      <p>R$ ${p.preco}</p>
-      <button onclick='addCarrinho(${i})'>Adicionar</button>
-    </div>`;
-  });
+ carrinhoItens.push({...produtos[i], qtd:1});
+ salvarCarrinho();
+ renderCarrinho();
 }
 
 function renderCarrinho(){
-  let html='';
-  let total=0;
-
-  carrinho.forEach(p=>{
-    total+=p.preco;
-    html+=`<p>${p.nome} - R$ ${p.preco}</p>`;
-  });
-
-  document.getElementById('carrinho').innerHTML = html;
-  document.getElementById('total').innerText = 'Total: R$ '+total;
+ let total=0;
+ carrinho.innerHTML='';
+ carrinhoItens.forEach((p,i)=>{
+ total += p.preco * p.qtd;
+ carrinho.innerHTML+=`<p>${p.nome} x${p.qtd} - R$ ${p.preco*p.qtd}
+ <button onclick='remover(${i})'>❌</button></p>`;
+ });
+ total.innerText='Total: R$ '+total;
 }
+
+function remover(i){ carrinhoItens.splice(i,1); salvarCarrinho(); renderCarrinho(); }
 
 function finalizar(){
-  let msg = 'Pedido:%0A';
-  carrinho.forEach(p=>{
-    msg += `• ${p.nome} - R$ ${p.preco}%0A`;
-  });
-
-  window.open(`https://wa.me/5542999296088?text=${msg}`);
+ let msg='Pedido:%0A';
+ carrinhoItens.forEach(p=> msg+=`${p.nome} x${p.qtd}%0A`);
+ window.open(`https://wa.me/5542999296088?text=${msg}`);
 }
 
-render();
+async function salvarProduto(){
+ await db.collection('produtos').add({ nome:nome.value, preco:Number(preco.value), imagem:imagem.value });
+ carregar();
+}
+
+carregar();
 </script>
 
 </body>
