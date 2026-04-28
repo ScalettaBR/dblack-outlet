@@ -150,115 +150,95 @@ footer span{
 }
 
 
-/* Novidades reposicionadas e mais discretas */
-.novidades-title{
-  margin-top:52px;
-}
-.novidades-title h2{
-  font-size:28px;
-  color:#e8e8e8;
-}
-.novidades-grid{
-  grid-template-columns:repeat(4,1fr);
-  opacity:.92;
-}
-.highlight-card{
-  background:linear-gradient(145deg,#121212,#0d0d0d)!important;
-  border:1px solid rgba(255,196,0,.25)!important;
-  box-shadow:0 8px 22px rgba(0,0,0,.28)!important;
-  transform:none!important;
-}
-.highlight-card:hover{
-  border-color:rgba(255,196,0,.65)!important;
-  opacity:1;
-}
-.highlight-card::before{
-  content:"Novo"!important;
-  font-size:11px!important;
-  opacity:.9;
-}
-.highlight-card img{
-  height:180px!important;
-}
-.highlight-card .highlight-info{
-  padding:12px!important;
-}
-.highlight-card h3{
-  font-size:20px!important;
-}
-@media(max-width:1000px){
-  .novidades-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:650px){
-  .novidades-grid{grid-template-columns:1fr}
-  .highlight-card img{height:210px!important}
-}
 
-
-/* AJUSTE FINAL - BOTÕES ESTILO NIKE */
-.btn:not(.btn-dark):not(.btn-danger),
+/* AJUSTE FINAL - BOTÕES AMARELOS COM TEXTO BRANCO */
+.btn,
 .add-btn,
 .search button,
+.icon-btn,
 .qty button,
 .modal-close,
-.icon-btn {
-  background:#000 !important;
-  color:#fff !important;
-  border:1px solid #2c2c2c !important;
-  border-radius:999px !important;
-  font-weight:800 !important;
-  letter-spacing:.4px;
-  transition:all .25s ease;
+button {
+  background: var(--yellow) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 999px !important;
+  font-weight: 800 !important;
+  letter-spacing: .4px !important;
+  transition: all .25s ease !important;
 }
 
-.btn:not(.btn-dark):not(.btn-danger):hover,
+.btn:hover,
 .add-btn:hover,
 .search button:hover,
+.icon-btn:hover,
 .qty button:hover,
 .modal-close:hover,
-.icon-btn:hover {
-  background:#111 !important;
-  color:#fff !important;
-  transform:translateY(-2px) scale(1.02);
-  box-shadow:0 10px 25px rgba(0,0,0,.55);
+button:hover {
+  background: #eab308 !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 12px 28px rgba(250,204,21,.28) !important;
 }
 
-/* Mantém botões perigosos em vermelho */
-.btn-danger {
-  background:#ef4444 !important;
-  color:#fff !important;
-  border-radius:999px !important;
-}
-
-/* Mantém botões escuros elegantes */
 .btn-dark {
-  background:#181818 !important;
-  color:#fff !important;
-  border:1px solid #333 !important;
-  border-radius:999px !important;
+  background: #181818 !important;
+  color: #ffffff !important;
+  border: 1px solid #333 !important;
 }
 
-/* Botões do menu superior mais limpos */
-.nav a {
-  border-radius:999px !important;
+.btn-danger {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+.btn-danger:hover {
+  background: #dc2626 !important;
+  color: #ffffff !important;
 }
 
 .nav a:hover,
 .nav a.active {
-  background:#000 !important;
-  color:#fff !important;
-  border:1px solid #333 !important;
+  background: var(--yellow) !important;
+  color: #ffffff !important;
 }
 
-/* Botão de favorito continua funcional e destacado */
+.cat-card:hover,
+.cat-card.active {
+  background: rgba(255,196,0,.18) !important;
+  color: #ffffff !important;
+  border-color: var(--yellow) !important;
+}
+
 .heart {
-  background:rgba(255,255,255,.9) !important;
-  color:#000 !important;
+  background: rgba(255,255,255,.92) !important;
+  color: #000000 !important;
+  border: none !important;
+  border-radius: 50% !important;
+}
+
+.heart:hover {
+  background: #ffffff !important;
+  color: #000000 !important;
+  transform: scale(1.08) !important;
 }
 
 .heart.ativo {
-  background:#ef4444 !important;
-  color:#fff !important;
+  background: #ef4444 !important;
+  color: #ffffff !important;
+}
+
+.whatsapp-float {
+  background: #25d366 !important;
+  border: none !important;
+}
+
+.contato-card.instagram img{
+  width:46px;
+  height:46px;
+  border-radius:12px;
+  background:#000;
+  padding:4px;
 }
 
 </style>
@@ -272,7 +252,8 @@ footer span{
   </div>
   <nav class="nav">
   <a href="#top" onclick="mostrarLoja()">Início</a>
-  <a href="#categoriasProdutos" onclick="mostrarLoja()">Produtos</a>
+  <a href="#categoriasProdutos" onclick="mostrarLoja()">Nossos produtos</a>
+  <a href="#produtos" onclick="mostrarLoja()">Produtos</a>
   <a href="#avaliacoes" onclick="mostrarLoja()">Avaliações</a>
   <a href="#sobre" onclick="mostrarLoja()">Sobre nós</a>
   <a href="#contato" onclick="mostrarLoja()">Contato</a>
@@ -280,8 +261,8 @@ footer span{
 </header>
 
 <main id="lojaView">
-  <section id="top" class="hero"><div class="hero-box"><div class="hero-content"><div class="kicker">Estilo que impõe</div><h1>ATITUDE QUE <span>TRANSFORMA</span></h1><button class="btn" onclick="document.getElementById('produtos').scrollIntoView()">Ver categorias →</button></div><div class="hero-mascot"><img src="logo.png" alt="Mascote D'Black Outlet"></div></div></section>
-  <section class="main"><div id="categoriasProdutos" class="section-title"><h2>Categorias</h2></div><div class="categories"><div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div><span>Todos</span></div><div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div><span>Calçados</span></div><div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div><span>Camisas</span></div><div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div><div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div><div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div></div><div id="produtos" class="section-title"><h2>Produtos</h2></div><div id="lista" class="product-grid"></div><div id="destaques" class="section-title novidades-title"><h2>Novidades da loja</h2></div><div id="listaDestaques" class="highlight-grid novidades-grid"></div></section>
+  <section id="top" class="hero"><div class="hero-box"><div class="hero-content"><div class="kicker">Estilo que impõe</div><h1>ATITUDE QUE <span>TRANSFORMA</span></h1><button class="btn" onclick="document.getElementById('produtos').scrollIntoView()">Ver produtos →</button></div><div class="hero-mascot"><img src="logo.png" alt="Mascote D'Black Outlet"></div></div></section>
+  <section class="main"><div id="categoriasProdutos" class="section-title"><h2>Categorias</h2></div><div class="categories"><div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div><span>Todos</span></div><div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div><span>Calçados</span></div><div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div><span>Camisas</span></div><div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div><div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div><div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div></div><div id="destaques" class="section-title"><h2>Novidades da loja</h2></div><div id="listaDestaques" class="highlight-grid"></div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div></section>
   <section class="benefits"><div class="benefit">🚚 <div><strong>Frete para todo Brasil</strong><small>Envio rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>Pagamento via Pix</strong><small>Rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>5% off no Pix</strong><small>Pagamento à vista</small></div></div><div class="benefit">💬 <div><strong>Atendimento VIP</strong><small>Suporte via WhatsApp</small></div></div></section>
 </main>
 
@@ -340,7 +321,7 @@ footer span{
       </div>
     </a>
 
-    <a class="contato-card instagram" href="https://instagram.com/SEU_INSTAGRAM" target="_blank">
+    <a class="contato-card instagram" href="https://instagram.com/dblack_outlet" target="_blank">
       <div class="instagram-icon">📸</div>
       <div>
         <h3>Instagram</h3>
