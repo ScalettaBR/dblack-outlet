@@ -497,6 +497,23 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   }
 }
 
+
+/* Correção visual dos nomes nas categorias */
+.cat-card span{
+  display:block !important;
+  color:#fff !important;
+  font-size:18px !important;
+  font-weight:900 !important;
+  margin-top:8px !important;
+}
+.cat-card:hover span,
+.cat-card.active span{
+  color:#fff !important;
+}
+.cat-card .ico{
+  display:block !important;
+}
+
 </style>
 </head>
 <body>
@@ -541,7 +558,15 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
     <div class="carousel-dots" id="heroDots"></div>
   </div>
 </section>
-  <section class="main"><div id="categoriasProdutos" class="section-title"><h2>Categorias</h2></div><div class="categories"><div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div></div><div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div></div><div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div></div><div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div></div><div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div></div><div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div></div></div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div></section>
+  <section class="main"><div id="categoriasProdutos" class="section-title"><h2>Categorias</h2></div>
+<div class="categories">
+  <div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div><span>Todos</span></div>
+  <div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div><span>Calçados</span></div>
+  <div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div><span>Camisas</span></div>
+  <div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div>
+  <div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div>
+  <div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div>
+</div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div></section>
   <section class="benefits"><div class="benefit">🚚 <div><strong>Frete para todo Brasil</strong><small>Envio rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>Pagamento via Pix</strong><small>Rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>5% off no Pix</strong><small>Pagamento à vista</small></div></div><div class="benefit">💬 <div><strong>Atendimento VIP</strong><small>Suporte via WhatsApp</small></div></div></section>
 </main>
 
@@ -708,10 +733,16 @@ function obterImagemProduto(p){
 
   let url = (possiveis.find(v => typeof v === 'string' && v.trim()) || '').trim();
 
-  // Converte link compartilhado do Google Drive para link direto visualizável
+  // Google Drive compartilhado
   const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
   if(driveMatch && driveMatch[1]){
     url = `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+  }
+
+  // Imgur: se for link de página, tenta transformar em link direto
+  const imgurMatch = url.match(/^https?:\/\/(?:www\.)?imgur\.com\/([a-zA-Z0-9]+)$/);
+  if(imgurMatch && imgurMatch[1]){
+    url = `https://i.imgur.com/${imgurMatch[1]}.jpg`;
   }
 
   return url;
@@ -936,11 +967,10 @@ function iniciarHeroCarousel(){
 
   function mostrarSlide(index){
     const p = novidades[index];
+    const urlImagem = obterImagemProduto(p);
+
     heroProdutoIndex = produtos.findIndex(x => x.id === p.id);
 
-    img.style.objectFit = 'cover';
-    img.style.padding = '0';
-    img.src = obterImagemProduto(p);
     img.onerror = function(){
       this.onerror = null;
       this.src = 'logo.png';
@@ -948,13 +978,18 @@ function iniciarHeroCarousel(){
       this.style.padding = '18px';
     };
 
+    img.style.objectFit = 'cover';
+    img.style.padding = '0';
+    img.src = urlImagem;
+
     nome.textContent = p.nome || 'Produto';
     meta.textContent = `${p.marca || 'Multimarcas'} • ${p.categoria || ''} • Estoque: ${p.estoque || 0}`;
     preco.textContent = moeda(p.preco) + ' • Frete incluso';
     dots.innerHTML = novidades.map((_,i)=>`<span class="carousel-dot ${i===index?'active':''}"></span>`).join('');
   }
 
-  mostrarSlide(heroIndex % novidades.length);
+  heroIndex = heroIndex % novidades.length;
+  mostrarSlide(heroIndex);
 
   if(heroTimer) clearInterval(heroTimer);
   heroTimer = setInterval(()=>{
