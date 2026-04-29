@@ -423,6 +423,80 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   }
 }
 
+
+/* Finalizar pedido dentro da sacola */
+.cart-panel .checkout-btn{
+  width:100% !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:8px !important;
+  margin-top:16px !important;
+  padding:15px 18px !important;
+  position:static !important;
+  z-index:2 !important;
+}
+.cart-panel .continue-btn{
+  width:100% !important;
+  margin-top:10px !important;
+  background:transparent !important;
+  color:#fff !important;
+  border:1px solid rgba(242,194,48,.45) !important;
+  box-shadow:none !important;
+}
+.cart-panel .continue-btn:hover{
+  background:rgba(242,194,48,.12) !important;
+}
+
+
+.checkout-modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.78);
+  z-index:150;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.checkout-modal.open{display:flex}
+.checkout-box{
+  width:100%;
+  max-width:440px;
+  background:#111;
+  border:1px solid rgba(242,194,48,.25);
+  border-radius:24px;
+  padding:24px;
+  box-shadow:0 24px 60px rgba(0,0,0,.65);
+}
+.checkout-box h2{margin-top:0}
+.checkout-box select{
+  width:100%;
+  margin:12px 0 18px;
+  padding:14px;
+  border-radius:14px;
+  background:#0d0d0d;
+  color:#fff;
+  border:1px solid #333;
+}
+
+
+/* Correção do slogan e imagens das novidades */
+.hero h1{
+  word-break: normal;
+  overflow-wrap: normal;
+}
+.carousel-product-card img,
+.highlight-card img{
+  background:#111;
+}
+@media(max-width:650px){
+  .hero h1{
+    font-size:38px !important;
+    line-height:.95 !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -447,7 +521,7 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   <div class="hero-box carousel-hero">
     <div class="hero-content">
       <div class="kicker">Estilo que impõe</div>
-      <h1>ATITUDE QUE TRANSFORMA </h1>
+      <h1>ATITUDE QUE <span>TRANSFORMA</span></h1>
       <p class="hero-slogan">Multimarcas com preço justo, estilo forte e frete incluso.</p>
       <button class="btn hero-btn" onclick="document.getElementById('categoriasProdutos').scrollIntoView({behavior:'smooth', block:'start'})">Ver categorias →</button>
     </div>
@@ -458,7 +532,7 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
         <img id="heroImagem" src="logo.png" alt="Novidade D'Black Outlet">
         <div class="carousel-info">
           <h3 id="heroProdutoNome">Novidades da loja</h3>
-          <p id="heroProdutoMeta"></p>
+          <p id="heroProdutoMeta">As últimas peças cadastradas aparecem aqui.</p>
           <strong id="heroProdutoPreco"></strong>
         </div>
       </div>
@@ -477,7 +551,7 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
 
 <aside id="cartPanel" class="cart-panel">
   <div class="cart-head">
-    <h2>Seu carrinho</h2>
+    <h2>Sua sacola</h2>
     <button class="btn-dark" onclick="toggleCart()">✕</button>
   </div>
 
@@ -489,7 +563,8 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   </div>
 
   <button class="btn checkout-btn" onclick="finalizar()">
-    <i class="fa-solid fa-bag-shopping"></i> Finalizar pedido
+    <i class="fa-solid fa-bag-shopping"></i>
+    Finalizar pedido
   </button>
 
   <button class="btn btn-outline continue-btn" onclick="toggleCart()">
@@ -620,7 +695,10 @@ function toast(msg){
 }
 
 function imagemProduto(url, nome){
-  return `<img src="${url || 'logo.png'}" alt="${nome || 'Produto'}" onerror="this.src='logo.png';this.style.objectFit='contain';this.style.padding='18px';">`;
+  const imagem = (url || '').trim();
+  const src = imagem ? imagem : 'logo.png';
+
+  return `<img src="${src}" alt="${nome || 'Produto'}" loading="lazy" onerror="this.onerror=null;this.src='logo.png';this.style.objectFit='contain';this.style.padding='18px';">`;
 }
 
 function salvarCarrinho(){
@@ -799,6 +877,9 @@ function render(){
 
 
 
+
+
+
 let heroIndex = 0;
 let heroProdutoIndex = 0;
 let heroTimer = null;
@@ -813,14 +894,15 @@ function iniciarHeroCarousel(){
   if(!img || !nome || !meta || !preco || !dots) return;
 
   const novidades = [...produtos]
-    .filter(p => p.nome && p.imagem)
+    .filter(p => (p.nome || '').trim() && (p.imagem || '').trim())
     .slice(0, 5);
 
   if(novidades.length === 0){
     img.src = 'logo.png';
     img.style.objectFit = 'contain';
+    img.style.padding = '18px';
     nome.textContent = 'Novidades da loja';
-    meta.textContent = 'Cadastre produtos no painel admin para aparecerem aqui.';
+    meta.textContent = 'Cadastre produtos com link de imagem no painel admin.';
     preco.textContent = '';
     dots.innerHTML = '';
     return;
@@ -831,8 +913,10 @@ function iniciarHeroCarousel(){
     heroProdutoIndex = produtos.findIndex(x => x.id === p.id);
 
     img.style.objectFit = 'cover';
-    img.src = p.imagem || 'logo.png';
+    img.style.padding = '0';
+    img.src = (p.imagem || '').trim();
     img.onerror = function(){
+      this.onerror = null;
       this.src = 'logo.png';
       this.style.objectFit = 'contain';
       this.style.padding = '18px';
@@ -858,13 +942,13 @@ function renderDestaques(){
   if(!area) return;
 
   const destaques = [...produtos]
-    .filter(p => p.nome && p.imagem)
-    .slice(0,4);
+    .filter(p => (p.nome || '').trim() && (p.imagem || '').trim())
+    .slice(0, 4);
 
   area.innerHTML = '';
 
   if(destaques.length === 0){
-    area.innerHTML = '<div class="empty">As novidades aparecerão aqui assim que você cadastrar produtos.</div>';
+    area.innerHTML = '<div class="empty">As novidades aparecerão aqui quando novos produtos com imagem forem cadastrados.</div>';
     return;
   }
 
@@ -876,7 +960,8 @@ function renderDestaques(){
         <div class="highlight-info">
           <h3>${p.nome || 'Produto'}</h3>
           <p class="muted">${p.marca || 'Multimarcas'} ${p.tamanho ? '• Tam: ' + p.tamanho : ''}</p>
-          <p class="price">Valor: ${moeda(p.preco)} <span style="font-size:13px;color:#ccc;font-weight:600">(Frete incluso)</span></p><p class="muted">Estoque: ${p.estoque || 0} unidade(s)</p>
+          <p class="price">Valor: ${moeda(p.preco)} <span style="font-size:13px;color:#ccc;font-weight:600">(Frete incluso)</span></p>
+          <p class="muted">Estoque: ${p.estoque || 0} unidade(s)</p>
           <button class="add-btn" onclick="event.stopPropagation();addCarrinho(${i})">Comprar agora</button>
         </div>
       </article>
@@ -994,8 +1079,6 @@ function finalizar(){
   const modal = document.getElementById('checkoutModal');
   if(modal){
     modal.classList.add('open');
-  }else{
-    enviarPedidoWhatsapp();
   }
 }
 
