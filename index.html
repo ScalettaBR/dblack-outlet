@@ -153,98 +153,172 @@ footer span{
 
 
 
-/* AJUSTE FINAL - BOTÕES AMARELOS SUAVES */
+
+
+/* =========================
+   AJUSTE FINAL VISUAL
+   ========================= */
+
+/* Botões com amarelo premium, sem estourar */
 .btn,
 .add-btn,
 .search button,
-.icon-btn,
 .qty button,
 .modal-close,
-button {
-  background: linear-gradient(135deg, #d9a900, #b88900) !important;
+button:not(.heart):not(.btn-dark):not(.btn-danger) {
+  background: linear-gradient(135deg, #c99700, #9f7600) !important;
   color: #ffffff !important;
-  border: 1px solid rgba(255,255,255,.14) !important;
+  border: 1px solid rgba(255,255,255,.12) !important;
   border-radius: 999px !important;
   font-weight: 800 !important;
   letter-spacing: .35px !important;
-  transition: all .25s ease !important;
-  box-shadow: 0 6px 16px rgba(184,137,0,.18) !important;
+  box-shadow: 0 8px 18px rgba(159,118,0,.22) !important;
+  transition: all .22s ease !important;
 }
 
 .btn:hover,
 .add-btn:hover,
 .search button:hover,
-.icon-btn:hover,
 .qty button:hover,
 .modal-close:hover,
-button:hover {
-  background: linear-gradient(135deg, #e0b11a, #c49300) !important;
+button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
+  background: linear-gradient(135deg, #d7a60c, #b98900) !important;
   color: #ffffff !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 10px 24px rgba(184,137,0,.26) !important;
+  box-shadow: 0 12px 28px rgba(159,118,0,.32) !important;
 }
 
+/* Botões do topo mais elegantes e menos chamativos */
+.icon-btn {
+  background: #151515 !important;
+  color: #ffffff !important;
+  border: 1px solid #303030 !important;
+  box-shadow: none !important;
+}
+.icon-btn:hover {
+  background: #222 !important;
+  color: #ffffff !important;
+  border-color: #c99700 !important;
+}
+
+/* Menu superior */
+.nav a:hover,
+.nav a.active {
+  background: rgba(201,151,0,.22) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(201,151,0,.55) !important;
+}
+
+/* Categorias */
+.cat-card:hover,
+.cat-card.active {
+  background: rgba(201,151,0,.16) !important;
+  color: #ffffff !important;
+  border-color: #c99700 !important;
+}
+
+/* Botões especiais */
 .btn-dark {
   background: #181818 !important;
   color: #ffffff !important;
   border: 1px solid #333 !important;
   box-shadow: none !important;
 }
-
 .btn-danger {
   background: #ef4444 !important;
   color: #ffffff !important;
   box-shadow: none !important;
 }
 
-.btn-danger:hover {
-  background: #dc2626 !important;
-  color: #ffffff !important;
-}
-
-.nav a:hover,
-.nav a.active {
-  background: linear-gradient(135deg, #d9a900, #b88900) !important;
-  color: #ffffff !important;
-}
-
-.cat-card:hover,
-.cat-card.active {
-  background: rgba(217,169,0,.16) !important;
-  color: #ffffff !important;
-  border-color: #d9a900 !important;
-}
-
+/* Favoritos */
 .heart {
   background: rgba(255,255,255,.92) !important;
-  color: #000000 !important;
+  color: #000 !important;
   border: none !important;
-  border-radius: 50% !important;
   box-shadow: none !important;
 }
-
-.heart:hover {
-  background: #ffffff !important;
-  color: #000000 !important;
-  transform: scale(1.08) !important;
-}
-
 .heart.ativo {
   background: #ef4444 !important;
   color: #ffffff !important;
 }
 
+/* Produtos: destaque principal */
+.produtos-title {
+  margin-top: 42px;
+  padding-top: 18px;
+}
+.produtos-title h2 {
+  font-size: 44px;
+}
+.produtos-title p {
+  margin: 8px auto 0;
+  color: #cfcfcf;
+  font-size: 15px;
+  max-width: 620px;
+}
+.produtos-destaque {
+  background: linear-gradient(145deg, rgba(201,151,0,.055), rgba(255,255,255,.025));
+  border: 1px solid rgba(201,151,0,.16);
+  border-radius: 26px;
+  padding: 22px;
+  box-shadow: 0 18px 45px rgba(0,0,0,.32);
+}
+
+/* Novidades abaixo dos produtos, sem disputar atenção */
+.novidades-title {
+  margin-top: 48px;
+}
+.novidades-title h2 {
+  font-size: 30px;
+  color: #f2f2f2;
+}
+.novidades-title p {
+  color: #aaa;
+  margin: 6px 0 0;
+}
+.novidades-grid {
+  opacity: .96;
+}
+.highlight-card {
+  background: linear-gradient(145deg, #121212, #0b0b0b) !important;
+  border: 1px solid rgba(201,151,0,.24) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,.26) !important;
+  transform: none !important;
+}
+.highlight-card:hover {
+  border-color: rgba(201,151,0,.65) !important;
+  transform: translateY(-3px) !important;
+}
+.highlight-card::before {
+  content: "Novo" !important;
+  background: linear-gradient(135deg, #c99700, #9f7600) !important;
+  color: #fff !important;
+}
+.highlight-card img {
+  height: 185px !important;
+}
+
+/* Instagram real */
+.contato-card.instagram img.instagram-logo {
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 14px !important;
+  object-fit: contain !important;
+  background: #000 !important;
+  padding: 5px !important;
+}
+
+/* WhatsApp flutuante mantém verde */
 .whatsapp-float {
   background: #25d366 !important;
   border: none !important;
 }
 
-.contato-card.instagram img{
-  width:46px;
-  height:46px;
-  border-radius:12px;
-  background:#000;
-  padding:4px;
+@media(max-width:650px){
+  .produtos-title h2 { font-size: 34px; }
+  .produtos-destaque { padding: 12px; border-radius: 20px; }
+  .highlight-card img { height: 210px !important; }
 }
 
 </style>
@@ -268,7 +342,7 @@ button:hover {
 
 <main id="lojaView">
   <section id="top" class="hero"><div class="hero-box"><div class="hero-content"><div class="kicker">Estilo que impõe</div><h1>ATITUDE QUE <span>TRANSFORMA</span></h1><button class="btn" onclick="document.getElementById('produtos').scrollIntoView()">Ver produtos →</button></div><div class="hero-mascot"><img src="logo.png" alt="Mascote D'Black Outlet"></div></div></section>
-  <section class="main"><div id="categoriasProdutos" class="section-title"><h2>Categorias</h2></div><div class="categories"><div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div><span>Todos</span></div><div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div><span>Calçados</span></div><div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div><span>Camisas</span></div><div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div><div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div><div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div></div><div id="destaques" class="section-title"><h2>Novidades da loja</h2></div><div id="listaDestaques" class="highlight-grid"></div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div></section>
+  <section class="main"><div id="categoriasProdutos" class="section-title"><h2>Categorias</h2></div><div class="categories"><div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div><span>Todos</span></div><div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div><span>Calçados</span></div><div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div><span>Camisas</span></div><div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div><div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div><div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div></div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div></section>
   <section class="benefits"><div class="benefit">🚚 <div><strong>Frete para todo Brasil</strong><small>Envio rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>Pagamento via Pix</strong><small>Rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>5% off no Pix</strong><small>Pagamento à vista</small></div></div><div class="benefit">💬 <div><strong>Atendimento VIP</strong><small>Suporte via WhatsApp</small></div></div></section>
 </main>
 
@@ -328,7 +402,7 @@ button:hover {
     </a>
 
     <a class="contato-card instagram" href="https://instagram.com/SEU_INSTAGRAM" target="_blank">
-      <div class="instagram-icon">📸</div>
+      <img src="instagram-oficial.png" alt="Instagram" class="instagram-logo">
       <div>
         <h3>Instagram</h3>
         <p>Acompanhe novidades, lançamentos e ofertas</p>
@@ -484,8 +558,7 @@ async function carregar(){
   }
 
   render();
-  renderDestaques();
-  renderAdmin();
+    renderAdmin();
   renderCarrinho();
   renderAvaliacoes();
 }
