@@ -159,23 +159,25 @@ footer span{
 
 
 
-/* AJUSTE FINAL PREMIUM - BOTÕES */
+
+
+/* AJUSTE FINAL - BOTÕES PREMIUM MAIS LIMPOS */
 .btn,
 .add-btn,
 .search button,
 .qty button,
 .modal-close,
 button:not(.heart):not(.btn-dark):not(.btn-danger) {
-  background:#d4a017 !important;
-  color:#fff !important;
-  border:1px solid rgba(255,255,255,.12) !important;
-  border-radius:999px !important;
-  font-family:'Barlow Condensed',sans-serif !important;
-  font-size:18px !important;
-  font-weight:800 !important;
-  letter-spacing:.55px !important;
-  box-shadow:0 5px 14px rgba(212,160,23,.18) !important;
-  transition:all .22s ease !important;
+  background: linear-gradient(135deg, #f2c230, #d7a21b) !important;
+  color: #121212 !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
+  border-radius: 14px !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  letter-spacing: .2px !important;
+  box-shadow: 0 6px 14px rgba(242,194,48,.14) !important;
+  transition: all .22s ease !important;
 }
 .btn:hover,
 .add-btn:hover,
@@ -183,77 +185,161 @@ button:not(.heart):not(.btn-dark):not(.btn-danger) {
 .qty button:hover,
 .modal-close:hover,
 button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
-  background:#c99514 !important;
-  color:#fff !important;
-  transform:translateY(-1px) !important;
-  box-shadow:0 8px 18px rgba(212,160,23,.24) !important;
+  background: linear-gradient(135deg, #ffd34d, #e0ab22) !important;
+  color: #111 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 10px 20px rgba(242,194,48,.20) !important;
+}
+.hero-btn {
+  padding: 14px 24px !important;
+  border-radius: 999px !important;
 }
 .icon-btn {
-  background:rgba(255,255,255,.06) !important;
-  color:#fff !important;
-  border:1px solid rgba(212,160,23,.32) !important;
-  box-shadow:none !important;
-  font-family:'Inter',sans-serif !important;
-  font-size:14px !important;
+  background: rgba(255,255,255,.055) !important;
+  color: #fff !important;
+  border: 1px solid rgba(242,194,48,.22) !important;
+  border-radius: 999px !important;
+  box-shadow: none !important;
 }
 .icon-btn:hover {
-  background:rgba(212,160,23,.13) !important;
-  color:#fff !important;
-  border-color:#d4a017 !important;
-  box-shadow:none !important;
+  background: rgba(242,194,48,.12) !important;
+  color: #fff !important;
+  border-color: rgba(242,194,48,.55) !important;
 }
 .nav a:hover,
 .nav a.active {
-  background:rgba(212,160,23,.16) !important;
-  color:#fff !important;
-  border:1px solid rgba(212,160,23,.55) !important;
+  background: rgba(242,194,48,.14) !important;
+  color: #fff !important;
+  border: 1px solid rgba(242,194,48,.45) !important;
 }
 .cat-card:hover,
 .cat-card.active {
-  background:rgba(212,160,23,.13) !important;
-  color:#fff !important;
-  border-color:#d4a017 !important;
+  background: rgba(242,194,48,.12) !important;
+  color: #fff !important;
+  border-color: #f2c230 !important;
 }
 .btn-dark {
-  background:#181818 !important;
-  color:#fff !important;
-  border:1px solid #333 !important;
-  box-shadow:none !important;
+  background: #181818 !important;
+  color: #fff !important;
+  border: 1px solid #333 !important;
+  box-shadow: none !important;
 }
 .btn-danger {
-  background:#ef4444 !important;
-  color:#fff !important;
-  box-shadow:none !important;
+  background: #ef4444 !important;
+  color: #fff !important;
+  box-shadow: none !important;
 }
 .heart {
-  background:rgba(255,255,255,.92) !important;
-  color:#000 !important;
-  border:none !important;
-  box-shadow:none !important;
-  font-size:24px !important;
+  background: rgba(255,255,255,.92) !important;
+  color: #000 !important;
+  border: none !important;
+  border-radius: 50% !important;
+  box-shadow: none !important;
 }
 .heart.ativo {
-  background:#ef4444 !important;
-  color:#fff !important;
+  background: #ef4444 !important;
+  color: #fff !important;
 }
-.highlight-card::before {
-  background:#d4a017 !important;
-  color:#fff !important;
+
+/* Hero com slogan fixo e carrossel de novidades */
+.hero-slogan {
+  color: #d8d8d8;
+  font-size: 17px;
+  max-width: 520px;
+  margin: -10px 0 26px;
+}
+.hero-box.carousel-hero {
+  min-height: 410px;
+}
+.carousel-product-card {
+  position: relative;
+  z-index: 2;
+  width: min(390px, 92%);
+  background: linear-gradient(145deg, rgba(18,18,18,.92), rgba(6,6,6,.92));
+  border: 1px solid rgba(242,194,48,.28);
+  border-radius: 26px;
+  padding: 16px;
+  cursor: pointer;
+  box-shadow: 0 24px 52px rgba(0,0,0,.55);
+  transition: .25s;
+}
+.carousel-product-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(242,194,48,.7);
+}
+.carousel-product-card img {
+  width: 100%;
+  height: 245px;
+  object-fit: cover;
+  border-radius: 20px;
+  background: #111;
+}
+.carousel-tag {
+  position: absolute;
+  left: 28px;
+  top: 28px;
+  background: linear-gradient(135deg, #f2c230, #d7a21b);
+  color: #111;
+  font-weight: 900;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  z-index: 3;
+}
+.carousel-info {
+  padding: 14px 4px 2px;
+}
+.carousel-info h3 {
+  margin: 0 0 4px;
+  font-size: 24px;
+}
+.carousel-info p {
+  margin: 0 0 8px;
+  color: #aaa;
+  font-size: 13px;
+}
+.carousel-info strong {
+  color: #f2c230;
+  font-size: 20px;
+}
+.carousel-dots {
+  position: absolute;
+  left: 68px;
+  bottom: 26px;
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+}
+.carousel-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.35);
 }
 .carousel-dot.active {
-  background:#d4a017 !important;
+  background: #f2c230;
+}
+.highlight-card::before {
+  background: linear-gradient(135deg, #f2c230, #d7a21b) !important;
+  color: #111 !important;
 }
 .contato-card.instagram img.instagram-logo {
-  width:48px !important;
-  height:48px !important;
-  border-radius:14px !important;
-  object-fit:contain !important;
-  background:#000 !important;
-  padding:5px !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 14px !important;
+  object-fit: contain !important;
+  background: #000 !important;
+  padding: 5px !important;
 }
 .whatsapp-float {
-  background:#25d366 !important;
-  border:none !important;
+  background: #25d366 !important;
+  border: none !important;
+}
+@media(max-width:650px){
+  .hero-slogan { text-align:center; margin: 0 auto 22px; }
+  .carousel-product-card { width: 92%; }
+  .carousel-product-card img { height: 220px; }
+  .carousel-dots { left: 50%; transform: translateX(-50%); }
 }
 
 </style>
@@ -267,7 +353,7 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   </div>
   <nav class="nav">
   <a href="#top" onclick="mostrarLoja()">Início</a>
-  <a href="#categoriasProdutos" onclick="mostrarLoja()">Nossos produtos</a>
+  <a href="#categoriasProdutos" onclick="mostrarLoja()">Categorias</a>
   <a href="#produtos" onclick="mostrarLoja()">Produtos</a>
   <a href="#avaliacoes" onclick="mostrarLoja()">Avaliações</a>
   <a href="#sobre" onclick="mostrarLoja()">Sobre nós</a>
@@ -279,16 +365,24 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   <section id="top" class="hero">
   <div class="hero-box carousel-hero">
     <div class="hero-content">
-      <div class="kicker" id="heroKicker">Novidades da loja</div>
-      <h1 id="heroTitulo">ATITUDE QUE <span>TRANSFORMA</span></h1>
-      <p id="heroDescricao" class="muted" style="max-width:520px;font-size:16px;margin-bottom:24px">Confira as últimas peças cadastradas na D'Black Outlet.</p>
-      <button class="btn" onclick="document.getElementById('categoriasProdutos').scrollIntoView({behavior:'smooth', block:'start'})">Ver produtos →</button>
+      <div class="kicker">Estilo que impõe</div>
+      <h1>ATITUDE QUE <span>TRANSFORMA</span></h1>
+      <p class="hero-slogan">Multimarcas com preço justo, estilo forte e frete incluso.</p>
+      <button class="btn hero-btn" onclick="document.getElementById('categoriasProdutos').scrollIntoView({behavior:'smooth', block:'start'})">Ver categorias →</button>
     </div>
+
     <div class="hero-mascot">
-      <div class="carousel-product-card">
+      <div class="carousel-product-card" onclick="abrirProduto(heroProdutoIndex)">
+        <span class="carousel-tag">Novidade</span>
         <img id="heroImagem" src="logo.png" alt="Novidade D'Black Outlet">
+        <div class="carousel-info">
+          <h3 id="heroProdutoNome">Novidades da loja</h3>
+          <p id="heroProdutoMeta">As últimas peças aparecem aqui.</p>
+          <strong id="heroProdutoPreco"></strong>
+        </div>
       </div>
     </div>
+
     <div class="carousel-dots" id="heroDots"></div>
   </div>
 </section>
@@ -589,33 +683,51 @@ function render(){
 }
 
 
+
+
+
 let heroIndex = 0;
+let heroProdutoIndex = 0;
 let heroTimer = null;
 
 function iniciarHeroCarousel(){
   const img = document.getElementById('heroImagem');
-  const titulo = document.getElementById('heroTitulo');
-  const desc = document.getElementById('heroDescricao');
+  const nome = document.getElementById('heroProdutoNome');
+  const meta = document.getElementById('heroProdutoMeta');
+  const preco = document.getElementById('heroProdutoPreco');
   const dots = document.getElementById('heroDots');
 
-  if(!img || !titulo || !desc || !dots) return;
+  if(!img || !nome || !meta || !preco || !dots) return;
 
-  const novidades = [...produtos].filter(p => p.nome && p.imagem).slice(0, 5);
+  const novidades = [...produtos]
+    .filter(p => p.nome && p.imagem)
+    .slice(0, 5);
 
   if(novidades.length === 0){
     img.src = 'logo.png';
-    titulo.innerHTML = 'ATITUDE QUE <span>TRANSFORMA</span>';
-    desc.textContent = 'Cadastre produtos no painel admin para aparecerem como novidades aqui.';
+    img.style.objectFit = 'contain';
+    nome.textContent = 'Novidades da loja';
+    meta.textContent = 'Cadastre produtos no painel admin para aparecerem aqui.';
+    preco.textContent = '';
     dots.innerHTML = '';
     return;
   }
 
   function mostrarSlide(index){
     const p = novidades[index];
+    heroProdutoIndex = produtos.findIndex(x => x.id === p.id);
+
+    img.style.objectFit = 'cover';
     img.src = p.imagem || 'logo.png';
-    img.onerror = function(){ this.src = 'logo.png'; this.style.objectFit = 'contain'; };
-    titulo.innerHTML = `${p.nome || 'Novidade'} <span>${moeda(p.preco)}</span>`;
-    desc.textContent = `${p.marca || 'Multimarcas'} • ${p.categoria || ''} • Estoque: ${p.estoque || 0}`;
+    img.onerror = function(){
+      this.src = 'logo.png';
+      this.style.objectFit = 'contain';
+      this.style.padding = '18px';
+    };
+
+    nome.textContent = p.nome || 'Produto';
+    meta.textContent = `${p.marca || 'Multimarcas'} • ${p.categoria || ''} • Estoque: ${p.estoque || 0}`;
+    preco.textContent = moeda(p.preco) + ' • Frete incluso';
     dots.innerHTML = novidades.map((_,i)=>`<span class="carousel-dot ${i===index?'active':''}"></span>`).join('');
   }
 
