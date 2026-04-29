@@ -547,7 +547,7 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
 
 <section id="loginView" class="login hidden"><div class="admin-card" style="max-width:460px;margin:auto"><h2>Login Admin</h2><div class="field"><label>Email</label><input id="email" type="email" placeholder="seu@email.com"></div><div class="field"><label>Senha</label><input id="senha" type="password" placeholder="Senha"></div><button class="btn" onclick="login()">Entrar</button><button class="btn btn-dark" onclick="mostrarLoja()">Voltar</button></div></section>
 
-<section id="adminView" class="admin hidden"><div class="admin-card"><div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap"><h2>👑 Painel Admin</h2><button class="btn btn-dark" onclick="logout()">Sair</button></div><div class="admin-grid"><div><h3 id="formTitulo">Adicionar produto</h3><div class="form-grid"><div class="field"><label>Nome do produto</label><input id="nome" placeholder="Ex: Camiseta Lacoste"></div><div class="field"><label>Preço (R$)</label><input id="preco" type="number" step="0.01" placeholder="149.90"></div><div class="field"><label>Marca</label><input id="marca" placeholder="Ex: Nike"></div><div class="field"><label>Tamanho</label><input id="tamanho" placeholder="Ex: P, M, G, 42"></div><div class="field"><label>Categoria</label><select id="categoria"><option value="Calçados">Calçados</option><option value="Camisas">Camisas</option><option value="Bermudas">Bermudas</option><option value="Calças">Calças</option><option value="Acessórios">Acessórios</option><option value="Outros">Outros</option></select></div><div class="field"><label>Estoque</label><input id="estoque" type="number" placeholder="1"></div><div class="field full"><label>Imagem (URL/link direto)</label><input id="imagem" placeholder="Cole o link da imagem aqui" oninput="atualizarPreviewImagem()"></div></div><button id="btnSalvar" class="btn" style="width:100%;margin-top:12px" onclick="salvarProduto()">Salvar produto</button><button id="btnCancelarEdicao" class="btn btn-dark hidden" style="width:100%;margin-top:10px" onclick="cancelarEdicao()">Cancelar edição</button></div><div class="preview-box"><h3>Prévia da imagem</h3><img id="preview" alt="Prévia"><p class="muted">Cole um link direto da imagem. Exemplo: endereço terminando em .jpg, .png ou .webp.</p><img src="logo.png" alt="Mascote" style="display:block;width:210px;height:auto;margin:18px auto 0;object-fit:contain"></div></div></div><div class="admin-card" style="margin-top:22px"><h3>Gerenciar produtos</h3><div id="listaAdmin" class="admin-list"></div></div></section>
+<section id="adminView" class="admin hidden"><div class="admin-card"><div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap"><h2>👑 Painel Admin</h2><button class="btn btn-dark" onclick="logout()">Sair</button></div><div class="admin-grid"><div><h3 id="formTitulo">Adicionar produto</h3><div class="form-grid"><div class="field"><label>Nome do produto</label><input id="nome" placeholder="Ex: Camiseta Lacoste"></div><div class="field"><label>Preço (R$)</label><input id="preco" type="number" step="0.01" placeholder="149.90"></div><div class="field"><label>Marca</label><input id="marca" placeholder="Ex: Nike"></div><div class="field"><label>Tamanho</label><input id="tamanho" placeholder="Ex: P, M, G, 42"></div><div class="field"><label>Categoria</label><select id="categoria"><option value="Calçados">Calçados</option><option value="Camisas">Camisas</option><option value="Bermudas">Bermudas</option><option value="Calças">Calças</option><option value="Acessórios">Acessórios</option><option value="Outros">Outros</option></select></div><div class="field"><label>Estoque</label><input id="estoque" type="number" placeholder="1"></div><div class="field full"><label>Imagem (URL/link direto)</label><input id="imagem" placeholder="Cole o link da imagem aqui" oninput="atualizarPreviewImagem()"></div></div><button id="btnSalvar" class="btn" style="width:100%;margin-top:12px" onclick="salvarProduto()">Salvar produto</button><button id="btnCancelarEdicao" class="btn btn-dark hidden" style="width:100%;margin-top:10px" onclick="cancelarEdicao()">Cancelar edição</button></div><div class="preview-box"><h3>Prévia da imagem</h3><img id="preview" alt="Prévia"><p class="muted">Cole um link direto da imagem. Exemplo: .jpg, .png, .webp. Links do Google Drive também serão convertidos automaticamente.</p><img src="logo.png" alt="Mascote" style="display:block;width:210px;height:auto;margin:18px auto 0;object-fit:contain"></div></div></div><div class="admin-card" style="margin-top:22px"><h3>Gerenciar produtos</h3><div id="listaAdmin" class="admin-list"></div></div></section>
 
 <aside id="cartPanel" class="cart-panel">
   <div class="cart-head">
@@ -694,9 +694,35 @@ function toast(msg){
   setTimeout(() => t.classList.remove('show'), 2600);
 }
 
-function imagemProduto(url, nome){
-  const imagem = (url || '').trim();
-  const src = imagem ? imagem : 'logo.png';
+function obterImagemProduto(p){
+  const possiveis = [
+    p?.imagem,
+    p?.imagemUrl,
+    p?.image,
+    p?.imageUrl,
+    p?.foto,
+    p?.fotoUrl,
+    p?.urlImagem,
+    p?.linkImagem
+  ];
+
+  let url = (possiveis.find(v => typeof v === 'string' && v.trim()) || '').trim();
+
+  // Converte link compartilhado do Google Drive para link direto visualizável
+  const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+  if(driveMatch && driveMatch[1]){
+    url = `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+  }
+
+  return url;
+}
+
+function imagemProduto(urlOuProduto, nome){
+  const url = typeof urlOuProduto === 'object'
+    ? obterImagemProduto(urlOuProduto)
+    : (urlOuProduto || '').trim();
+
+  const src = url || 'logo.png';
 
   return `<img src="${src}" alt="${nome || 'Produto'}" loading="lazy" onerror="this.onerror=null;this.src='logo.png';this.style.objectFit='contain';this.style.padding='18px';">`;
 }
@@ -861,7 +887,7 @@ function render(){
       <article class="product">
         <span class="badge">Novo</span>
         <button type="button" class="heart ${favorito ? 'ativo' : ''}" onclick="toggleFavorito(event,'${p.id}',this)">${favorito ? '♥' : '♡'}</button>
-        <div class="product-img" onclick="abrirProduto(${i})">${imagemProduto(p.imagem, p.nome)}</div>
+        <div class="product-img" onclick="abrirProduto(${i})">${imagemProduto(p, p.nome)}</div>
         <div class="product-info">
           <h3>${p.nome || 'Produto'}</h3>
           <div class="meta">${p.marca || 'Multimarcas'} ${p.tamanho ? '• Tam: ' + p.tamanho : ''}</div>
@@ -894,7 +920,7 @@ function iniciarHeroCarousel(){
   if(!img || !nome || !meta || !preco || !dots) return;
 
   const novidades = [...produtos]
-    .filter(p => (p.nome || '').trim() && (p.imagem || '').trim())
+    .filter(p => (p.nome || '').trim() && obterImagemProduto(p))
     .slice(0, 5);
 
   if(novidades.length === 0){
@@ -914,7 +940,7 @@ function iniciarHeroCarousel(){
 
     img.style.objectFit = 'cover';
     img.style.padding = '0';
-    img.src = (p.imagem || '').trim();
+    img.src = obterImagemProduto(p);
     img.onerror = function(){
       this.onerror = null;
       this.src = 'logo.png';
@@ -942,7 +968,7 @@ function renderDestaques(){
   if(!area) return;
 
   const destaques = [...produtos]
-    .filter(p => (p.nome || '').trim() && (p.imagem || '').trim())
+    .filter(p => (p.nome || '').trim() && obterImagemProduto(p))
     .slice(0, 4);
 
   area.innerHTML = '';
@@ -956,7 +982,7 @@ function renderDestaques(){
     const i = produtos.findIndex(x => x.id === p.id);
     area.innerHTML += `
       <article class="highlight-card" onclick="abrirProduto(${i})">
-        ${imagemProduto(p.imagem, p.nome)}
+        ${imagemProduto(p, p.nome)}
         <div class="highlight-info">
           <h3>${p.nome || 'Produto'}</h3>
           <p class="muted">${p.marca || 'Multimarcas'} ${p.tamanho ? '• Tam: ' + p.tamanho : ''}</p>
@@ -974,7 +1000,7 @@ function abrirProduto(i){
   if(!p) return;
 
   const modalImg = document.getElementById('modalImg');
-  modalImg.src = p.imagem || 'logo.png';
+  modalImg.src = obterImagemProduto(p) || 'logo.png';
   modalImg.onerror = function(){
     this.src = 'logo.png';
     this.style.objectFit = 'contain';
@@ -1048,7 +1074,7 @@ function renderCarrinho(){
 
     c.innerHTML += `
       <div class="cart-item">
-        ${imagemProduto(p.imagem, p.nome)}
+        ${imagemProduto(p, p.nome)}
         <div>
           <h4>${p.nome || 'Produto'}</h4>
           <small class="muted">${p.tamanho ? 'Tamanho: ' + p.tamanho : p.categoria || ''}</small>
@@ -1221,7 +1247,7 @@ function renderAdmin(){
   produtos.forEach(p => {
     el.innerHTML += `
       <div class="admin-prod">
-        ${imagemProduto(p.imagem, p.nome)}
+        ${imagemProduto(p, p.nome)}
         <div>
           <h4>${p.nome || 'Produto'}</h4>
           <small class="muted">${moeda(p.preco)} | ${p.categoria || ''} ${p.tamanho ? '| Tam: ' + p.tamanho : ''}</small>
