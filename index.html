@@ -155,24 +155,27 @@ footer span{
 
 
 
+
+
 /* =========================
-   AJUSTE FINAL VISUAL
+   AJUSTE FINAL VISUAL - D'BLACK
    ========================= */
 
-/* Botões com amarelo premium, sem estourar */
+/* Botões com amarelo premium limpo */
 .btn,
 .add-btn,
 .search button,
 .qty button,
 .modal-close,
 button:not(.heart):not(.btn-dark):not(.btn-danger) {
-  background: linear-gradient(135deg, #c99700, #9f7600) !important;
+  background: linear-gradient(135deg, #f4c430, #d9a900) !important;
   color: #ffffff !important;
-  border: 1px solid rgba(255,255,255,.12) !important;
+  border: 1px solid rgba(255,255,255,.18) !important;
   border-radius: 999px !important;
+  font-family: 'Inter', sans-serif !important;
   font-weight: 800 !important;
-  letter-spacing: .35px !important;
-  box-shadow: 0 8px 18px rgba(159,118,0,.22) !important;
+  letter-spacing: .25px !important;
+  box-shadow: 0 8px 18px rgba(244,196,48,.20) !important;
   transition: all .22s ease !important;
 }
 
@@ -182,39 +185,39 @@ button:not(.heart):not(.btn-dark):not(.btn-danger) {
 .qty button:hover,
 .modal-close:hover,
 button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
-  background: linear-gradient(135deg, #d7a60c, #b98900) !important;
+  background: linear-gradient(135deg, #ffd84d, #e8b900) !important;
   color: #ffffff !important;
   transform: translateY(-2px) !important;
-  box-shadow: 0 12px 28px rgba(159,118,0,.32) !important;
+  box-shadow: 0 12px 28px rgba(244,196,48,.30) !important;
 }
 
-/* Botões do topo mais elegantes e menos chamativos */
+/* Botões do topo mais finos */
 .icon-btn {
-  background: #151515 !important;
+  background: rgba(255,255,255,.06) !important;
   color: #ffffff !important;
-  border: 1px solid #303030 !important;
+  border: 1px solid rgba(244,196,48,.35) !important;
   box-shadow: none !important;
 }
 .icon-btn:hover {
-  background: #222 !important;
+  background: rgba(244,196,48,.16) !important;
   color: #ffffff !important;
-  border-color: #c99700 !important;
+  border-color: #f4c430 !important;
 }
 
 /* Menu superior */
 .nav a:hover,
 .nav a.active {
-  background: rgba(201,151,0,.22) !important;
+  background: rgba(244,196,48,.18) !important;
   color: #ffffff !important;
-  border: 1px solid rgba(201,151,0,.55) !important;
+  border: 1px solid rgba(244,196,48,.55) !important;
 }
 
 /* Categorias */
 .cat-card:hover,
 .cat-card.active {
-  background: rgba(201,151,0,.16) !important;
+  background: rgba(244,196,48,.14) !important;
   color: #ffffff !important;
-  border-color: #c99700 !important;
+  border-color: #f4c430 !important;
 }
 
 /* Botões especiais */
@@ -257,14 +260,14 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   max-width: 620px;
 }
 .produtos-destaque {
-  background: linear-gradient(145deg, rgba(201,151,0,.055), rgba(255,255,255,.025));
-  border: 1px solid rgba(201,151,0,.16);
+  background: linear-gradient(145deg, rgba(244,196,48,.052), rgba(255,255,255,.025));
+  border: 1px solid rgba(244,196,48,.16);
   border-radius: 26px;
   padding: 22px;
   box-shadow: 0 18px 45px rgba(0,0,0,.32);
 }
 
-/* Novidades abaixo dos produtos, sem disputar atenção */
+/* Novidades abaixo dos produtos */
 .novidades-title {
   margin-top: 48px;
 }
@@ -281,22 +284,64 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
 }
 .highlight-card {
   background: linear-gradient(145deg, #121212, #0b0b0b) !important;
-  border: 1px solid rgba(201,151,0,.24) !important;
+  border: 1px solid rgba(244,196,48,.24) !important;
   border-radius: 20px !important;
   box-shadow: 0 8px 24px rgba(0,0,0,.26) !important;
   transform: none !important;
 }
 .highlight-card:hover {
-  border-color: rgba(201,151,0,.65) !important;
+  border-color: rgba(244,196,48,.65) !important;
   transform: translateY(-3px) !important;
 }
 .highlight-card::before {
   content: "Novo" !important;
-  background: linear-gradient(135deg, #c99700, #9f7600) !important;
+  background: linear-gradient(135deg, #f4c430, #d9a900) !important;
   color: #fff !important;
 }
 .highlight-card img {
   height: 185px !important;
+}
+
+/* Carrossel do topo */
+.hero-box.carousel-hero {
+  min-height: 390px;
+}
+.carousel-product-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(0,0,0,.32);
+  border: 1px solid rgba(244,196,48,.22);
+  border-radius: 24px;
+  padding: 18px;
+  margin: 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+  box-shadow: 0 22px 44px rgba(0,0,0,.45);
+}
+.carousel-product-card img {
+  width: 100%;
+  max-width: 330px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+.carousel-dots {
+  position: absolute;
+  left: 68px;
+  bottom: 26px;
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+}
+.carousel-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.35);
+}
+.carousel-dot.active {
+  background: #f4c430;
 }
 
 /* Instagram real */
@@ -309,6 +354,42 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   padding: 5px !important;
 }
 
+/* Modal de localização */
+.checkout-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.78);
+  z-index: 150;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.checkout-modal.open {
+  display: flex;
+}
+.checkout-box {
+  width: 100%;
+  max-width: 440px;
+  background: #111;
+  border: 1px solid rgba(244,196,48,.25);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 24px 60px rgba(0,0,0,.65);
+}
+.checkout-box h2 {
+  margin-top: 0;
+}
+.checkout-box select {
+  width: 100%;
+  margin: 12px 0 18px;
+  padding: 14px;
+  border-radius: 14px;
+  background: #0d0d0d;
+  color: #fff;
+  border: 1px solid #333;
+}
+
 /* WhatsApp flutuante mantém verde */
 .whatsapp-float {
   background: #25d366 !important;
@@ -319,6 +400,9 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   .produtos-title h2 { font-size: 34px; }
   .produtos-destaque { padding: 12px; border-radius: 20px; }
   .highlight-card img { height: 210px !important; }
+  .carousel-product-card { margin: 14px; }
+  .carousel-product-card img { height: 230px; }
+  .carousel-dots { left: 50%; transform: translateX(-50%); }
 }
 
 </style>
@@ -341,7 +425,22 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
 </header>
 
 <main id="lojaView">
-  <section id="top" class="hero"><div class="hero-box"><div class="hero-content"><div class="kicker">Estilo que impõe</div><h1>ATITUDE QUE <span>TRANSFORMA</span></h1><button class="btn" onclick="document.getElementById('produtos').scrollIntoView()">Ver produtos →</button></div><div class="hero-mascot"><img src="logo.png" alt="Mascote D'Black Outlet"></div></div></section>
+  <section id="top" class="hero">
+  <div class="hero-box carousel-hero">
+    <div class="hero-content">
+      <div class="kicker" id="heroKicker">Novidades da loja</div>
+      <h1 id="heroTitulo">ATITUDE QUE <span>TRANSFORMA</span></h1>
+      <p id="heroDescricao" class="muted" style="max-width:520px;font-size:16px;margin-bottom:24px">Confira as últimas peças cadastradas na D'Black Outlet.</p>
+      <button class="btn" onclick="document.getElementById('categoriasProdutos').scrollIntoView({behavior:'smooth', block:'start'})">Ver produtos →</button>
+    </div>
+    <div class="hero-mascot">
+      <div class="carousel-product-card">
+        <img id="heroImagem" src="logo.png" alt="Novidade D'Black Outlet">
+      </div>
+    </div>
+    <div class="carousel-dots" id="heroDots"></div>
+  </div>
+</section>
   <section class="main"><div id="categoriasProdutos" class="section-title"><h2>Categorias</h2></div><div class="categories"><div class="cat-card active" onclick="filtrar('Todos')"><div class="ico">▦</div><span>Todos</span></div><div class="cat-card" onclick="filtrar('Calçados')"><div class="ico">👟</div><span>Calçados</span></div><div class="cat-card" onclick="filtrar('Camisas')"><div class="ico">👕</div><span>Camisas</span></div><div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div><div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div><div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div></div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div></section>
   <section class="benefits"><div class="benefit">🚚 <div><strong>Frete para todo Brasil</strong><small>Envio rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>Pagamento via Pix</strong><small>Rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>5% off no Pix</strong><small>Pagamento à vista</small></div></div><div class="benefit">💬 <div><strong>Atendimento VIP</strong><small>Suporte via WhatsApp</small></div></div></section>
 </main>
@@ -352,6 +451,20 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
 
 <aside id="cartPanel" class="cart-panel"><div class="cart-head"><h2>Seu carrinho</h2><button class="btn-dark" onclick="toggleCart()">✕</button></div><div id="carrinho"></div><div class="cart-total"><span>Subtotal</span><span id="total">R$ 0,00</span></div><button class="btn" style="width:100%" onclick="finalizar()">🛒 Finalizar compra</button><button class="btn btn-outline" style="width:100%;margin-top:10px" onclick="toggleCart()">Continuar comprando</button><p class="muted" style="text-align:center;margin-top:24px">🔒 Compra 100% segura</p></aside>
 <div id="produtoModal" class="modal"><div class="modal-box"><button class="modal-close" onclick="fecharProduto()">✕</button><img id="modalImg" src="" alt="Produto"><div><h2 id="modalNome"></h2><p id="modalMeta" class="muted"></p><p id="modalPreco" class="price" style="font-size:34px"></p><p class="muted">Produto selecionado da D'Black Outlet. Finalize pelo WhatsApp para confirmar disponibilidade, entrega e pagamento.</p><button id="modalAdd" class="btn" style="width:100%">Adicionar ao carrinho</button></div></div></div>
+<div id="checkoutModal" class="checkout-modal">
+  <div class="checkout-box">
+    <h2>Finalizar pedido</h2>
+    <p class="muted">Selecione a região para atendimento:</p>
+    <select id="checkoutCidade">
+      <option value="">Escolha uma opção</option>
+      <option value="Uberlândia e Região">Uberlândia e Região</option>
+      <option value="Francisco Beltrão e Região">Francisco Beltrão e Região</option>
+    </select>
+    <button class="btn" style="width:100%" onclick="enviarPedidoWhatsapp()">Continuar para WhatsApp</button>
+    <button class="btn btn-dark" style="width:100%;margin-top:10px" onclick="fecharCheckout()">Cancelar</button>
+  </div>
+</div>
+
 <a class="whatsapp-float" href="https://wa.me/5542999296088?text=Ol%C3%A1%20gostaria%20de%20saber%20mais%20sobre%20a%20loja." target="_blank"><img src="whatsapp.png" alt="WhatsApp"></a><div id="toast" class="toast">Produto salvo com sucesso!</div>
 
 
@@ -624,6 +737,46 @@ function render(){
   });
 }
 
+
+let heroIndex = 0;
+let heroTimer = null;
+
+function iniciarHeroCarousel(){
+  const img = document.getElementById('heroImagem');
+  const titulo = document.getElementById('heroTitulo');
+  const desc = document.getElementById('heroDescricao');
+  const dots = document.getElementById('heroDots');
+
+  if(!img || !titulo || !desc || !dots) return;
+
+  const novidades = [...produtos].filter(p => p.nome && p.imagem).slice(0, 5);
+
+  if(novidades.length === 0){
+    img.src = 'logo.png';
+    titulo.innerHTML = 'ATITUDE QUE <span>TRANSFORMA</span>';
+    desc.textContent = 'Cadastre produtos no painel admin para aparecerem como novidades aqui.';
+    dots.innerHTML = '';
+    return;
+  }
+
+  function mostrarSlide(index){
+    const p = novidades[index];
+    img.src = p.imagem || 'logo.png';
+    img.onerror = function(){ this.src = 'logo.png'; this.style.objectFit = 'contain'; };
+    titulo.innerHTML = `${p.nome || 'Novidade'} <span>${moeda(p.preco)}</span>`;
+    desc.textContent = `${p.marca || 'Multimarcas'} • ${p.categoria || ''} • Estoque: ${p.estoque || 0}`;
+    dots.innerHTML = novidades.map((_,i)=>`<span class="carousel-dot ${i===index?'active':''}"></span>`).join('');
+  }
+
+  mostrarSlide(heroIndex % novidades.length);
+
+  if(heroTimer) clearInterval(heroTimer);
+  heroTimer = setInterval(()=>{
+    heroIndex = (heroIndex + 1) % novidades.length;
+    mostrarSlide(heroIndex);
+  }, 4200);
+}
+
 function renderDestaques(){
   const area = document.getElementById('listaDestaques');
   if(!area) return;
@@ -761,6 +914,20 @@ function finalizar(){
     alert('Carrinho vazio');
     return;
   }
+  document.getElementById('checkoutModal')?.classList.add('open');
+}
+
+function fecharCheckout(){
+  document.getElementById('checkoutModal')?.classList.remove('open');
+}
+
+function enviarPedidoWhatsapp(){
+  const cidade = document.getElementById('checkoutCidade')?.value || '';
+
+  if(!cidade){
+    alert('Selecione sua cidade/região.');
+    return;
+  }
 
   let msg = `Pedido D'Black Outlet:%0A%0A`;
   let total = 0;
@@ -771,8 +938,11 @@ function finalizar(){
     msg += `• ${p.nome} x${p.qtd || 1} - ${moeda(sub)}%0A`;
   });
 
-  msg += `%0ATotal: ${moeda(total)}%0A%0AQuero finalizar este pedido.`;
+  msg += `%0ARegião: ${cidade}`;
+  msg += `%0ATotal: ${moeda(total)}`;
+  msg += `%0A%0AQuero finalizar este pedido.`;
 
+  fecharCheckout();
   window.open(`https://wa.me/5542999296088?text=${msg}`, '_blank');
 }
 
