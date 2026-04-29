@@ -10,6 +10,7 @@
 
 
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -342,6 +343,76 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   .carousel-dots { left: 50%; transform: translateX(-50%); }
 }
 
+
+/* Carrinho e mascote */
+.icon-btn i{
+  font-size:17px;
+}
+.add-btn i,
+.btn i{
+  margin-right:6px;
+}
+.mascote-fixo{
+  position:fixed;
+  left:20px;
+  bottom:22px;
+  z-index:75;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  cursor:pointer;
+  animation:flutuarMascote 4s ease-in-out infinite, aparecerMascote .8s ease;
+}
+.mascote-fixo img{
+  width:94px;
+  max-height:120px;
+  object-fit:contain;
+  filter:drop-shadow(0 12px 22px rgba(0,0,0,.7));
+  transition:.25s;
+}
+.mascote-fixo span{
+  background:rgba(17,17,17,.92);
+  color:#fff;
+  border:1px solid rgba(242,194,48,.45);
+  border-radius:999px;
+  padding:9px 14px;
+  font-size:13px;
+  font-weight:800;
+  box-shadow:0 10px 24px rgba(0,0,0,.4);
+  opacity:.95;
+}
+.mascote-fixo:hover img{
+  transform:scale(1.05) rotate(-2deg);
+}
+.mascote-fixo:hover span{
+  background:rgba(242,194,48,.16);
+}
+@keyframes flutuarMascote{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+  100%{transform:translateY(0)}
+}
+@keyframes aparecerMascote{
+  from{opacity:0;transform:scale(.85)}
+  to{opacity:1;transform:scale(1)}
+}
+@media(max-width:650px){
+  .mascote-fixo{
+    left:12px;
+    bottom:14px;
+  }
+  .mascote-fixo img{
+    width:68px;
+  }
+  .mascote-fixo span{
+    display:none;
+  }
+  .whatsapp-float{
+    right:14px!important;
+    bottom:14px!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -349,7 +420,7 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   <div class="header-inner">
     <a class="brand" href="#top" onclick="mostrarLoja()"><img class="logo-word" src="logo-escrita.png" alt="D'Black Outlet" onerror="this.src='logo escrita.png'"></a>
     <div class="search"><input id="busca" placeholder="Buscar produtos..." onkeyup="buscar()"><button onclick="buscar()">🔎</button></div>
-    <div class="header-actions"><button class="icon-btn" onclick="toggleCart()">🛒 <span id="cartCount" class="cart-count">0</span></button><button class="icon-btn" onclick="abrirAdmin()">👤 Admin</button></div>
+    <div class="header-actions"><button class="icon-btn" onclick="toggleCart()" title="Carrinho"><i class="fa-solid fa-bag-shopping"></i><span id="cartCount" class="cart-count">0</span></button><button class="icon-btn" onclick="abrirAdmin()">👤 Admin</button></div>
   </div>
   <nav class="nav">
   <a href="#top" onclick="mostrarLoja()">Início</a>
@@ -394,7 +465,7 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
 
 <section id="adminView" class="admin hidden"><div class="admin-card"><div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap"><h2>👑 Painel Admin</h2><button class="btn btn-dark" onclick="logout()">Sair</button></div><div class="admin-grid"><div><h3 id="formTitulo">Adicionar produto</h3><div class="form-grid"><div class="field"><label>Nome do produto</label><input id="nome" placeholder="Ex: Camiseta Lacoste"></div><div class="field"><label>Preço (R$)</label><input id="preco" type="number" step="0.01" placeholder="149.90"></div><div class="field"><label>Marca</label><input id="marca" placeholder="Ex: Nike"></div><div class="field"><label>Tamanho</label><input id="tamanho" placeholder="Ex: P, M, G, 42"></div><div class="field"><label>Categoria</label><select id="categoria"><option value="Calçados">Calçados</option><option value="Camisas">Camisas</option><option value="Bermudas">Bermudas</option><option value="Calças">Calças</option><option value="Acessórios">Acessórios</option><option value="Outros">Outros</option></select></div><div class="field"><label>Estoque</label><input id="estoque" type="number" placeholder="1"></div><div class="field full"><label>Imagem (URL/link direto)</label><input id="imagem" placeholder="Cole o link da imagem aqui" oninput="atualizarPreviewImagem()"></div></div><button id="btnSalvar" class="btn" style="width:100%;margin-top:12px" onclick="salvarProduto()">Salvar produto</button><button id="btnCancelarEdicao" class="btn btn-dark hidden" style="width:100%;margin-top:10px" onclick="cancelarEdicao()">Cancelar edição</button></div><div class="preview-box"><h3>Prévia da imagem</h3><img id="preview" alt="Prévia"><p class="muted">Cole um link direto da imagem. Exemplo: endereço terminando em .jpg, .png ou .webp.</p><img src="logo.png" alt="Mascote" style="display:block;width:210px;height:auto;margin:18px auto 0;object-fit:contain"></div></div></div><div class="admin-card" style="margin-top:22px"><h3>Gerenciar produtos</h3><div id="listaAdmin" class="admin-list"></div></div></section>
 
-<aside id="cartPanel" class="cart-panel"><div class="cart-head"><h2>Seu carrinho</h2><button class="btn-dark" onclick="toggleCart()">✕</button></div><div id="carrinho"></div><div class="cart-total"><span>Subtotal</span><span id="total">R$ 0,00</span></div><button class="btn" style="width:100%" onclick="finalizar()">🛒 Finalizar compra</button><button class="btn btn-outline" style="width:100%;margin-top:10px" onclick="toggleCart()">Continuar comprando</button><p class="muted" style="text-align:center;margin-top:24px">🔒 Compra 100% segura</p></aside>
+<aside id="cartPanel" class="cart-panel"><div class="cart-head"><h2>Seu carrinho</h2><button class="btn-dark" onclick="toggleCart()">✕</button></div><div id="carrinho"></div><div class="cart-total"><span>Subtotal</span><span id="total">R$ 0,00</span></div><button class="btn" style="width:100%" onclick="finalizar()"><i class="fa-solid fa-bag-shopping"></i> Finalizar compra</button><button class="btn btn-outline" style="width:100%;margin-top:10px" onclick="toggleCart()">Continuar comprando</button><p class="muted" style="text-align:center;margin-top:24px">🔒 Compra 100% segura</p></aside>
 <div id="produtoModal" class="modal"><div class="modal-box"><button class="modal-close" onclick="fecharProduto()">✕</button><img id="modalImg" src="" alt="Produto"><div><h2 id="modalNome"></h2><p id="modalMeta" class="muted"></p><p id="modalPreco" class="price" style="font-size:34px"></p><p class="muted">Produto selecionado da D'Black Outlet. Finalize pelo WhatsApp para confirmar disponibilidade, entrega e pagamento.</p><button id="modalAdd" class="btn" style="width:100%">Adicionar ao carrinho</button></div></div></div>
 <div id="checkoutModal" class="checkout-modal">
   <div class="checkout-box">
@@ -408,6 +479,11 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
     <button class="btn" style="width:100%" onclick="enviarPedidoWhatsapp()">Continuar para WhatsApp</button>
     <button class="btn btn-dark" style="width:100%;margin-top:10px" onclick="fecharCheckout()">Cancelar</button>
   </div>
+</div>
+
+<div class="mascote-fixo" onclick="abrirMascoteWhatsapp()" title="Falar com a D'Black Outlet">
+  <img src="logo.png" alt="Mascote D'Black Outlet">
+  <span>Precisa de ajuda?</span>
 </div>
 
 <a class="whatsapp-float" href="https://wa.me/5542999296088?text=Ol%C3%A1%20gostaria%20de%20saber%20mais%20sobre%20a%20loja." target="_blank"><img src="whatsapp.png" alt="WhatsApp"></a><div id="toast" class="toast">Produto salvo com sucesso!</div>
@@ -497,6 +573,12 @@ const moeda = valor => Number(valor || 0).toLocaleString('pt-BR', {
   style: 'currency',
   currency: 'BRL'
 });
+
+
+function abrirMascoteWhatsapp(){
+  const texto = 'Ol%C3%A1%20gostaria%20de%20saber%20mais%20sobre%20a%20loja.';
+  window.open(`https://wa.me/5542999296088?text=${texto}`, '_blank');
+}
 
 function toast(msg){
   const t = document.getElementById('toast');
@@ -675,7 +757,7 @@ function render(){
           <h3>${p.nome || 'Produto'}</h3>
           <div class="meta">${p.marca || 'Multimarcas'} ${p.tamanho ? '• Tam: ' + p.tamanho : ''}</div>
           <p class="price">Valor: ${moeda(p.preco)} <span style="font-size:13px;color:#ccc;font-weight:600">(Frete incluso)</span></p><p class="muted">Estoque: ${p.estoque || 0} unidade(s)</p>
-          <button class="add-btn" onclick="addCarrinho(${i})">🛒 Adicionar ao carrinho</button>
+          <button class="add-btn" onclick="addCarrinho(${i})"><i class="fa-solid fa-bag-shopping"></i> Adicionar</button>
         </div>
       </article>
     `;
@@ -764,7 +846,7 @@ function renderDestaques(){
           <h3>${p.nome || 'Produto'}</h3>
           <p class="muted">${p.marca || 'Multimarcas'} ${p.tamanho ? '• Tam: ' + p.tamanho : ''}</p>
           <p class="price">Valor: ${moeda(p.preco)} <span style="font-size:13px;color:#ccc;font-weight:600">(Frete incluso)</span></p><p class="muted">Estoque: ${p.estoque || 0} unidade(s)</p>
-          <button class="add-btn" onclick="event.stopPropagation();addCarrinho(${i})">Comprar agora</button>
+          <button class="add-btn" onclick="event.stopPropagation();addCarrinho(${i})"><i class="fa-solid fa-bolt"></i> Comprar agora</button>
         </div>
       </article>
     `;
