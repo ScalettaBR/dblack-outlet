@@ -514,6 +514,40 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   display:block !important;
 }
 
+
+/* Menu de favoritos restaurado */
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.icon-btn i{
+  margin-right:6px;
+}
+.fav-count{
+  display:inline-grid;
+  place-items:center;
+  min-width:22px;
+  height:22px;
+  padding:0 6px;
+  margin-left:6px;
+  background:#ef4444;
+  color:#fff;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+}
+.favoritos-vazio{
+  grid-column:1/-1;
+  text-align:center;
+  background:#111;
+  border:1px solid #333;
+  border-radius:18px;
+  padding:28px;
+  color:#ccc;
+}
+
 </style>
 </head>
 <body>
@@ -521,7 +555,23 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   <div class="header-inner">
     <a class="brand" href="#top" onclick="mostrarLoja()"><img class="logo-word" src="logo-escrita.png" alt="D'Black Outlet" onerror="this.src='logo escrita.png'"></a>
     <div class="search"><input id="busca" placeholder="Buscar produtos..." onkeyup="buscar()"><button onclick="buscar()">🔎</button></div>
-    <div class="header-actions"><button class="icon-btn" onclick="toggleCart()" title="Carrinho"><i class="fa-solid fa-bag-shopping"></i><span id="cartCount" class="cart-count">0</span></button><button class="icon-btn" onclick="abrirAdmin()">👤 Admin</button></div>
+    <div class="header-actions">
+  <button class="icon-btn" onclick="mostrarFavoritos()" title="Favoritos">
+    <i class="fa-solid fa-heart"></i>
+    Favoritos
+    <span id="favCount" class="fav-count">0</span>
+  </button>
+
+  <button class="icon-btn" onclick="toggleCart()" title="Sacola">
+    <i class="fa-solid fa-bag-shopping"></i>
+    <span id="cartCount" class="cart-count">0</span>
+  </button>
+
+  <button class="icon-btn" onclick="abrirAdmin()" title="Admin">
+    <i class="fa-solid fa-user"></i>
+    Admin
+  </button>
+</div>
   </div>
   <nav class="nav">
   <a href="#top" onclick="mostrarLoja()">Início</a>
@@ -566,7 +616,8 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   <div class="cat-card" onclick="filtrar('Bermudas')"><div class="ico">🩳</div><span>Bermudas</span></div>
   <div class="cat-card" onclick="filtrar('Calças')"><div class="ico">👖</div><span>Calças</span></div>
   <div class="cat-card" onclick="filtrar('Acessórios')"><div class="ico">🧢</div><span>Acessórios</span></div>
-</div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div></section>
+</div><div id="produtos" class="section-title"><h2>Todos os produtos</h2></div><div id="lista" class="product-grid"></div>
+<div id="destaques" class="section-title novidades-title"><h2>Novidades</h2></div><div id="listaDestaques" class="highlight-grid novidades-grid"></div></section>
   <section class="benefits"><div class="benefit">🚚 <div><strong>Frete para todo Brasil</strong><small>Envio rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>Pagamento via Pix</strong><small>Rápido e seguro</small></div></div><div class="benefit">💠 <div><strong>5% off no Pix</strong><small>Pagamento à vista</small></div></div><div class="benefit">💬 <div><strong>Atendimento VIP</strong><small>Suporte via WhatsApp</small></div></div></section>
 </main>
 
@@ -658,7 +709,7 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   </div>
 
   <div class="contato-grid">
-    <a class="contato-card whatsapp" href="https://wa.me/5542999296088?text=Ol%C3%A1%20gostaria%20de%20saber%20mais%20sobre%20a%20loja." target="_blank">
+    <a class="contato-card whatsapp" href="https://wa.me/5595981065559?text=Ol%C3%A1%20gostaria%20de%20saber%20mais%20sobre%20a%20loja." target="_blank">
       <img src="whatsapp.png" alt="WhatsApp">
       <div>
         <h3>WhatsApp</h3>
@@ -708,7 +759,7 @@ const moeda = valor => Number(valor || 0).toLocaleString('pt-BR', {
 
 function abrirMascoteWhatsapp(){
   const texto = 'Ol%C3%A1%20gostaria%20de%20saber%20mais%20sobre%20a%20loja.';
-  window.open(`https://wa.me/5542999296088?text=${texto}`, '_blank');
+  window.open(`https://wa.me/5595981065559?text=${texto}`, '_blank');
 }
 
 function toast(msg){
@@ -733,16 +784,22 @@ function obterImagemProduto(p){
 
   let url = (possiveis.find(v => typeof v === 'string' && v.trim()) || '').trim();
 
-  // Google Drive compartilhado
+  if(!url) return '';
+
+  url = url.replace(/\s/g, '');
+
   const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
   if(driveMatch && driveMatch[1]){
-    url = `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+    return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
   }
 
-  // Imgur: se for link de página, tenta transformar em link direto
-  const imgurMatch = url.match(/^https?:\/\/(?:www\.)?imgur\.com\/([a-zA-Z0-9]+)$/);
-  if(imgurMatch && imgurMatch[1]){
-    url = `https://i.imgur.com/${imgurMatch[1]}.jpg`;
+  if(/^https?:\/\/i\.imgur\.com\//i.test(url)){
+    return url;
+  }
+
+  const imgurPage = url.match(/^https?:\/\/(?:www\.)?imgur\.com\/([a-zA-Z0-9]+)(?:[?#].*)?$/);
+  if(imgurPage && imgurPage[1]){
+    return `https://i.imgur.com/${imgurPage[1]}.jpg`;
   }
 
   return url;
@@ -766,6 +823,12 @@ function salvarFavoritos(){
   localStorage.setItem('favoritos_dblack', JSON.stringify(favoritos));
 }
 
+
+function atualizarContadorFavoritos(){
+  const el = document.getElementById('favCount');
+  if(el) el.textContent = favoritos.length;
+}
+
 function toggleFavorito(event, id, btn){
   event.preventDefault();
   event.stopPropagation();
@@ -785,6 +848,15 @@ function toggleFavorito(event, id, btn){
   }
 
   salvarFavoritos();
+}
+
+
+function mostrarFavoritos(){
+  mostrarLoja();
+  filtroAtual = 'Favoritos';
+  document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+  render();
+  document.getElementById('produtos')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
 function produtoAtualizado(item){
@@ -864,9 +936,12 @@ async function carregar(){
   }
 
   render();
-    renderAdmin();
+  renderDestaques();
+  iniciarHeroCarousel();
+  renderAdmin();
   renderCarrinho();
   renderAvaliacoes();
+  atualizarContadorFavoritos();
 }
 
 function filtrar(cat){
@@ -889,12 +964,13 @@ function buscar(){
 
 function produtosFiltrados(){
   return produtos.filter(p => {
-    const porCategoria = filtroAtual === 'Todos' || p.categoria === filtroAtual;
+    const porFavorito = filtroAtual === 'Favoritos' ? favoritos.includes(p.id) : true;
+    const porCategoria = filtroAtual === 'Todos' || filtroAtual === 'Favoritos' || p.categoria === filtroAtual;
     const porBusca = !termoBusca ||
       (p.nome || '').toLowerCase().includes(termoBusca) ||
       (p.marca || '').toLowerCase().includes(termoBusca);
 
-    return porCategoria && porBusca;
+    return porFavorito && porCategoria && porBusca;
   });
 }
 
@@ -906,7 +982,7 @@ function render(){
   lista.innerHTML = '';
 
   if(dados.length === 0){
-    lista.innerHTML = '<div class="empty">Nenhum produto encontrado.</div>';
+    lista.innerHTML = filtroAtual === 'Favoritos' ? '<div class="favoritos-vazio">Você ainda não favoritou nenhum produto. Clique no coração dos produtos para salvar aqui.</div>' : '<div class="empty">Nenhum produto encontrado.</div>';
     return;
   }
 
@@ -980,7 +1056,7 @@ function iniciarHeroCarousel(){
 
     img.style.objectFit = 'cover';
     img.style.padding = '0';
-    img.src = urlImagem;
+    img.src = urlImagem + (urlImagem.includes('?') ? '&' : '?') + 'v=' + Date.now();
 
     nome.textContent = p.nome || 'Produto';
     meta.textContent = `${p.marca || 'Multimarcas'} • ${p.categoria || ''} • Estoque: ${p.estoque || 0}`;
@@ -1169,7 +1245,7 @@ function enviarPedidoWhatsapp(){
   msg += `%0A%0AQuero finalizar este pedido.`;
 
   fecharCheckout();
-  window.open(`https://wa.me/5542999296088?text=${msg}`, '_blank');
+  window.open(`https://wa.me/5595981065559?text=${msg}`, '_blank');
 }
 
 function atualizarPreviewImagem(){
