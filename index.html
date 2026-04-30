@@ -1199,6 +1199,15 @@ function buscar(){
   }
 
   render();
+
+  if(termoBusca && produtosFiltrados().length > 0){
+    setTimeout(() => {
+      document.getElementById('produtos')?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }, 200);
+  }
 }
 
 function limparBusca(){
