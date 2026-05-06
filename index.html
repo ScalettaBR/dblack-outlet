@@ -763,6 +763,22 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   }
 }
 
+
+/* Correção contador favoritos */
+.fav-count{
+  display:inline-grid;
+  place-items:center;
+  min-width:22px;
+  height:22px;
+  padding:0 6px;
+  margin-left:6px;
+  background:#ef4444;
+  color:#fff;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+}
+
 </style>
 </head>
 <body>
@@ -1058,15 +1074,22 @@ function toggleFavorito(event, id, btn){
     favoritos.splice(index, 1);
     btn.classList.remove('ativo');
     btn.innerHTML = '♡';
+    btn.setAttribute('title','Adicionar aos favoritos');
     toast('Produto removido dos favoritos.');
   }else{
     favoritos.push(id);
     btn.classList.add('ativo');
     btn.innerHTML = '♥';
+    btn.setAttribute('title','Remover dos favoritos');
     toast('Produto favoritado!');
   }
 
   salvarFavoritos();
+  atualizarContadorFavoritos();
+
+  if(filtroAtual === 'Favoritos'){
+    render();
+  }
 }
 
 
@@ -1074,6 +1097,7 @@ function mostrarFavoritos(){
   mostrarLoja();
   filtroAtual = 'Favoritos';
   document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('active'));
+  atualizarContadorFavoritos();
   render();
   document.getElementById('produtos')?.scrollIntoView({behavior:'smooth', block:'start'});
 }
