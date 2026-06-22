@@ -779,26 +779,55 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   font-weight:900;
 }
 
+</style>
 
-/* PREMIUM UPGRADE */
-.top-frete{background:linear-gradient(90deg,#1a1a1a,#242424);padding:8px;text-align:center;font-weight:700;color:#ffc400;border-bottom:1px solid rgba(255,196,0,.15)}
-body::before{opacity:.35;background-size:140px 140px!important}
-.product-card,.produto-card,.card-produto{transition:.35s ease}
-.product-card:hover,.produto-card:hover,.card-produto:hover{transform:translateY(-6px);box-shadow:0 0 30px rgba(255,196,0,.18)}
-.btn{background:#d4a514!important;color:#000!important}
-.stock-disponivel{background:#16a34a;color:#fff}
-.stock-ultimas{background:#ea580c;color:#fff}
-.stock-esgotado{background:#dc2626;color:#fff}
-.logo-rating{display:flex;align-items:center;gap:10px;font-size:14px;color:#ffc400}
-.cart-modern{backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08)}
-@media(max-width:768px){
-.product-card,.produto-card,.card-produto{width:100%!important}
+<style>
+:root{
+--gold:#d4af37;--gold2:#f0d67a;--bg:#0f0f10;--card:#181818;
 }
-
+body{
+background:
+radial-gradient(circle at top right, rgba(212,175,55,.08), transparent 35%),
+radial-gradient(circle at bottom left, rgba(212,175,55,.05), transparent 40%),
+#0f0f10!important;
+}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;
+background:linear-gradient(135deg,rgba(255,255,255,.015),transparent 40%);
+}
+.top-shipping-bar{
+background:linear-gradient(90deg,#111,#222,#111);
+color:#f5f5f5;padding:8px;text-align:center;font-weight:700;
+letter-spacing:.5px;border-bottom:1px solid rgba(212,175,55,.3)
+}
+.product-card,.produto,.product{
+border-radius:18px!important;
+background:rgba(24,24,24,.95)!important;
+border:1px solid rgba(212,175,55,.15)!important;
+box-shadow:0 8px 25px rgba(0,0,0,.25)!important;
+transition:all .3s ease!important;
+}
+.product-card:hover,.produto:hover,.product:hover{
+transform:translateY(-6px);
+box-shadow:0 15px 35px rgba(212,175,55,.15)!important;
+}
+button,.btn{
+border-radius:12px!important;
+background:linear-gradient(135deg,#b38a1f,#e0c15a)!important;
+color:#111!important;font-weight:700!important;
+}
+.stock-available{background:#198754;color:#fff}
+.stock-low{background:#fd7e14;color:#fff}
+.stock-out{background:#dc3545;color:#fff}
+.cart,.carrinho{
+backdrop-filter:blur(12px);
+border-left:1px solid rgba(212,175,55,.2);
+}
+@media(max-width:768px){
+.product-card,.produto,.product{margin-bottom:16px}
+}
 </style>
 </head>
-<body>
-<div class='top-frete'>🚚 FRETE INCLUSO PARA TODO O BRASIL • ENVIO RÁPIDO</div>
+<body><div class="top-shipping-bar">🚚 FRETE INCLUSO • PAGAMENTO SEGURO • ENTREGA RÁPIDA</div>
 <header class="header">
   <div class="header-inner">
     <a class="brand" href="#top" onclick="mostrarLoja()"><img class="logo-word" src="logo-escrita.png" alt="D'Black Outlet" onerror="this.src='logo escrita.png'"></a>
