@@ -779,9 +779,26 @@ button:not(.heart):not(.btn-dark):not(.btn-danger):hover {
   font-weight:900;
 }
 
+
+/* PREMIUM UPGRADE */
+.top-frete{background:linear-gradient(90deg,#1a1a1a,#242424);padding:8px;text-align:center;font-weight:700;color:#ffc400;border-bottom:1px solid rgba(255,196,0,.15)}
+body::before{opacity:.35;background-size:140px 140px!important}
+.product-card,.produto-card,.card-produto{transition:.35s ease}
+.product-card:hover,.produto-card:hover,.card-produto:hover{transform:translateY(-6px);box-shadow:0 0 30px rgba(255,196,0,.18)}
+.btn{background:#d4a514!important;color:#000!important}
+.stock-disponivel{background:#16a34a;color:#fff}
+.stock-ultimas{background:#ea580c;color:#fff}
+.stock-esgotado{background:#dc2626;color:#fff}
+.logo-rating{display:flex;align-items:center;gap:10px;font-size:14px;color:#ffc400}
+.cart-modern{backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08)}
+@media(max-width:768px){
+.product-card,.produto-card,.card-produto{width:100%!important}
+}
+
 </style>
 </head>
 <body>
+<div class='top-frete'>🚚 FRETE INCLUSO PARA TODO O BRASIL • ENVIO RÁPIDO</div>
 <header class="header">
   <div class="header-inner">
     <a class="brand" href="#top" onclick="mostrarLoja()"><img class="logo-word" src="logo-escrita.png" alt="D'Black Outlet" onerror="this.src='logo escrita.png'"></a>
